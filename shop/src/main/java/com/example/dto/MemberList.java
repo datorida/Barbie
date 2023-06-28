@@ -15,8 +15,9 @@ import lombok.ToString;
 public class MemberList {
     private int membernum;
     private String mem_id;
+    private String mem_name;
     private String email;
     private String phone;
     private String pwd;
-    private String addres;
+    private String address;
 }

@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="shortcut icon" href="images/favicon.png" type="">
+
+    <title>Barbie</title>
+
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
+
+    <!-- Owl slider stylesheet -->
+    <link rel="stylesheet" type="text/css"
+        href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" />
+
+    <!-- Nice Select -->
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/jquery-nice-select/1.1.0/css/nice-select.min.css"
+        integrity="sha512-CruCP+TD3yXzlvvijET8wV5WxxEh5H8P4cmz0RFbKK6FlZ2sYl3AEsKlLPHbniXKSrDdFewhbmBK5skbdsASbQ=="
+        crossorigin="anonymous" />
+
+    <!-- Font Awesome Style -->
+    <link href="css/font-awesome.min.css" rel="stylesheet" />
+
+    <!-- Custom styles for this template -->
+    <link href="css/style.css" rel="stylesheet" />
+    <!-- Responsive style -->
+    <link href="css/responsive.css" rel="stylesheet" />
+    <style>
+        .login {
+            background-color: #f7f7f7;
+            font-family: Arial, sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        .login-container {
+            background-color: #ffffff;
+            border-radius: 5px;
+            padding: 20px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            width: 400px;
+            text-align: center;
+        }
+
+        h2 {
+            text-align: center;
+            color: #333333;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 10px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #666666;
+            text-align: left;
+        }
+
+        input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #dddddd;
+            border-radius: 3px;
+        }
+
+        button {
+            background-color: #3498db;
+            color: #ffffff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 3px;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        button:hover {
+            background-color: #2980b9;
+        }
+
+        .signup-link {
+            margin-top: 15px;
+            text-align: center;
+        }
+
+        .signup-link a {
+            color: #666666;
+            text-decoration: none;
+        }
+
+        .signup-link a:hover {
+            color: #333333;
+        }
+
+        .social-login {
+            margin-top: 30px;
+        }
+
+        .social-login h3 {
+            color: #666666;
+                    }
+
+        .social-login .btn {
+            display: block;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .social-login .btn-facebook {
+            background-color: #3b5998;
+        }
+
+        .social-login .btn-google {
+            background-color: #dd4b39;
+        }
+
+        .social-login .btn-kakao {
+            background-color: #f9e000;
+            color: #000000;
+        }
+
+        .social-login .btn img {
+            vertical-align: middle;
+            margin-right: 10px;
+            max-width: 10px;
+            max-height: 10px;
+        }
+    </style>
+
+</head>
+
+<body>
+    <header th:replace="top.html ::navigation-bar"></header>
+    <div class="login">
+        <div class="login-container">
+            <h2>Login</h2>
+            <form>
+                <div class="form-group">
+                    <label for="userId">Id</label>
+                    <input type="text" id="userId" name="userId" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+                 	<button type="submit">Login</button>
+            </form>
+            <div class="signup-link">
+                <a href="#">회원가입</a>
+            </div>
+            <div class="social-login">
+                <h5>Social Login</h5>
+                <a href="#" class="btn btn-google"><img src="images/google-icon.png" alt="Google">Google Login</a>
+                <a href="#" class="btn btn-kakao"><img src="images/kakao-icon.png" alt="Kakao">카카오로 로그인하기</a>
+            </div>
+        </div>
+    </div>
+
+
+</html>
+            
