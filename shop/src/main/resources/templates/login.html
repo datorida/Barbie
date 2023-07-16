@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="keywords" content="">
+<meta name="description" content="">
+<meta name="author" content="">
+<link rel="shortcut icon" href="images/favicon.png" type="">
+
+<title>Barbie</title>
+
+<!-- Bootstrap core CSS -->
+<link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
+
+<!-- Owl slider stylesheet -->
+<link rel="stylesheet" type="text/css"
+	href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" />
+
+<!-- Nice Select -->
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/jquery-nice-select/1.1.0/css/nice-select.min.css"
+	integrity="sha512-CruCP+TD3yXzlvvijET8wV5WxxEh5H8P4cmz0RFbKK6FlZ2sYl3AEsKlLPHbniXKSrDdFewhbmBK5skbdsASbQ=="
+	crossorigin="anonymous" />
+
+<!-- Font Awesome Style -->
+<link href="css/font-awesome.min.css" rel="stylesheet" />
+
+<!-- Custom styles for this template -->
+<link href="css/style.css" rel="stylesheet" />
+<!-- Responsive style -->
+<link href="css/responsive.css" rel="stylesheet" />
+<script src="http://code.jquery.com/jquery-3.5.1.min.js"></script>
+
+<style>
+.login {
+	background-color: #f7f7f7;
+	font-family: Arial, sans-serif;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	height: 100vh;
+}
+
+.login-container {
+	background-color: #ffffff;
+	border-radius: 5px;
+	padding: 20px;
+	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+	width: 400px;
+	text-align: center;
+}
+
+h2 {
+	text-align: center;
+	color: #333333;
+	margin-bottom: 30px;
+}
+
+.form-group {
+	margin-bottom: 10px;
+}
+
+label {
+	display: block;
+	margin-bottom: 5px;
+	color: #666666;
+	text-align: left;
+}
+
+input {
+	width: 100%;
+	padding: 8px;
+	border: 1px solid #dddddd;
+	border-radius: 3px;
+}
+
+button {
+	background-color: #FF91C8;
+	color: #ffffff;
+	border: none;
+	padding: 10px 20px;
+	border-radius: 3px;
+	cursor: pointer;
+	width: 100%;
+}
+
+button:hover {
+	background-color: #FF28A7;
+}
+
+.signup-link {
+	margin-top: 15px;
+	text-align: center;
+}
+
+.signup-link a {
+	color: #666666;
+	text-decoration: none;
+}
+
+.signup-link a:hover {
+	color: #333333;
+}
+
+.social-login {
+	margin-top: 30px;
+}
+
+.social-login h3 {
+	color: #666666;
+}
+
+.social-login .btn {
+	display: block;
+	margin-bottom: 10px;
+	text-align: center;
+}
+
+.social-login .btn-google {
+	background-color: #0A8A8A;
+	color: #ffffff;
+}
+
+.social-login .btn-kakao {
+	background-color: #f9e000;
+	color: #000000;
+}
+
+.social-login .btn img {
+	vertical-align: middle;
+	margin-right: 10px;
+	max-width: 30px;
+	max-height: 30px;
+}
+</style>
+<script>
+	$(document).ready(function() {
+		$('#login_form').submit(function(e) {
+			e.preventDefault(); // 기본 form 제출 동작 막기
+
+			// Ajax를 사용하여 로그인 요청 보내기
+			$.ajax({
+				type : "POST",
+				url : "[[@{/loginimpl}]]",
+				data : $('#login_form').serialize(), // 폼 데이터 직렬화하여 전송
+				success : function(response) {
+					// 로그인 성공 시 알림 표시
+					alert("로그인이 성공하였습니다.");
+					// 페이지 리다이렉션
+					window.location.href = "[[@{/index}]]";
+				},
+				error : function(xhr, status, error) {
+					// 로그인 실패 시 에러 처리
+					alert("아이디 또는 비밀번호가 올바르지 않습니다.");
+				}
+			});
+		});
+	});
+	
+	/*id,pwd찾기*/
+	function openLostInfo(event, type) {
+        event.preventDefault(); // 기본 동작 막기
+
+        var url;
+        if (type === 'id') {
+            url = '[[@{/FindId}]]';
+        } else if (type === 'pwd') {
+            url = '[[@{/FindFd}]]';
+        }
+        window.open(url, 'new', 'scrollbars=yes,resizable=no,width=500,height=750,left=600,top=200');
+    }
+</script>
+
+</head>
+
+<body>
+	<header th:replace="top.html ::navigation-bar"></header>
+	<div class="login">
+		<div class="login-container">
+			<h2>Login</h2>
+			<form id="login_form" method="post" action="#">
+				<div class="form-group">
+					<label for="userId">Id</label> <input type="text" id="userId"
+						name="userId" required>
+				</div>
+				<div class="form-group">
+					<label for="password">Password</label> <input type="password"
+						id="password" name="password" required>
+				</div>
+				<button type="submit" id="signbtn">Login</button>
+			</form>
+
+			<div class="forgot-password">
+				<a href="#" onclick="openLostInfo(event, 'id')">id찾기 / </a> 
+				<a href="#" onclick="openLostInfo(event, 'pwd')">pwd찾기</a>
+			</div>
+
+			<div class="signup-link">
+				<a href="#">회원가입</a>
+			</div>
+			<div class="social-login">
+				<h5>Social Login</h5>
+				<a href="#" class="btn btn-google"><img
+					src="images/google-icon.png" alt="Google">Google Login</a> <a
+					href="#" class="btn btn-kakao"><img src="images/kakao-icon.png"
+					alt="Kakao">카카오로 로그인하기</a>
+			</div>
+		</div>
+	</div>
+
+
+
+</body>
+
+
+</html>
+
