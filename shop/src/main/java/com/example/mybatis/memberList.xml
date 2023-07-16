@@ -21,28 +21,19 @@ PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN"
 	<select id="select">
 		SELECT*FROM MEMBERLIST WHERE mem_id=#{mem_id}
 	</select>
+	
 	<select id="findByUserId" resultType="MemberList">
 		SELECT*FROM MEMBERLIST WHERE mem_id = #{mem_id}
 	</select>
-	<select id="selecaAll" parameterType="String" resultType="MemberList">
-		SELECT*FROM MEMBERLIST;
+	
+	<select parameterType="String" id="selecaAll" resultType="MemberList">
+		SELECT*FROM MEMBERLIST; 
 	</select>
+	
 <!-- 	아이디찾기 -->
-	<select id="findid" parameterType="java.util.Map" resultType="java.lang.String">
+	<select parameterType="java.util.Map" id="findid" resultType="java.lang.String">
 		SELECT mem_id FROM MEMBERLIST WHERE mem_name=#{mem_name} and email=#{email}
 	</select>
 	
-	<delete id="delete">
-	
-	</delete>
-	
-	<update id="update">
-	
-	</update>
-	
-	<select id="select">
-	
->>>>>>> branch 'main' of https://github.com/datorida/Barbie.git
-	</select>
 	
 </mapper>
