@@ -32,4 +32,17 @@ PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN"
 		SELECT mem_id FROM MEMBERLIST WHERE mem_name=#{mem_name} and email=#{email}
 	</select>
 	
+	<delete id="delete">
+	
+	</delete>
+	
+	<update id="update">
+	
+	</update>
+	
+	<select id="select">
+	
+>>>>>>> branch 'main' of https://github.com/datorida/Barbie.git
+	</select>
+	
 </mapper>

@@ -20,7 +20,7 @@ public class MemberList {
     private String phone;
     private String pwd;
     private String address;
-    
+
     
     
 
