@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.service.MemberListService;
 
 @RestController
-public class LoginController {
+public class AjaxController {
 	
 	@Autowired
 	MemberListService mservice;
@@ -25,10 +25,24 @@ public class LoginController {
 		return mem_id;
 	}
 	
+	//비밀번호찾기
 	@RequestMapping("/FindFwd")
-		public String FindIFwd(Model model) {
-		return "FindFwd";
+		public Object findfwd(String mem_id, String email) {
+			String pwd=null;
+			try {
+				pwd=mservice.findpwd(mem_id, email);
+			}catch(Exception e){
+				e.printStackTrace();
+			}
+			return pwd;
+	}
+	
+	//아이디 중복체크
+	@RequestMapping("/idCheck")
+		public int idCheck(String mem_id) {
+		int cnt= mservice.idCheck(mem_id);
+		return cnt;
+	}
 	}
 	
 	
-}

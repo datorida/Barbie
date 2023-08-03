@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<style>
+h4 {
+	text-align: center;
+}
+
+input {
+	background-color: #eee;
+	border: none;
+	padding: 12px 0px;
+	margin: 8px 0;
+	width: 320px;
+	height: 25px;
+}
+
+.textbox {
+	width: 400px;
+	height: 300px;
+	margin: 0 auto;
+}
+</style>
+<script src="http://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script>
+	function checkAll() {
+		var email_injeung = document.getElementById('email_injeung').value;
+		var numchk = document.getElementById('numchk').value;
+		
+		if (numchk == "no") {
+			alert("인증번호를 확인해주세요");
+			return false;
+		} else if (email_injeung.length == 0 || email_injeung == "") {
+			alert("인증번호를 입력해주세요");
+			return false; // 인증번호가 입력되지 않을 경우 폼 제출 방지
+		}
+		
+		return true;
+	}
+
+	function check_num() {
+		if (document.getElementById('num').value != ''
+				&& document.getElementById('email_injeung').value != '') {
+			if (document.getElementById('num').value == document
+					.getElementById('email_injeung').value) {
+				document.getElementById('checknum').innerHTML = '인증번호가 일치합니다';
+				document.getElementById('checknum').style.color = 'blue';
+				document.getElementById('numchk').value = "yes";
+			} else {
+				document.getElementById('checknum').innerHTML = '인증번호가 일치하지 않습니다';
+				document.getElementById('checknum').style.color = 'red';
+				document.getElementById('numchk').value = "no";
+			}
+		}
+	}
+</script>
+</head>
+<body>
+	<form action="/member/pw_set.me" method="post"
+		onsubmit="return checkAll()">
+		<div class="content">
+			<h4>인증번호 확인</h4>
+			<div class="textbox">
+				<input type="hidden" id="num" name="num" th:value="${num}"
+					onchange="check_num()"> <input type="hidden" id="email"
+					name="email" th:value="${email}"> <input type="text"
+					name="email_injeung" id="email_injeung" placeholder="인증번호를 입력하세요"
+					onchange="check_num()">
+				<!-- 인증번호 입력을 위한 input 태그 추가 -->
+				<input type="hidden" id="numchk" value="no">
+				<button id="check">확인</button>
+				<br> <span id="checknum"></span>
+			</div>
+		</div>
+	</form>
+</body>
+</html>

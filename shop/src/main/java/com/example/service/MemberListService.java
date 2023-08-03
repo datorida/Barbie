@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.example.dto.MemberList;
@@ -18,7 +17,7 @@ public class MemberListService implements MyService<String, MemberList> {
 	@Autowired
 	MemberListMapper mmapper;
 
-	private BCryptPasswordEncoder passwordEncoder;
+	
 
 	@Override
 	public void register(MemberList v) throws Exception {
@@ -63,6 +62,21 @@ public class MemberListService implements MyService<String, MemberList> {
 		return mmapper.findid(parameters);
 	}
 
+	public MemberList selectMember(String email) {
+		return mmapper.selectMember(email);
+	}
 
+	public void pwUpdate_M(String mem_id, String pwd, String email) throws Exception{
+		mmapper.pwUpdate(mem_id, pwd, email);
+	}
+	
+	public String findpwd(String mem_id, String email) {
+		return mmapper.findpwd(mem_id, email);
+	}
+
+	public int idCheck(String mem_id) {
+		int cnt = mmapper.idCheck(mem_id);
+		return cnt;
+	}
 
 }

@@ -14,7 +14,7 @@ public class CreatMemberTests {
 	
 	@Test
 	void contextLoads() {
-		MemberList obj = new MemberList(2, "moa8417", "박하", "moa8417@naver.com", "01086168407", "qkrgkektha1!", "경주시 황성동");
+		MemberList obj = new MemberList(1, "moa8417", "박하", "moa8417@naver.com", "01086168407", "qkrgkektha1!", "경주시 황성동");
 		
 		try {
 			mservice.register(obj);

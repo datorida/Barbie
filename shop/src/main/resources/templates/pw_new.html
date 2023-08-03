@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<meta charset="UTF-8">
+<style>
+*{
+	list-style:none;
+}
+h4{
+	text-align:center;
+	}
+input {
+	background-color: #eee;
+    border: none;
+    padding: 12px 0px;
+    margin: 8px 0;
+    width: 320px;
+    height: 25px;
+}
+.textbox{
+	border:1px solid #dcdcdc;
+	width:400px;
+	height:300px;
+	margin:0 auto;
+}
+
+</style>
+<script>
+	function check_pw(){
+		var pwchk=document.getElementById('pwchk').value;
+		if(pwchk=="no"){
+	    	  alert("비밀번호를 확인해주세요")
+	    	  return false;
+		} alert("비밀번호 수정이 완료되었습니다.");
+		  return true;		
+	}
+
+	function isSame(){
+	 
+    var pw = document.getElementById('pw').value;
+    var SC = ["!","@","#","$","%","?","^","*","."];
+    var check_SC = 0;
+    
+    if(pw.length < 6 || pw.length>16){
+        window.alert('비밀번호는 6글자 이상, 16글자 이하만 이용 가능합니다.');
+        document.getElementById('pw').value='';
+    }
+    for(var i=0;i<SC.length;i++){
+        if(pw.indexOf(SC[i]) != -1){
+            check_SC = 1;
+        }
+    }
+    if(check_SC == 0){
+        window.alert('!,@,#,$,%,? 등의 특수문자가 들어가 있지 않습니다.')
+        document.getElementById('pw').value='';
+    }
+    if(document.getElementById('pw').value !='' && document.getElementById('pw2').value!=''){
+        if(document.getElementById('pw').value==document.getElementById('pw2').value){
+            document.getElementById('checkpwd').innerHTML='비밀번호가 일치합니다.'
+            document.getElementById('checkpwd').style.color='blue';
+            document.getElementById('pwchk').value="yes"
+        }
+        else{
+            document.getElementById('checkpwd').innerHTML='비밀번호가 일치하지 않습니다.';
+            document.getElementById('checkpwd').style.color='red';
+            document.getElementById('pwchk').value="no"
+        }
+    }
+}
+
+</script>
+<body>
+<h4>비밀번호 변경</h4>
+<form action="/member/pw_new.me" method="POST" class="content" onsubmit="return check_pw()">
+	<div class="textbox">
+		<ul>
+			새 비밀번호<li><input id="pw" name="pw" type="password" onchange="isSame();"></li><br>
+			비밀번호 확인<li><input id="pw2" type="password" onchange="isSame();"></li>
+			<span id="checkpwd" style="font-size:12px;"></span>
+			<br>
+			<input type="hidden" id="pwchk" value="no">
+			<input type="hidden" name="email" th:value="${email}">
+			<br>
+		<button id="check">비밀번호변경</button>
+		</ul> 
+		
+	</div>
+	<br>
+</form>
+</body>
+</html>

@@ -14,8 +14,9 @@ PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN"
 	
 	</delete>
 	
-	<update id="update">
-
+	<!-- 비밀번호 재설정 -->
+	<update id="pwUpdate" parameterType="MemberList">
+		UPDATE MEMBERLIST SET PWD=#{PWD} WHERE EMAIL=#{EMAIL}	
 	</update>
 	
 	<select id="select">
@@ -27,9 +28,20 @@ PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN"
 	<select id="selecaAll" parameterType="String" resultType="MemberList">
 		SELECT*FROM MEMBERLIST;
 	</select>
-<!-- 	아이디찾기 -->
+	<!-- 	아이디찾기 -->
 	<select id="findid" parameterType="java.util.Map" resultType="java.lang.String">
 		SELECT mem_id FROM MEMBERLIST WHERE mem_name=#{mem_name} and email=#{email}
 	</select>
-	
+	<!--비밀번호 이메일인증 -->
+	<select id="selectMember" parameterType="String" resultType="MemberList">
+		SELECT*FROM MEMBERLIST WHERE EMAIL=#{EMAIL}
+	</select>
+	<!-- 비밀번호 찾기 -->
+	<select id="findfwd"  parameterType="String"  resultType="MemberList">
+		SELECT * FROM MEMBERLIST WHERE mem_id=#{mem_id} and email=#{email}
+	</select>
+	<!-- 아이디 중복체크 -->
+	<select id="idCheck" parameterType="String"  resultType="Integer">
+		SELECT COUNT(mem_id) FROM MEMBERLIST WHERE mem_id=#{mem_id}
+	</select>
 </mapper>
