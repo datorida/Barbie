@@ -32,14 +32,12 @@ public class MainController {
 
 	@GetMapping("/login")
 	public String login(Model model) {
-		model.addAttribute("top", "login");
 		return "login";
 	}
 
 	// 회원가입페이지
 	@GetMapping("/signup")
-	public String signup(Model model) {
-		model.addAttribute("top", "signup");
+	public String signup() {
 		return "signup";
 	}
 
@@ -92,6 +90,12 @@ public class MainController {
 	@RequestMapping("/FindId")
 	public String FindId() {
 		return "FindId";
+	}
+	
+	//mypage
+	@GetMapping("/mypage")
+	public String mypage() {
+		return "mypage";
 	}
 
 }

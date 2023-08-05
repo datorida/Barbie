@@ -1,28 +1,11 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
-<head>
-<meta charset="UTF-8">
+
+<head th:replace="fragments/common :: head('회원가입')">
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
 <title>회원가입</title>
-<!-- Bootstrap core CSS -->
-<link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
-
-<!-- Owl slider stylesheet -->
-<link rel="stylesheet" type="text/css"
-	href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" />
-
-<!-- Nice Select -->
-<link rel="stylesheet"
-	href="https://cdnjs.cloudflare.com/ajax/libs/jquery-nice-select/1.1.0/css/nice-select.min.css"
-	integrity="sha512-CruCP+TD3yXzlvvijET8wV5WxxEh5H8P4cmz0RFbKK6FlZ2sYl3AEsKlLPHbniXKSrDdFewhbmBK5skbdsASbQ=="
-	crossorigin="anonymous" />
-
-<!-- Font Awesome Style -->
-<link href="css/font-awesome.min.css" rel="stylesheet" />
-
-<!-- Custom styles for this template -->
-<link href="css/style.css" rel="stylesheet" />
-<!-- Responsive style -->
-<link href="css/responsive.css" rel="stylesheet" />
 
 
 <style>
@@ -77,10 +60,10 @@ input[type="submit"]:hover {
 	background-color: #ff4081;
 }
 </style>
-<script src="http://code.jquery.com/jquery-3.5.1.min.js"></script>
+
 </head>
 <body>
-	<header th:replace="top.html ::navigation-bar"></header>
+	<header th:replace="fragments/common :: copy"></header>
 	<div class="container2">
 		<h2 id="sign_h2">회원가입</h2>
 		<form action="/member/register" method="post" name="mem_form" id="mem_form" onsubmit="return checkAll()">
@@ -117,7 +100,7 @@ input[type="submit"]:hover {
 </form>
 
 	</div>
-</body>
+
 <script>
 	//id 중복체크
 	$("#checkid").click(function(){
@@ -231,4 +214,25 @@ input[type="submit"]:hover {
 }
 
 </script>
+<script src="js/jquery-3.4.1.min.js"></script>
+	<!-- popper js -->
+	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+		integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous">
+		</script>
+	<!-- bootstrap js -->
+	<script src="js/bootstrap.js"></script>
+	<!-- owl slider -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js">
+	</script>
+	<!-- isotope js -->
+	<script src="https://unpkg.com/isotope-layout@3.0.4/dist/isotope.pkgd.min.js"></script>
+	<!-- nice select -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-nice-select/1.1.0/js/jquery.nice-select.min.js"></script>
+	<!-- custom js -->
+	<script src="js/custom.js"></script>
+	<!-- Google Map -->
+	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCh39n5U-4IoWpsVGUHWdqB6puEkhRLdmI&callback=myMap">
+	</script>
+	</body>
+
 </html>
