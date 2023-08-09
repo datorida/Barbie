@@ -1,220 +1,230 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 
-<head th:replace="fragments/common :: head('회원가입')">
+<head th:replace="fragments/common :: head('메인')">
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-
-<title>회원가입</title>
-
-
+	<title>회원가입</title>
+	<script th:src="@{/js/jquery-3.4.1.min.js}"></script>
+</head>
 <style>
-body {
-	background-color: #fcd7d7;
-	font-family: Arial, sans-serif;
-}
+	.container2 {
+		width: 400px;
+		margin: 20px auto 0;
+		padding: 20px;
+		background-color: #fce4ec;
+		border-radius: 10px;
+		box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+	}
 
-.container2 {
-	width: 400px;
-	margin: 20px auto 0;
-	padding: 20px;
-	background-color: #fce4ec;
-	border-radius: 10px;
-	box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-}
+	#sign_h2 {
+		text-align: center;
+		color: #e91e63;
+		margin-bottom: 20px;
+		font-family: sans-serif;
+	}
 
-#sign_h2 {
-	text-align: center;
-	color: #e91e63;
-	margin-bottom: 20px;
-	font-family: sans-serif;
-}
+	label {
+		display: block;
+		color: #e91e63;
+		margin-bottom: 5px;
+	}
 
-label {
-	display: block;
-	color: #e91e63;
-	margin-bottom: 5px;
-}
+	input[type="text"],
+	input[type="email"],
+	input[type="tel"],
+	input[type="password"] {
+		width: 100%;
+		padding: 10px;
+		margin-bottom: 10px;
+		border: 1px solid #ccc;
+		border-radius: 5px;
+	}
 
-input[type="text"], input[type="email"], input[type="tel"], input[type="password"]
-	{
-	width: 100%;
-	padding: 10px;
-	margin-bottom: 10px;
-	border: 1px solid #ccc;
-	border-radius: 5px;
-}
+	input[type="submit"] {
+		background-color: #e91e63;
+		color: #fff;
+		border: none;
+		border-radius: 5px;
+		padding: 10px 20px;
+		display: block;
+		/* 인라인 요소를 블록 요소로 변경하여 가로 공간을 모두 차지하게 만듦 */
+		margin: 0 auto;
+		/* 수평 가운데 정렬 */
+		cursor: pointer;
+	}
 
-input[type="submit"] {
-	background-color: #e91e63;
-	color: #fff;
-	border: none;
-	border-radius: 5px;
-	padding: 10px 20px;
-	display: block; /* 인라인 요소를 블록 요소로 변경하여 가로 공간을 모두 차지하게 만듦 */
-	margin: 0 auto; /* 수평 가운데 정렬 */
-	cursor: pointer;
-}
-
-input[type="submit"]:hover {
-	background-color: #ff4081;
-}
+	input[type="submit"]:hover {
+		background-color: #ff4081;
+	}
 </style>
 
 </head>
+
 <body>
 	<header th:replace="fragments/common :: copy"></header>
 	<div class="container2">
 		<h2 id="sign_h2">회원가입</h2>
 		<form action="/member/register" method="post" name="mem_form" id="mem_form" onsubmit="return checkAll()">
-	<label for="name">이름</label>
-	<input type="text" id="name" name="mem_name" required>
+			<label for="name">이름</label>
+			<input type="text" id="name" name="mem_name" required>
 
-	<label for="username">아이디</label>
-	<input type="text"  id="mem_id" name="mem_id" required>
-	<input type="button" id="checkid" name="checkid" value="중복확인">
+			<label for="username">아이디</label>
+			<input type="text" id="mem_id" name="mem_id" required>
+			<input type="button" id="checkid" name="checkid" value="중복확인">
 
-	<label for="email">이메일</label>
-	<input type="email" id="email" name="email" required>
+			<label for="email">이메일</label>
+			<input type="email" id="email" name="email" required>
 
-	<label for="phone">핸드폰번호</label>
-	<input type="tel" id="phone" name="phone" required>
+			<label for="phone">핸드폰번호</label>
+			<input type="tel" id="phone" name="phone" required>
 
-	<div class="passConfirm">
-		<label for="password">비밀번호</label>
-		<input type="password" name="pwd" id="pwd1" required onchange="check_pw()">
+			<div class="passConfirm">
+				<label for="password">비밀번호</label>
+				<input type="password" name="pwd" id="pwd1" required onchange="check_pw()">
 
-		<label for="confirm_password">비밀번호 확인</label>
-		<input type="password" name="confirm_password" id="pwd2" required onchange="check_pw()">
-		<span id="check"></span>
+				<label for="confirm_password">비밀번호 확인</label>
+				<input type="password" name="confirm_password" id="pwd2" required onchange="check_pw()">
+				<span id="check"></span>
+
+			</div>
+
+			<label for="address">주소</label>
+			<input type="text" id="address" name="address" required>
+
+			<input type="hidden" id="pwchk" value="no">
+			<input type="hidden" id="idchk" value="no">
+
+			<button type="submit" id="joinbtn">가입하기</button>
+		</form>
 
 	</div>
-
-	<label for="address">주소</label>
-	<input type="text" id="address" name="address" required>
-
-	<input type="hidden" id="pwchk" value="no">
-	<input type="hidden" id="idchk" value="no">
-
-	<button type="submit" id="joinbtn">가입하기</button>
-</form>
-
-	</div>
-
-<script>
-	//id 중복체크
-	$("#checkid").click(function(){
-		console.log("버튼 클릭됨"); // 콘솔에 메시지 출력
-		var mem_id=$("#mem_id").val();
+	<script src="js/jquery-3.4.1.min.js"></script>
+	<script>
+		//id 중복체크
+		$("#checkid").click(function () {
+			console.log("버튼 클릭됨"); // 콘솔에 메시지 출력
+			var mem_id = $("#mem_id").val();
 			$.ajax({
-				url:'[[@{/idCheck}]]',
+				url: '[[@{/idCheck}]]',
 				type: "post",
-				data: {mem_id:mem_id},
-				success:function(cnt){
-					if(cnt == 0){
+				data: {mem_id: mem_id},
+				success: function (cnt) {
+					if (cnt == 0) {
 						alert("이 아이디는 사용 가능합니다.");
-						document.getElementById('idchk').value="yes"
-					}else{
+						document.getElementById('idchk').value = "yes"
+					} else {
 						alert("이 아이디는 사용 불가능 합니다.");
-						 document.getElementById('idchk').value="no"
+						document.getElementById('idchk').value = "no"
 					}
 				},
-				error:function(request, error){
-	  				alert("fail");
-	  				alert("code: "+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+				error: function (request, error) {
+					alert("fail");
+					alert("code: " + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
 				}
-				});
 			});
-	
-	
-	//id 유효성검사
-	function checkUserId(mem_id) {
-		var idRegExp= /^[a-zA-z0-9]{4,12}$/; 
-		if (! idRegExp.test(id)){
-			alert("아이디는 영문 대소문자, 숫자 4~12자리로 입력해야 합니다!");
-			id="";
-			$("mem_id").focus();
-			return false;
+		});
+
+
+		//id 유효성검사
+		function checkUserId(mem_id) {
+			var idRegExp = /^[a-zA-z0-9]{4,12}$/;
+			if (!idRegExp.test(id)) {
+				alert("아이디는 영문 대소문자, 숫자 4~12자리로 입력해야 합니다!");
+				id = "";
+				$("mem_id").focus();
+				return false;
+			}
+			return true;
 		}
-		return true;
-	}
-	
-	//이름 유효성검사
-	function checkName(mem_name){
-		var nameRegExp =/^[가-힣]{2,5}$/;
-	      if (!nameRegExp.test(mem_name)) {
-	          alert("이름이 올바르지 않습니다.");
-	          return false;
-	      }
-	      return true; 
-	}
-	
-	//이메일 유효성검사
-	function checkMail(email){
-		  var emailRegExp = /^[A-Za-z0-9_]*[@]{1}[A-Za-z0-9]*[.]{1}[A-Za-z]{1,3}$/;
-	      if (!emailRegExp.test(email)) {
-	          alert("이메일 형식이 올바르지 않습니다!");
-	          email= "";
-	          $("#email").focus();
-	          return false;
-	      }
-	      return true;
-	}
-	
 
-	//비밀번호, 아이디 확인
-	function checkAll(){
-		var pwchk=document.getElementById('pwchk').value;
-		var idchk=document.getElementById('idchk').value;
-		
-		if(pwchk=="no"){
-			alert("비밀번호를 확인해주세요");
-			return false;
-		}else if(idchk=="no"){
-			alert("아이디 중복체크를 해주세요");
-			return false;
+		//이름 유효성검사
+		function checkName(mem_name) {
+			var nameRegExp = /^[가-힣]{2,5}$/;
+			if (!nameRegExp.test(mem_name)) {
+				alert("이름이 올바르지 않습니다.");
+				return false;
+			}
+			return true;
 		}
-		alert("회원가입이 완료되었습니다")
-		return true;
-	}
-	
-	//비밀번호 유효성검사 & 비밀번호 재확인
-	function check_pw() {
-    var pw = document.getElementById('pwd1').value;
-    var SC = ["!", "@", "#", "$", "%", "?", "^", "*", "."];
-    var check_SC = 0;
 
-    if (pw.length < 6 || pw.length > 16) {
-        window.alert("비밀번호는 6글자 이상, 16글자 이하만 이용 가능합니다.");
-        document.getElementById('pwd1').value = '';
-    }
+		//이메일 유효성검사
+		function checkMail(email) {
+			var emailRegExp = /^[A-Za-z0-9_]*[@]{1}[A-Za-z0-9]*[.]{1}[A-Za-z]{1,3}$/;
+			if (!emailRegExp.test(email)) {
+				alert("이메일 형식이 올바르지 않습니다!");
+				email = "";
+				$("#email").focus();
+				return false;
+			}
+			return true;
+		}
 
-    for (var i = 0; i < SC.length; i++) {
-        if (pw.indexOf(SC[i]) != -1) {
-            check_SC = 1;
-        }
-    }
 
-    if (check_SC == 0) {
-        window.alert('!, @, #, $, %, ?, ^, *, . 등의 특수문자가 들어가 있지 않습니다.');
-        document.getElementById('pwd1').value = '';
-    }
+		//비밀번호, 아이디 확인
+		function checkAll() {
+			var pwchk = document.getElementById('pwchk').value;
+			var idchk = document.getElementById('idchk').value;
 
-    if (document.getElementById('pwd1').value != '' && document.getElementById('pwd2').value != '') {
-        if (document.getElementById('pwd1').value == document.getElementById('pwd2').value) {
-            document.getElementById('check').innerHTML = '비밀번호가 일치합니다.';
-            document.getElementById('check').style.color = 'blue';
-            document.getElementById('pwchk').value = "yes";
-        } else {
-            document.getElementById('check').innerHTML = '비밀번호가 일치하지 않습니다.';
-            document.getElementById('check').style.color = 'red';
-            document.getElementById('pwchk').value = "no";
-        }
-    }
-}
+			if (pwchk == "no") {
+				alert("비밀번호를 확인해주세요");
+				return false;
+			} else if (idchk == "no") {
+				alert("아이디 중복체크를 해주세요");
+				return false;
+			}
+			alert("회원가입이 완료되었습니다")
+			return true;
+		}
 
-</script>
-<script src="js/jquery-3.4.1.min.js"></script>
+		//비밀번호 유효성검사 & 비밀번호 재확인
+		function check_pw() {
+			var pw = document.getElementById('pwd1').value;
+			var SC = ["!", "@", "#", "$", "%", "?", "^", "*", "."];
+			var check_SC = 0;
+
+			if (pw.length < 6 || pw.length > 16) {
+				window.alert("비밀번호는 6글자 이상, 16글자 이하만 이용 가능합니다.");
+				document.getElementById('pwd1').value = '';
+			}
+
+			for (var i = 0; i < SC.length; i++) {
+				if (pw.indexOf(SC[i]) != -1) {
+					check_SC = 1;
+				}
+			}
+
+			if (check_SC == 0) {
+				window.alert('!, @, #, $, %, ?, ^, *, . 등의 특수문자가 들어가 있지 않습니다.');
+				document.getElementById('pwd1').value = '';
+			}
+
+			if (document.getElementById('pwd1').value != '' && document.getElementById('pwd2').value != '') {
+				if (document.getElementById('pwd1').value == document.getElementById('pwd2').value) {
+					document.getElementById('check').innerHTML = '비밀번호가 일치합니다.';
+					document.getElementById('check').style.color = 'blue';
+					document.getElementById('pwchk').value = "yes";
+				} else {
+					document.getElementById('check').innerHTML = '비밀번호가 일치하지 않습니다.';
+					document.getElementById('check').style.color = 'red';
+					document.getElementById('pwchk').value = "no";
+				}
+			}
+		}
+
+	</script>
+
+	<script>
+		function redirectToLoginPage() {
+			alert("로그인해주세요");
+		}
+	</script>
+
+	<script>
+		function logout() {
+			alert("로그아웃 되었습니다.");
+		}
+	</script>
 	<!-- popper js -->
 	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
 		integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous">
@@ -233,6 +243,6 @@ input[type="submit"]:hover {
 	<!-- Google Map -->
 	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCh39n5U-4IoWpsVGUHWdqB6puEkhRLdmI&callback=myMap">
 	</script>
-	</body>
+</body>
 
 </html>

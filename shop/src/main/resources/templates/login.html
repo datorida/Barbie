@@ -1,175 +1,116 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 
-<head>
+<head th:replace="fragments/common :: head('메인')">
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<titl>로그인</title>
+		<script th:src="@{/js/jquery-3.4.1.min.js}"></script>
+</head>
+<style>
+	
 
-	<!-- Site Metas -->
-	<meta name="keywords" content="" />
-	<meta name="description" content="" />
-	<meta name="author" content="" />
-	<link rel="shortcut icon" href="images/favicon.png" type="">
+	.login {
+		background-color: #f7f7f7;
+		font-family: Arial, sans-serif;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		height: 100vh;
+	}
 
-	<title th:text="${title}">Barbie</title>
+	.login-container {
+		background-color: #ffffff;
+		border-radius: 5px;
+		padding: 20px;
+		box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+		width: 400px;
+		text-align: center;
+	}
 
-	<!-- bootstrap core css -->
-	<link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
+	h2 {
+		text-align: center;
+		color: #333333;
+		margin-bottom: 30px;
+	}
 
-	<!--owl slider stylesheet -->
-	<link rel="stylesheet" type="text/css"
-		href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" />
-	<!-- nice select  -->
-	<link rel="stylesheet"
-		href="https://cdnjs.cloudflare.com/ajax/libs/jquery-nice-select/1.1.0/css/nice-select.min.css"
-		integrity="sha512-CruCP+TD3yXzlvvijET8wV5WxxEh5H8P4cmz0RFbKK6FlZ2sYl3AEsKlLPHbniXKSrDdFewhbmBK5skbdsASbQ=="
-		crossorigin="anonymous" />
-	<!-- font awesome style -->
-	<link href="css/font-awesome.min.css" rel="stylesheet" />
+	.form-group {
+		margin-bottom: 10px;
+	}
 
-	<!-- Custom styles for this template -->
-	<link href="css/style.css" rel="stylesheet" />
-	<!-- responsive style -->
-	<link href="css/responsive.css" rel="stylesheet" />
-	<style>
-		/* 기본 스타일은 그대로 유지하고 미디어 쿼리로 화면 크기에 따라 스타일을 변경 */
-		/* 작은 화면 (스마트폰, 태블릿)에 대한 스타일 */
-		@media screen and (max-width: 767px) {
-			.login-container {
-				width: 90%;
-				/* 화면 크기에 맞춰 로그인 컨테이너 너비를 조정 */
-			}
+	label {
+		display: block;
+		margin-bottom: 5px;
+		color: #666666;
+		text-align: left;
+	}
 
-			/* 추가적인 작은 화면용 스타일 */
-			/* 여기에 원하는 스타일을 추가적으로 작성하세요 */
-		}
+	input {
+		width: 100%;
+		padding: 8px;
+		border: 1px solid #dddddd;
+		border-radius: 3px;
+	}
 
-		/* 중간 화면 (모니터, 노트북)에 대한 스타일 */
-		@media screen and (min-width: 768px) and (max-width: 1199px) {
-			.login-container {
-				width: 70%;
-				/* 화면 크기에 맞춰 로그인 컨테이너 너비를 조정 */
-			}
+	button {
+		background-color: #FF91C8;
+		color: #ffffff;
+		border: none;
+		padding: 10px 20px;
+		border-radius: 3px;
+		cursor: pointer;
+		width: 100%;
+	}
 
-			/* 추가적인 중간 화면용 스타일 */
-			/* 여기에 원하는 스타일을 추가적으로 작성하세요 */
-		}
+	button:hover {
+		background-color: #FF28A7;
+	}
 
-		/* 큰 화면 (대형 모니터)에 대한 스타일 */
-		@media screen and (min-width: 1200px) {
-			.login-container {
-				width: 50%;
-				/* 화면 크기에 맞춰 로그인 컨테이너 너비를 조정 */
-			}
+	.signup-link {
+		margin-top: 15px;
+		text-align: center;
+	}
 
-			/* 추가적인 큰 화면용 스타일 */
-			/* 여기에 원하는 스타일을 추가적으로 작성하세요 */
-		}
+	.signup-link a {
+		color: #666666;
+		text-decoration: none;
+	}
 
+	.signup-link a:hover {
+		color: #333333;
+	}
 
+	.social-login {
+		margin-top: 30px;
+	}
 
-		.login {
-			background-color: #f7f7f7;
-			font-family: Arial, sans-serif;
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			height: 100vh;
-		}
+	.social-login h3 {
+		color: #666666;
+	}
 
-		.login-container {
-			background-color: #ffffff;
-			border-radius: 5px;
-			padding: 20px;
-			box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-			width: 400px;
-			text-align: center;
-		}
+	.social-login .btn {
+		display: block;
+		margin-bottom: 10px;
+		text-align: center;
+	}
 
-		h2 {
-			text-align: center;
-			color: #333333;
-			margin-bottom: 30px;
-		}
+	.social-login .btn-google {
+		background-color: #0A8A8A;
+		color: #ffffff;
+	}
 
-		.form-group {
-			margin-bottom: 10px;
-		}
+	.social-login .btn-kakao {
+		background-color: #f9e000;
+		color: #000000;
+	}
 
-		label {
-			display: block;
-			margin-bottom: 5px;
-			color: #666666;
-			text-align: left;
-		}
-
-		input {
-			width: 100%;
-			padding: 8px;
-			border: 1px solid #dddddd;
-			border-radius: 3px;
-		}
-
-		button {
-			background-color: #FF91C8;
-			color: #ffffff;
-			border: none;
-			padding: 10px 20px;
-			border-radius: 3px;
-			cursor: pointer;
-			width: 100%;
-		}
-
-		button:hover {
-			background-color: #FF28A7;
-		}
-
-		.signup-link {
-			margin-top: 15px;
-			text-align: center;
-		}
-
-		.signup-link a {
-			color: #666666;
-			text-decoration: none;
-		}
-
-		.signup-link a:hover {
-			color: #333333;
-		}
-
-		.social-login {
-			margin-top: 30px;
-		}
-
-		.social-login h3 {
-			color: #666666;
-		}
-
-		.social-login .btn {
-			display: block;
-			margin-bottom: 10px;
-			text-align: center;
-		}
-
-		.social-login .btn-google {
-			background-color: #0A8A8A;
-			color: #ffffff;
-		}
-
-		.social-login .btn-kakao {
-			background-color: #f9e000;
-			color: #000000;
-		}
-
-		.social-login .btn img {
-			vertical-align: middle;
-			margin-right: 10px;
-			max-width: 30px;
-			max-height: 30px;
-		}
-	</style>
+	.social-login .btn img {
+		vertical-align: middle;
+		margin-right: 10px;
+		max-width: 30px;
+		max-height: 30px;
+	}
+</style>
 
 </head>
 
@@ -245,7 +186,7 @@
 		}
 	</script>
 
-	<script src="js/jquery-3.4.1.min.js"></script>
+
 	<!-- popper js -->
 	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
 		integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous">

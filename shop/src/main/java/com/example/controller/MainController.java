@@ -1,5 +1,7 @@
 package com.example.controller;
 
+import java.util.List;
+
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,18 +17,26 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.dto.MemberList;
+import com.example.dto.Product;
 import com.example.service.MemberListService;
+import com.example.service.ProductService;
 
 @Controller
 public class MainController {
 	@Autowired
 	private MemberListService memService;
 
+	@Autowired
+	private ProductService productService;
+	
 	@RequestMapping(value = { "/", "/index" })
-	public String index(Model model) {
-		// 모델에 필요한 데이터를 추가하는 로직을 여기에 작성합니다.
-		// 예를 들어, model.addAttribute("message", "Hello, World!");
-
+	public String index(Model model) throws Exception {
+		List<Product> products = productService.get();
+		for(Product product : products ) {
+		String categoryName = productService.selectCategoryNamebyCategoryNum(product.getCategory_num());
+		product.setCategoryName(categoryName);
+		}
+		model.addAttribute("products", products);
 		return "index"; // index.html 파일의 이름을 반환합니다.
 	}
 
@@ -94,7 +104,7 @@ public class MainController {
 	
 	//mypage
 	@GetMapping("/mypage")
-	public String mypage() {
+	public String mypage(Model model) {
 		return "mypage";
 	}
 

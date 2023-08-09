@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.dto.MemberList;
+import com.example.dto.Product;
 import com.example.frame.MyService;
 import com.example.mapper.MemberListMapper;
 
@@ -44,7 +45,7 @@ public class MemberListService implements MyService<String, MemberList> {
 	@Override
 	public List<MemberList> get() throws Exception {
 		// TODO Auto-generated method stub
-		return mmapper.selectall();
+		return mmapper.selectAll();
 	}
 
 	public boolean authenticate(String mem_id, String pwd) throws Exception {
@@ -77,6 +78,12 @@ public class MemberListService implements MyService<String, MemberList> {
 	public int idCheck(String mem_id) {
 		int cnt = mmapper.idCheck(mem_id);
 		return cnt;
+	}
+
+	@Override
+	public Product getProductByProductNum(int productNum) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
