@@ -93,5 +93,12 @@ public class MainController {
 	public String FindId() {
 		return "FindId";
 	}
+	
+	//장바구니
+	@GetMapping("/cart")
+	public String CartPage(Model model) {
+		return "cart";
+	}
+	}
+	
 
-}
