@@ -1,6 +1,9 @@
 package com.example.controller;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 
 import javax.mail.internet.MimeMessage;
@@ -38,10 +41,10 @@ public class MemberController {
 		MemberList member = new MemberList();
 		member.setMem_id(memberList.getMem_id());
 		member.setMem_name(memberList.getMem_name());
-		member.setPwd(member.getPwd());
-		member.setEmail(member.getEmail());
-		member.setAddress(member.getAddress());
-		member.setPhone(member.getPhone());
+		member.setPwd(memberList.getPwd());
+		member.setEmail(memberList.getEmail());
+		member.setAddress(memberList.getAddress());
+		member.setPhone(memberList.getPhone());
 		try {
 			mservice.register(member);
 		}catch(Exception e) {
@@ -49,6 +52,16 @@ public class MemberController {
 		}
 		 model.addAttribute("message", "회원가입이 완료되었습니다");
 		return "redirect:/login";
+	}
+	
+	private String hashPassword(String password) throws NoSuchAlgorithmException{
+		MessageDigest md= MessageDigest.getInstance("SHA-256");
+		 byte[] hashedBytes = md.digest(password.getBytes(StandardCharsets.UTF_8));
+		    StringBuilder sb = new StringBuilder();
+		    for (byte b : hashedBytes) {
+		        sb.append(String.format("%02x", b));
+		    }
+		    return sb.toString();
 	}
 	// 인증번호 발송
 	@RequestMapping(value = "/pw_auth.me")

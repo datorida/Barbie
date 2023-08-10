@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.example.dto.Order;
+import com.example.dto.Product;
 import com.example.frame.MyService;
 
 @Service
@@ -45,6 +46,12 @@ public class OrderService implements MyService<Integer, Order>{
 	public boolean authenticate(String mem_id, String pwd) throws Exception {
 		// TODO Auto-generated method stub
 		return false;
+	}
+
+	@Override
+	public Product getProductByProductNum(int productNum) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

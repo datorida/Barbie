@@ -1,5 +1,7 @@
 package com.example.frame;
 
+import com.example.dto.Product;
+
 public interface MyService<K,V> {
 	public void register(V v) throws Exception;
 	public void remove(K k) throws Exception;
@@ -10,5 +12,6 @@ public interface MyService<K,V> {
 	
 	/* 로그인 */
 	public boolean authenticate(String mem_id, String pwd) throws Exception;
+	Product getProductByProductNum(int productNum) throws Exception;
 	
 }

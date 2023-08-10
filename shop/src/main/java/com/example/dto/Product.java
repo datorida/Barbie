@@ -12,10 +12,23 @@ import lombok.ToString;
 @Setter
 @ToString
 
-public class Product{
-    private int product_num;
-    private int quantity;
-    private String price;
-    private String product_name;
-    private int category_num;
+public class Product {
+	private int product_num;
+	private int quantity;
+	private String price;
+	private String product_name;
+	private String product_info;
+	private String image_url;
+	private int category_num;
+	
+
+	private String categoryName;
+
+	public String getCategoryName() {
+		return categoryName;
+	}
+
+	public void setCategoryName(String categoryName) {
+		this.categoryName = categoryName;
+	}
 }

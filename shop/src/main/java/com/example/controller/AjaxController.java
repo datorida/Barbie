@@ -2,7 +2,8 @@ package com.example.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.service.MemberListService;
@@ -14,7 +15,7 @@ public class AjaxController {
 	MemberListService mservice;
 	
 	//id찾기
-	@RequestMapping("/FindID")
+	@GetMapping("/FindID")
 		public Object findId(String mem_name, String email) {
 		String mem_id=null;
 		try {
@@ -26,7 +27,7 @@ public class AjaxController {
 	}
 	
 	//비밀번호찾기
-	@RequestMapping("/FindFwd")
+	@GetMapping("/FindFwd")
 		public Object findfwd(String mem_id, String email) {
 			String pwd=null;
 			try {
@@ -38,7 +39,7 @@ public class AjaxController {
 	}
 	
 	//아이디 중복체크
-	@RequestMapping("/idCheck")
+	@PostMapping("/idCheck")
 		public int idCheck(String mem_id) {
 		int cnt= mservice.idCheck(mem_id);
 		return cnt;
