@@ -1,0 +1,86 @@
+
+		.product-container {
+			position: absolute;
+			left: 0%;
+			right: 0%;
+			top: 0%;
+			bottom: 0%;
+
+			background: #000000	;
+		}
+
+		.product-img {
+			position: absolute;
+			width: 652px;
+			height: 713px;
+			left: 47px;
+			top: 118px;
+		}
+
+
+		.product-name {
+			position: absolute;
+			width: 375px;
+			height: 31px;
+			left: 785px;
+			top: calc(50% - 31px/2 - 357.5px);
+
+			font-family: 'Delius';
+			font-style: normal;
+			font-weight: 400;
+			font-size: 40px;
+			line-height: 50px;
+
+			color: #000000;
+		}
+
+
+		.price {
+			position: absolute;
+			width: 138px;
+			height: 47px;
+			left: 790px;
+			top: 224px;
+
+			font-family: 'Delius';
+			font-style: normal;
+			font-weight: 400;
+			font-size: 30px;
+			line-height: 38px;
+
+			color: #000000;
+
+		}
+
+		.product-info {
+			position: absolute;
+			width: 593px;
+			height: 219px;
+			left: 790px;
+			top: 314px;
+
+			font-family: 'Delius';
+			font-style: normal;
+			font-weight: 400;
+			font-size: 14px;
+			line-height: 18px;
+
+			color: #000000;
+		}
+
+
+		.count {
+			position: absolute;
+			width: 202px;
+			height: 36px;
+			left: 792px;
+			top: 570px;
+
+			font-family: 'Delius';
+			font-style: normal;
+			font-weight: 400;
+			font-size: 20px;
+			line-height: 25px;
+
+			color: #000000;
+		}

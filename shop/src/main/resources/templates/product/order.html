@@ -1,31 +1,15 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 
-<head th:replace="fragments/common :: head('상품리스트')">
+<head th:replace="fragments/common :: head('장바구니')">
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 	<script th:src="@{/js/jquery-3.4.1.min.js}"></script>
-	<link rel="stylesheet" th:href="@{/css/product.css}">
 </head>
 
 <body>
 	<header th:replace="fragments/common :: copy"></header>
-	
-	<div id="product-container">
-		<div class="product-detail">
-			<img th:src="${product.image_url}" alt="Product Image" class="product-img">
-		<div class="product-info">
-			<h1 th:text="${product.product_name}" class="product-name">제품명</h1>
-			<p th:text="${product.price} + '$'" class="price">가격</p>
-			<p th:text="${product.product_info}" class="product-info"></p>
-			<p th:text="'Available Quantity: ' + ${product.quantity}" class="count"></p>
-			<button id="add-to-cart">Add to Cart</button>
-			<button id="buy-now">Buy Now</button>
-			<input type="number" id="quantity" min="1" max="50" value="1">
-			</div>
-		</div>
-	</div>
-
+	 
 	<script>
 		function redirectToLoginPage() {
 			alert("로그인해주세요");
