@@ -27,6 +27,8 @@
 						th:text="'Available Quantity:' + ${product.quantity}"></span> <span
 						th:if="${product.quantity ==0}" class="sold-out">Sold Out</span>
 				</p>
+				
+				<!-- 상품수량 추가시 토탈금액 -->
 				<div class="input-container">
 					<input type="number" id="quantity" min="1" value="1"
 						th:disabled="${product.quantity==0}" class="quantity-input">
@@ -36,6 +38,7 @@
 						Total Amount: <span id="calculated-total"></span> $
 					</p>
 				</div>
+				
 				<!-- 버튼 -->
 				<div class="button-container">
 					<div class="w-btn-outline w-btn-yellow-outline" type="button">Addto
@@ -57,12 +60,12 @@
 		var quantityInput = document.getElementById("quantity");
 		quantityInput.addEventListener("change", function() {
 			if (quantityInput.value > availableQuantity) {
-				quantityInput.value = availableQuantity;
+				quantityInput.value = availableQuantity; 
 			}
 		});
 
 		/*총 금액 계산기*/
-		function updateTotalAmount() {
+	  function updateTotalAmount() {
 			const quantityInput = document.getElementById('quantity');
 			const calculatedTotalSpan = document
 					.getElementById('calculated-total');
