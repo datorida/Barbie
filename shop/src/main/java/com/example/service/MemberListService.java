@@ -86,4 +86,15 @@ public class MemberListService implements MyService<String, MemberList> {
 		return null;
 	}
 
+	public List<String> checkLogin() {
+	    return mmapper.checkLogin();
+	}
+
+	public int MemberNumByMemberId(String sessionMemberId) {
+		return mmapper.MemberNumByMemberId(sessionMemberId);
+	}
+
+
+	
+
 }

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.mapper.CartMapper">
+	<insert id="addToCart" parameterType="Cart">
+		INSERT INTO cart (membernum, product_num, counts) VALUES (#{MemberNum},#{product_num},#{counts})
+	</insert>
+
+	<select id="selectAll" resultType="Cart">
+	
+	</select>
+<!-- 장바구니 리스트에 현재 상품찾기 -->
+	<select id="findCart" resultType="Cart">
+		SELECT*FROM cart WHERE membernum = #{(MemberNum} AND product_num = #{productNum}
+	</select>
+
+<!-- 장바구니에 존재하면 수량 추가 -->
+	<update id="updateCart" parameterType="Cart">
+		UPDATE cart SET counts=counts + #{quantity} WHERE membernum=#{MemberNum} AND product_num =#{productNum}
+	</update>
+</mapper>

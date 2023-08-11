@@ -44,4 +44,12 @@ PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN"
 	<select id="idCheck" parameterType="String"  resultType="Integer">
 		SELECT COUNT(mem_id) FROM MEMBERLIST WHERE mem_id=#{mem_id}
 	</select>
+	<!-- 로그인 체크 -->
+	<select id="checkLogin" resultType="String">
+		SELECT mem_id FROM MEMBERLIST;
+	</select>
+	<!-- 멤버아이디로 멤버넘버찾기 -->
+	<select id="MemberNumByMemberId" resultType="Integer">
+		SELECT membernum FROM MEMBERLIST WHERE mem_id=#{sessionMemberId};
+	</select>
 </mapper>

@@ -91,7 +91,6 @@ tml, body {
     padding: 10px;
     border-radius: 15px;
     font-family: "paybooc-Light", sans-serif;
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
     text-decoration: none;
     font-weight: 400;
     text-align: center;
@@ -106,22 +105,21 @@ tml, body {
 
   .w-btn-yellow-outline {
     border: 1px solid #fce205;
-    color: #6e6e6e;
+
   }
 
   .w-btn-yellow-outline:hover {
     background-color: #fce205;
-    color: #6e6e6e;
+
   }
 
   .w-btn-skin-outline {
     border: 1px solid #f8e6e0;
-    color: #6e6e6e;
+
   }
 
   .w-btn-skin-outline:hover {
     background-color: #f8e6e0;
-    color: #6e6e6e;
   }
 
   @media (max-width: 768px) {

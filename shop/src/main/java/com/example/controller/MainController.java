@@ -64,7 +64,7 @@ public class MainController {
 
 			if (isAuthenticated) {
 				MemberList member = memService.get(mem_id);
-				session.setAttribute("member", member);
+				session.setAttribute("member", member); //여기서 세션member정의
 				return ResponseEntity.ok("success");// 로그인 성공 시 200 상태 코드 반환
 			} else {
 				return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("아이디 또는 비밀번호가 올바르지 않습니다."); // 인증 실패 시 401 상태

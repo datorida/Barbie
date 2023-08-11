@@ -6,18 +6,20 @@
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 <script th:src="@{/js/jquery-3.4.1.min.js}"></script>
-
+<link rel="stylesheet" th:href="@{/css/product.css}">
 
 </head>
 
 <body>
+
 	<header th:replace="fragments/common :: copy"></header>
 	<div class="centered-container">
-		<div id="product-container">
+		<div id="product-container" class="product"
+			data-product-num="${product.product_num}">
 			<div class="product-img-container">
-			<img th:src="'/' + ${product.image_url}" alt="Product Image"
-				class="product-img">
-				</div>
+				<img th:src="'/' + ${product.image_url}" alt="Product Image"
+					class="product-img">
+			</div>
 			<div class="product-detail">
 				<h1 th:text="${product.product_name}" class="product-name">제품명</h1>
 				<p th:text="${product.price} + '$'" class="price">가격</p>
@@ -27,7 +29,7 @@
 						th:text="'Available Quantity:' + ${product.quantity}"></span> <span
 						th:if="${product.quantity ==0}" class="sold-out">Sold Out</span>
 				</p>
-				
+
 				<!-- 상품수량 추가시 토탈금액 -->
 				<div class="input-container">
 					<input type="number" id="quantity" min="1" value="1"
@@ -38,11 +40,11 @@
 						Total Amount: <span id="calculated-total"></span> $
 					</p>
 				</div>
-				
+
 				<!-- 버튼 -->
 				<div class="button-container">
-					<div class="w-btn-outline w-btn-yellow-outline" type="button">Addto
-						Cart</div>
+					<div class="w-btn-outline w-btn-yellow-outline"
+						id="add-to-cart-btn" type="button">Add to Cart</div>
 					<div class="w-btn-outline w-btn-skin-outline" type="button">Buy
 						Now</div>
 				</div>
@@ -50,7 +52,6 @@
 
 		</div>
 	</div>
-
 
 	<script>
 		/*input type 수량 제한 코드*/
@@ -60,12 +61,12 @@
 		var quantityInput = document.getElementById("quantity");
 		quantityInput.addEventListener("change", function() {
 			if (quantityInput.value > availableQuantity) {
-				quantityInput.value = availableQuantity; 
+				quantityInput.value = availableQuantity;
 			}
 		});
 
 		/*총 금액 계산기*/
-	  function updateTotalAmount() {
+		function updateTotalAmount() {
 			const quantityInput = document.getElementById('quantity');
 			const calculatedTotalSpan = document
 					.getElementById('calculated-total');
@@ -80,25 +81,77 @@
 			}
 		}
 
+		function addToCart(productNum, quantity) {
+			$.ajax({
+				url: '[[@{/addToCart}]]',
+				method: 'POST',
+				data: {
+					productNum: productNum,
+					quantity: quantity
+				},
+				success: function (response) {
+					if (response == "true") {
+						alert("장바구니에 추가되었습니다!")
+					} else {
+						window.location.href = "[[@{/login}]]";
+						return;
+					}
+				}
+			});
+		}
+
 		// DOM이 완전히 로드된 후 이벤트 리스너를 부착합니다
-		document.addEventListener("DOMContentLoaded", function() {
+		document.addEventListener("DOMContentLoaded", function () {
 			updateTotalAmount();
 
 			const quantityInput = document.getElementById('quantity');
 			quantityInput.addEventListener('input', updateTotalAmount); // 수량이 변경될 때마다 업데이트
+
+			const addToCartButtons = document.querySelectorAll(".add-to-cart-btn");
+			addToCartButtons.forEach(button => {
+				button.addEventListener("click", function () {
+					const productElement = button.closest(".product");
+					const productNum = productElement.getAttribute("data-product-num");
+					const quantityInput = productElement.querySelector(".quantity-input");
+					const quantity = quantityInput.value;
+
+					// 이제 productNum과 quantity를 사용하여 API 요청을 보내면 됨
+					addToCart(productNum, quantity);
+				});
+			});
+			
+			// 장바구니 버튼 클릭 이벤트 리스너
+			const addToCartBtn = document.getElementById("add-to-cart-btn");
+			addToCartBtn.addEventListener("click", function () {
+				// 로그인 여부 확인
+				isLoggedIn(function (isLoggedIn) {
+					if (!isLoggedIn) {
+						alert("로그인 후 이용해주세요!😘");
+						window.location.href = "[[@{/login}]]";
+						return;
+					}
+					// 장바구니 상품 추가
+					const productElement = document.getElementById("product-container");
+					const productNum = productElement.getAttribute("data-product-num");
+					const quantityInput = productElement.querySelector(".quantity-input");
+					const quantity = quantityInput.value;
+					addToCart(productNum, quantity);
+				});
+			});
+
+			function isLoggedIn(callback) {
+				$.ajax({
+					url: '[[@{/checkLogin}]]',
+					method: 'GET',
+					success: function (response) {
+						callback(response == "true");
+					},
+					error: function () {
+						callback(false);
+					}
+				});
+			}
 		});
-	</script>
-
-	<script>
-		function redirectToLoginPage() {
-			alert("로그인해주세요");
-		}
-	</script>
-
-	<script>
-		function logout() {
-			alert("로그아웃 되었습니다.");
-		}
 	</script>
 
 	<!-- popper js -->
@@ -106,14 +159,12 @@
 		src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
 		integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
 		crossorigin="anonymous">
-		
 	</script>
 	<!-- bootstrap js -->
 	<script src="/js/bootstrap.js"></script>
 	<!-- owl slider -->
 	<script
 		src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js">
-		
 	</script>
 	<!-- isotope js -->
 	<script
@@ -126,12 +177,8 @@
 	<!-- Google Map -->
 	<script
 		src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCh39n5U-4IoWpsVGUHWdqB6puEkhRLdmI&callback=myMap">
-		
 	</script>
-	<link rel="stylesheet" th:href="@{/css/product.css}">
-
-
 
 </body>
-
 </html>
+

@@ -16,5 +16,12 @@ public class Cart {
     private int cart_num;
     private int product_num;
     private int counts;
-    
+    private int memberNum;
+
+    public Cart(int product_num, int counts) {
+        this.product_num = product_num;
+        this.counts = counts;
+    }
+
+    // Getter and setter methods...
 }
