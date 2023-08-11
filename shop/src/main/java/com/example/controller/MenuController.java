@@ -28,5 +28,4 @@ public class MenuController {
     	model.addAttribute("products", products);
         return "menu"; // menu.html 파일을 반환합니다.
     }
-
 }

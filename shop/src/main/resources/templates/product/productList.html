@@ -5,57 +5,108 @@
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 	<script th:src="@{/js/jquery-3.4.1.min.js}"></script>
-	<link rel="stylesheet" th:href="@{/css/product.css}">
+
+
 </head>
 
 <body>
 	<header th:replace="fragments/common :: copy"></header>
-	
+
 	<div id="product-container">
+		<img th:src="${product.image_url}" alt="Product Image" class="product-img">
 		<div class="product-detail">
-			<img th:src="${product.image_url}" alt="Product Image" class="product-img">
-		<div class="product-info">
 			<h1 th:text="${product.product_name}" class="product-name">제품명</h1>
 			<p th:text="${product.price} + '$'" class="price">가격</p>
 			<p th:text="${product.product_info}" class="product-info"></p>
-			<p th:text="'Available Quantity: ' + ${product.quantity}" class="count"></p>
-			<button id="add-to-cart">Add to Cart</button>
-			<button id="buy-now">Buy Now</button>
-			<input type="number" id="quantity" min="1" max="50" value="1">
+			<p class="count">
+				<span th:if="${product.quantity > 0}" th:text="'Available Quantity:' + ${product.quantity}"></span>
+				<span th:if="${product.quantity ==0}" class="sold-out">Sold Out</span>
+			</p>
+			<div class="input-container">
+				<input type="number" id="quantity" min="1" value="1" th:disabled="${product.quantity==0}" class="quantity-input">
+				<input type="hidden" id="available-quantity" th:value="${product.quantity}">
+			</div>
+			
+   
+<p id="total-amount" class="total-amount">Total Amount: <span id="calculated-total"></span> $</p>
+			<div class="button-container">
+				<div class="w-btn-outline w-btn-yellow-outline" type="button">Add to Cart</div>
+				<div class="w-btn-outline w-btn-skin-outline" type="button">Buy Now</button>
+				</div>
+
 			</div>
 		</div>
-	</div>
 
-	<script>
-		function redirectToLoginPage() {
-			alert("로그인해주세요");
-		}
-	</script>
+		<script>
+			/*input type 수량 제한 코드*/
+			var availableQuantity = parseInt(document.getElementById("available-quantity").value);
 
-	<script>
-		function logout() {
-			alert("로그아웃 되었습니다.");
-		}
-	</script>
-
-	<!-- popper js -->
-	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
-		integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous">
+			var quantityInput = document.getElementById("quantity");
+			quantityInput.addEventListener("change", function () {
+				if (quantityInput.value > availableQuantity) {
+					quantityInput.value = availableQuantity;
+				}
+			});
+</script>
+			
+		<script>
+			function redirectToLoginPage() {
+				alert("로그인해주세요");
+			}
 		</script>
-	<!-- bootstrap js -->
-	<script src="/js/bootstrap.js"></script>
-	<!-- owl slider -->
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js">
-	</script>
-	<!-- isotope js -->
-	<script src="https://unpkg.com/isotope-layout@3.0.4/dist/isotope.pkgd.min.js"></script>
-	<!-- nice select -->
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-nice-select/1.1.0/js/jquery.nice-select.min.js"></script>
-	<!-- custom js -->
-	<script src="/js/custom.js"></script>
-	<!-- Google Map -->
-	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCh39n5U-4IoWpsVGUHWdqB6puEkhRLdmI&callback=myMap">
-	</script>
+
+		<script>
+			function logout() {
+				alert("로그아웃 되었습니다.");
+			}
+		</script>
+
+		<!-- popper js -->
+		<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+			integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous">
+			</script>
+		<!-- bootstrap js -->
+		<script src="/js/bootstrap.js"></script>
+		<!-- owl slider -->
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js">
+		</script>
+		<!-- isotope js -->
+		<script src="https://unpkg.com/isotope-layout@3.0.4/dist/isotope.pkgd.min.js"></script>
+		<!-- nice select -->
+		<script
+			src="https://cdnjs.cloudflare.com/ajax/libs/jquery-nice-select/1.1.0/js/jquery.nice-select.min.js"></script>
+		<!-- custom js -->
+		<script src="/js/custom.js"></script>
+		<!-- Google Map -->
+		<script
+			src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCh39n5U-4IoWpsVGUHWdqB6puEkhRLdmI&callback=myMap">
+			</script>
+		<link rel="stylesheet" th:href="@{/css/product.css}">
+		
+		<script>
+    function updateTotalAmount() {
+        const quantityInput = document.getElementById('quantity');
+        const calculatedTotalSpan = document.getElementById('calculated-total');
+        const priceText = document.querySelector('.price').textContent; // 가격 텍스트 가져오기
+        const price = parseFloat(priceText.split(' ')[0]); // 가격 값을 추출하고 파싱하기
+
+        const quantity = parseInt(quantityInput.value);
+
+        if (!isNaN(price) && !isNaN(quantity)) {
+            const total = (price * quantity).toFixed(2);
+            calculatedTotalSpan.textContent = total;
+        }
+    }
+
+    // DOM이 완전히 로드된 후 이벤트 리스너를 부착합니다
+    document.addEventListener("DOMContentLoaded", function () {
+        updateTotalAmount();
+
+        const quantityInput = document.getElementById('quantity');
+        quantityInput.addEventListener('input', updateTotalAmount); // 수량이 변경될 때마다 업데이트
+    });
+</script>
+
 </body>
 
 </html>
