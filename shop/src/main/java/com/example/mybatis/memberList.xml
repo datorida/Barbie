@@ -16,7 +16,7 @@ PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN"
 	
 	<!-- 비밀번호 재설정 -->
 	<update id="pwUpdate" parameterType="MemberList">
-		UPDATE MEMBERLIST SET PWD=#{PWD} WHERE EMAIL=#{EMAIL}	
+		UPDATE MEMBERLIST SET PWD = #{newPwd} WHERE MEM_ID = #{memberId} AND EMAIL = #{email}
 	</update>
 	
 	<select id="select">
@@ -45,7 +45,7 @@ PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN"
 		SELECT COUNT(mem_id) FROM MEMBERLIST WHERE mem_id=#{mem_id}
 	</select>
 	<!-- 로그인 체크 -->
-	<select id="checkLogin" resultType="String">
+	<select id="checkLogin"  resultType="String">
 		SELECT mem_id FROM MEMBERLIST;
 	</select>
 	<!-- 멤버아이디로 멤버넘버찾기 -->

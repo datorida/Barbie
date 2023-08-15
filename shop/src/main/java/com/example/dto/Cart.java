@@ -16,7 +16,7 @@ public class Cart {
     private int cart_num;
     private int product_num;
     private int counts;
-    private int memberNum;
+    private int membernum;
 
     public Cart(int product_num, int counts) {
         this.product_num = product_num;

@@ -142,15 +142,15 @@ public class MemberController {
 
 //DB비밀번호 업데이트	
 @RequestMapping(value = "/pw_new.me", method = RequestMethod.POST)
-public String pw_new(String pw, HttpSession session, String email) throws Exception {
-    System.out.println("pw=" + pw + "email=" + email);
-    MemberList member = new MemberList();
-    member = mservice.selectMember(email);
+public String pw_new(@RequestParam("pw")  String newPwd, @RequestParam("email") String email,  HttpSession session) throws Exception {
+    System.out.println("pwd=" + newPwd + "email=" + email);
+   
+    MemberList  member = mservice.selectMember(email);
     String memberId = member.getMem_id();
 
   
-    mservice.pwUpdate_M(memberId, pw, email);
-    return "login";
+    mservice.pwUpdate_M(memberId, newPwd, email);
+    return "/login";
 }
 
 }

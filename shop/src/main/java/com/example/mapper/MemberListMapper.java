@@ -21,7 +21,7 @@ public interface MemberListMapper extends MyMapper<String, MemberList> {
 	public MemberList selectMember(String email);
 
 
-	public void pwUpdate(String mem_id, String pwd, String email);
+	public void pwUpdate(String memberId, String newPwd, String email);
 
 
 	public String findpwd(String mem_id, String email);

@@ -43,8 +43,7 @@ public class CartService implements MyService<Integer,Cart>{
 
 	@Override
 	public List<Cart> get() throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		return cmapper.selectAll();
 	}
 
 	@Override
@@ -59,18 +58,17 @@ public class CartService implements MyService<Integer,Cart>{
 		return null;
 	}
 
-	public Cart findCart(int MemberNum, int productNum) {
-		return cmapper.findCart(MemberNum, productNum);
+	public Cart findCart(int memberNum, int productNum) {
+		return cmapper.findCart(memberNum, productNum);
 	}
 
-	public void addToCart(int MemberNum, Cart cartlist) {
-		cmapper.addToCart(MemberNum, cartlist.getProduct_num(), cartlist.getCounts());
-		
+	public void addToCart(int memberNum, int productNum, int quantityToCheck) {
+		Cart cartItem = new Cart();
+		cartItem.setMembernum(memberNum);
+		cartItem.setProduct_num(productNum);
+		cartItem.setCounts(quantityToCheck);
 	}
 
-	public void updateCart(int MemberNum, Cart cartlist) {
-		cmapper.updateCart(MemberNum,cartlist.getCounts(), cartlist.getProduct_num());
-	}
 
 
 }

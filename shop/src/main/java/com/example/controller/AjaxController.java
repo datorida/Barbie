@@ -15,6 +15,7 @@ import com.example.dto.Cart;
 import com.example.dto.MemberList;
 import com.example.service.CartService;
 import com.example.service.MemberListService;
+import com.example.service.ProductService;
 
 @RestController
 public class AjaxController {
@@ -24,6 +25,9 @@ public class AjaxController {
 	
 	@Autowired
 	CartService cservice;
+	
+	@Autowired
+	ProductService pservice;
 
 	// id찾기
 	@GetMapping("/FindID")
@@ -56,44 +60,45 @@ public class AjaxController {
 		return cnt;
 	}
 
-	// 로그인 여부
+	// 로그인 여부 체크 컨트롤러
 	@GetMapping("/checkLogin")
 	@ResponseBody
 	public String checkLogin(HttpSession session) {
-		String sessionMemberId = (String) session.getAttribute("member"); // 세션에서 멤버가져오기
-		List<String> memberIdList = mservice.checkLogin();
-		for (String memberId : memberIdList) {
-			if (sessionMemberId.equals(memberId)) {
-				return "true";
-			}
-		}
-		return "false";
+	    MemberList sessionMember = (MemberList) session.getAttribute("member");
+	    
+	    if (sessionMember != null) {
+	        return "true"; // 로그인된 상태
+	    } else {
+	        return "false"; // 비로그인 상태
+	    }
 	}
 
 	// 장바구니 추가
 	@PostMapping("/addToCart")
-	public String addToCart(@RequestParam("productNum") int productNum, @RequestParam("quantity") int quantity,
-			HttpSession session) {
-		String sessionMemberId = (String)session.getAttribute("member");
-		if(sessionMemberId==null) {
-			return "false"; //로그인되지않은상태
-		}
-		
-		int MemberNum = mservice.MemberNumByMemberId(sessionMemberId);
-		//장바구니 리스트에 현재 상품찾기
-		Cart cartlist = cservice.findCart(MemberNum, productNum);
-		
-		if(cartlist==null) {
-			//장바구니에 상품이 없으면 추가
-			cartlist = new Cart(productNum, quantity);
-		    cservice.addToCart(MemberNum, cartlist);
-		}
-		else {
-			// 이미 장바구니에 있는 상품의 수량만 증가시킴
-			cartlist.setCounts(cartlist.getCounts()+quantity);
-			cservice.updateCart(MemberNum, cartlist);
-		}
+	public String addToCart(@RequestParam("productNum") int productNum, @RequestParam("quantity") int quantityToCheck,
+			HttpSession session) throws Exception {
+		 MemberList sessionMember=(MemberList) session.getAttribute("member");
+		    String sessionMemberId= sessionMember !=null ? sessionMember.getMem_id() : null;
+		    int memberNum = sessionMemberId !=null ? mservice.MemberNumByMemberId(sessionMemberId) : -1; //-1이나 0은 일반적으로 로그인이 되지 않은 상태
 	
-	return "true";
-}
-}
+		//상품의 재고가 부족한 경우
+		boolean isOutOfStock = pservice.isOutOfStock(productNum, quantityToCheck);
+		if (isOutOfStock) {
+			return "out_of_stock"; //클라이언트로 전달 
+		}
+		
+		List<Cart> cartlist = cservice.get();
+		Cart addCart =cservice.findCart(memberNum, productNum);
+		
+		if (memberNum==-1) {
+			
+		}else if(addCart != null) {
+			int newQuantity = addCart.getCounts()+quantityToCheck;
+			addCart.setCounts(newQuantity);
+		}else {
+			cservice.addToCart(memberNum, productNum, quantityToCheck);
+		}
+		return "true";
+		}
+		}
+
