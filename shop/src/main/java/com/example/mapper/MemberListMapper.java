@@ -1,5 +1,6 @@
 package com.example.mapper;
 
+import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
@@ -20,11 +21,19 @@ public interface MemberListMapper extends MyMapper<String, MemberList> {
 	public MemberList selectMember(String email);
 
 
-	public void pwUpdate(String mem_id, String pwd, String email);
+	public void pwUpdate(String memberId, String newPwd, String email);
 
 
 	public String findpwd(String mem_id, String email);
 
 
 	public int idCheck(String mem_id);
+
+
+	public List<String> checkLogin();
+
+
+	public int MemberNumByMemberId(String sessionMemberId);
+
+
 }

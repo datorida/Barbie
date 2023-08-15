@@ -51,12 +51,10 @@ public class ProductService implements MyService{
 
 	@Override
 	public boolean authenticate(String mem_id, String pwd) throws Exception {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	public String selectCategoryNamebyCategoryNum(int categoryNum) {
-		// TODO Auto-generated method stub
 		return mapper.selectCategoryNameByCategoryNum(categoryNum);
 	}
 
@@ -65,7 +63,18 @@ public class ProductService implements MyService{
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
+
+	/* 상품의 재고가 있으면 False로 , 없으면 true */
+	public boolean isOutOfStock(int productNum, int quantityToCheck) {
+		Product product=mapper. isOutOfStock(productNum);
+		
+		if(product==null) {
+			return true;
+		}
+		return product.getQuantity() < quantityToCheck; //재고량 비교
+	}
+
+
 
 
 }

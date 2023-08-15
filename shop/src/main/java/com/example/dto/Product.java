@@ -31,4 +31,8 @@ public class Product {
 	public void setCategoryName(String categoryName) {
 		this.categoryName = categoryName;
 	}
+
+	public Product findByProduct(int productNum, int quantity) {
+		return null;
+	}
 }

@@ -67,8 +67,9 @@ public class MemberListService implements MyService<String, MemberList> {
 		return mmapper.selectMember(email);
 	}
 
-	public void pwUpdate_M(String mem_id, String pwd, String email) throws Exception{
-		mmapper.pwUpdate(mem_id, pwd, email);
+	//비밀번호 업데이트
+	public void pwUpdate_M(String memberId, String newPwd, String email) throws Exception{
+		mmapper.pwUpdate(memberId, newPwd, email);
 	}
 	
 	public String findpwd(String mem_id, String email) {
@@ -85,5 +86,16 @@ public class MemberListService implements MyService<String, MemberList> {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	public List<String> checkLogin() {
+	    return mmapper.checkLogin();
+	}
+
+	public int MemberNumByMemberId(String sessionMemberId) {
+		return mmapper.MemberNumByMemberId(sessionMemberId);
+	}
+
+
+	
 
 }

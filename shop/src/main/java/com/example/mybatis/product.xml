@@ -24,4 +24,10 @@
 	<select id="getProductByProductNum" resultType="Product">
 		SELECT * FROM product WHERE product_num=#{productNum}
 	</select>
+	
+	<select id=" isOutOfStock" resultType="Integer">
+		SELECT quantity FROM product WHERE product_num =#{ProductNum}
+	</select>
+
+
 </mapper>
