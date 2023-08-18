@@ -1,18 +1,19 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 
-<head th:fragment="head(title)">
-	<!-- Basic -->
+<head th:fragment="head">
 	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
 	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 
 	<!-- Site Metas -->
 	<meta name="keywords" content="" />
 	<meta name="description" content="" />
 	<meta name="author" content="" />
-	<link rel="shortcut icon" href="images/favicon.png" type="">
+	<link rel="shortcut icon" th:href="@{/images/favicon.png}" type="">
 
-	<title th:text="${title}">Barbie</title>
+	<title>Barbie</title>
 
 	<link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.css}" />
 	<link rel="stylesheet" type="text/css" th:href="@{/css/font-awesome.min.css}" />
@@ -25,22 +26,11 @@
 		href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" />
 
 
-	<script th:src="@{/js/jquery-3.4.1.min.js}"></script>
 
 </head>
 
 <body>
-	<script>
-		function redirectToLoginPage() {
-			alert("로그인해주세요");
-		}
-	</script>
 
-	<script>
-		function logout() {
-			alert("로그아웃 되었습니다.");
-		}
-	</script>
 	<header class="header_section" style="background-color: hotpink;" th:fragment="copy">
 		<div class="container">
 			<nav class="navbar navbar-expand-lg custom_nav-container ">
@@ -77,13 +67,12 @@
 								<i class="fa fa-user" aria-hidden="true"></i>
 							</a>
 
-							
-							<a th:href="@{/product/order}" class="cart_link"> <svg version="1.1" id="Capa_1"
 
 
-							<!-- 	장바구니 -->
 							<a th:href="@{/product/cart}" class="cart_link"> <svg version="1.1" id="Capa_1"
-
+									xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+									x="0px" y="0px" viewBox="0 0 456.029 456.029"
+									style="enable-background: new 0 0 456.029 456.029;" xml:space="preserve">
 									<g>
 										<g>
 											<path d="M345.6,338.862c-29.184,0-53.248,23.552-53.248,53.248c0,29.184,23.552,53.248,53.248,53.248
@@ -159,25 +148,92 @@
 			</nav>
 		</div>
 	</header>
-	<!-- jQery -->
 
-	</script>
-	<!-- popper js -->
-	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
-		integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous">
+	<!--footer-->
+	<footer class="footer_section" th:fragment="footer-script">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-4 footer-col">
+					<div class="footer_contact">
+						<h4>Contact Us</h4>
+						<div class="contact_link_box">
+							<a href=""> <i class="fa fa-map-marker" aria-hidden="true"></i>
+								<span> Location </span>
+							</a> <a href=""> <i class="fa fa-phone" aria-hidden="true"></i> <span>
+									Call +01 1234567890 </span>
+							</a> <a href=""> <i class="fa fa-envelope" aria-hidden="true"></i>
+								<span> demo@gmail.com </span>
+							</a>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-4 footer-col">
+					<div class="footer_detail">
+						<a href="" class="footer-logo"> Feane </a>
+						<p>Necessary, making this the first true generator on the
+							Internet. It uses a dictionary of over 200 Latin words, combined
+							with</p>
+						<div class="footer_social">
+							<a href=""> <i class="fa fa-facebook" aria-hidden="true"></i>
+							</a> <a href=""> <i class="fa fa-twitter" aria-hidden="true"></i>
+							</a> <a href=""> <i class="fa fa-linkedin" aria-hidden="true"></i>
+							</a> <a href=""> <i class="fa fa-instagram" aria-hidden="true"></i>
+							</a> <a href=""> <i class="fa fa-pinterest" aria-hidden="true"></i>
+							</a>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-4 footer-col">
+					<h4>Opening Hours</h4>
+					<p>Everyday</p>
+					<p>10.00 Am -10.00 Pm</p>
+				</div>
+			</div>
+			<div class="footer-info">
+				<p>
+					&copy; <span id="displayYear"></span> All Rights Reserved By <a href="https://html.design/">Free
+						Html Templates</a><br>
+					<br> &copy; <span id="displayYear"></span> Distributed By <a href="https://themewagon.com/"
+						target="_blank">ThemeWagon</a>
+				</p>
+			</div>
+		</div>
+
+
+		<script src="/js/jquery-3.4.1.min.js"></script>
+		<script>
+			function redirectToLoginPage() {
+				alert("로그인해주세요");
+			}
 		</script>
-	<!-- bootstrap js -->
-	<script src="js/bootstrap.js"></script>
-	<!-- owl slider -->
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js">
-	</script>
-	<!-- isotope js -->
-	<script src="https://unpkg.com/isotope-layout@3.0.4/dist/isotope.pkgd.min.js"></script>
-	<!-- nice select -->
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-nice-select/1.1.0/js/jquery.nice-select.min.js"></script>
-	<!-- custom js -->
-	<script src="js/custom.js"></script>
-	</script>
+
+		<script>
+			function logout() {
+				alert("로그아웃 되었습니다.");
+			}
+		</script>
+
+		</script>
+		<!-- popper js -->
+		<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+			integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous">
+			</script>
+		<!-- bootstrap js -->
+		<script src="/js/bootstrap.js"></script>
+		<!-- owl slider -->
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js">
+		</script>
+		<!-- isotope js -->
+		<script src="https://unpkg.com/isotope-layout@3.0.4/dist/isotope.pkgd.min.js"></script>
+		<!-- nice select -->
+		<script
+			src="https://cdnjs.cloudflare.com/ajax/libs/jquery-nice-select/1.1.0/js/jquery.nice-select.min.js"></script>
+		<!-- custom js -->
+		<script src="/js/custom.js"></script>
+		</script>
+
+	</footer>
+
 </body>
 
 </html>
