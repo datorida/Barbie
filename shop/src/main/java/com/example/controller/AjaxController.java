@@ -22,10 +22,10 @@ public class AjaxController {
 
 	@Autowired
 	MemberListService mservice;
-	
+
 	@Autowired
 	CartService cservice;
-	
+
 	@Autowired
 	ProductService pservice;
 
@@ -75,30 +75,39 @@ public class AjaxController {
 
 	// 장바구니 추가
 	@PostMapping("/addToCart")
-	public String addToCart(@RequestParam("productNum") int productNum, @RequestParam("quantity") int quantityToCheck,
-			HttpSession session) throws Exception {
-		 MemberList sessionMember=(MemberList) session.getAttribute("member");
-		    String sessionMemberId= sessionMember !=null ? sessionMember.getMem_id() : null;
-		    int memberNum = sessionMemberId !=null ? mservice.MemberNumByMemberId(sessionMemberId) : -1; //-1이나 0은 일반적으로 로그인이 되지 않은 상태
-	
-		//상품의 재고가 부족한 경우
-		boolean isOutOfStock = pservice.isOutOfStock(productNum, quantityToCheck);
-		if (isOutOfStock) {
-			return "out_of_stock"; //클라이언트로 전달 
-		}
-		
-		List<Cart> cartlist = cservice.get();
-		Cart addCart =cservice.findCart(memberNum, productNum);
-		
-		if (memberNum==-1) {
-			
-		}else if(addCart != null) {
-			int newQuantity = addCart.getCounts()+quantityToCheck;
-			addCart.setCounts(newQuantity);
-		}else {
-			cservice.addToCart(memberNum, productNum, quantityToCheck);
-		}
-		return "true";
-		}
-		}
+	public String addToCart(@RequestParam("productNum") int productNum,
+	                        @RequestParam("quantity") int quantityToCheck,
+	                        HttpSession session) {
+	    MemberList sessionMember = (MemberList) session.getAttribute("member");
+	    String sessionMemberId = sessionMember != null ? sessionMember.getMem_id() : null;
+	    
+	    int memberNum = -1; // 인증되지 않은 사용자의 기본 값
+	    if (sessionMemberId != null) {
+	        memberNum = mservice.MemberNumByMemberId(sessionMemberId);
+	    }
+	    
+	    try {
+	        // 제품이 품절인지 확인
+	        if (pservice.isOutOfStock(productNum, quantityToCheck)) {
+	            return "out_of_stock"; // 클라이언트에 알림
+	        }
+	        
+	        // 아이템이 이미 장바구니에 있는지 확인
+	        Cart addCart = cservice.findCart(memberNum, productNum);
+	        if (memberNum != -1 && addCart != null) {
+	            int newQuantity = addCart.getCounts() + quantityToCheck;
+	            addCart.setCounts(newQuantity);
+	        } else {
+	            // 아이템을 장바구니에 추가
+	            cservice.addToCart(memberNum, productNum, quantityToCheck);
+	        }
+	        
+	        return "true"; // 성공
+	    } catch (Exception e) {
+	        // 예외를 적절하게 처리
+	        e.printStackTrace(); // 디버깅 목적으로 사용; 로깅을 고려하세요
+	        return "error"; // 클라이언트에 오류를 알림
+	    }
+	}
 
+}

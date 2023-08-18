@@ -1,10 +1,17 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 
+
 <head th:replace="fragments/common :: head('메인')">
 	
 	<title>로그인</title>
 	
+=======
+<head th:replace="fragments/common :: head">
+	
+	<title>로그인</title>
+		
+
 </head>
 <style>
 	
@@ -115,7 +122,7 @@
 
 <body>
 	<header th:replace="fragments/common :: copy"></header>
-
+	<section class="login-section">
 	<div class="login">
 		<div class="login-container">
 			<h2>Login</h2>
@@ -145,7 +152,7 @@
 			</div>
 		</div>
 	</div>
-
+</section>
 
 	<script>
 		$(document).ready(function () {
@@ -186,7 +193,7 @@
 	</script>
 
 
-
+<footer th:replace="fragments/common :: footer-script"></footer>
 
 </body>
 
