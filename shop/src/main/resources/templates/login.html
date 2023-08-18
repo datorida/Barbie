@@ -2,15 +2,8 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 
 
-<head th:replace="fragments/common :: head('¸ŞÀÎ')">
-	
-	<title>·Î±×ÀÎ</title>
-	
-=======
 <head th:replace="fragments/common :: head">
-	
-	<title>·Î±×ÀÎ</title>
-		
+<title>ë¡œê·¸ì¸</title>
 
 </head>
 <style>
@@ -138,17 +131,17 @@
 			</form>
 
 			<div class="forgot-password">
-				<a href="#" onclick="openLostInfo(event, 'id')">idÃ£±â / </a>
-				<a href="#" onclick="openLostInfo(event, 'pwd')">pwdÃ£±â</a>
+				<a href="#" onclick="openLostInfo(event, 'id')">idÃ£ï¿½ï¿½ / </a>
+				<a href="#" onclick="openLostInfo(event, 'pwd')">pwdÃ£ï¿½ï¿½</a>
 			</div>
 
 			<div class="signup-link">
-				<a th:href=@{/signup}>È¸¿ø°¡ÀÔ</a>
+				<a th:href=@{/signup}>È¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½</a>
 			</div>
 			<div class="social-login">
 				<h5>Social Login</h5>
 				<a href="#" class="btn btn-google"><img src="images/google-icon.png" alt="Google">Google Login</a> <a
-					href="#" class="btn btn-kakao"><img src="images/kakao-icon.png" alt="Kakao">Ä«Ä«¿À·Î ·Î±×ÀÎÇÏ±â</a>
+					href="#" class="btn btn-kakao"><img src="images/kakao-icon.png" alt="Kakao">Ä«Ä«ï¿½ï¿½ï¿½ï¿½ ï¿½Î±ï¿½ï¿½ï¿½ï¿½Ï±ï¿½</a>
 			</div>
 		</div>
 	</div>
@@ -157,30 +150,30 @@
 	<script>
 		$(document).ready(function () {
 			$('#login_form').submit(function (e) {
-				e.preventDefault(); // ±âº» form Á¦Ãâ µ¿ÀÛ ¸·±â
+				e.preventDefault(); // ï¿½âº» form ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 
-				// Ajax¸¦ »ç¿ëÇÏ¿© ·Î±×ÀÎ ¿äÃ» º¸³»±â
+				// Ajaxï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ï¿ï¿½ ï¿½Î±ï¿½ï¿½ï¿½ ï¿½ï¿½Ã» ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 				$.ajax({
 					type: "POST",
 					url: "[[@{/loginimpl}]]",
-					data: $('#login_form').serialize(), // Æû µ¥ÀÌÅÍ Á÷·ÄÈ­ÇÏ¿© Àü¼Û
+					data: $('#login_form').serialize(), // ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½È­ï¿½Ï¿ï¿½ ï¿½ï¿½ï¿½ï¿½
 					success: function (response) {
-						// ·Î±×ÀÎ ¼º°ø ½Ã ¾Ë¸² Ç¥½Ã
-						alert("·Î±×ÀÎÀÌ ¼º°øÇÏ¿´½À´Ï´Ù.");
-						// ÆäÀÌÁö ¸®´ÙÀÌ·º¼Ç
+						// ï¿½Î±ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½Ë¸ï¿½ Ç¥ï¿½ï¿½
+						alert("ï¿½Î±ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï¿ï¿½ï¿½ï¿½ï¿½Ï´ï¿½.");
+						// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ì·ï¿½ï¿½ï¿½
 						window.location.href = "[[@{/index}]]";
 					},
 					error: function (xhr, status, error) {
-						// ·Î±×ÀÎ ½ÇÆĞ ½Ã ¿¡·¯ Ã³¸®
-						alert("¾ÆÀÌµğ ¶Ç´Â ºñ¹Ğ¹øÈ£°¡ ¿Ã¹Ù¸£Áö ¾Ê½À´Ï´Ù.");
+						// ï¿½Î±ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ Ã³ï¿½ï¿½
+						alert("ï¿½ï¿½ï¿½Ìµï¿½ ï¿½Ç´ï¿½ ï¿½ï¿½Ğ¹ï¿½È£ï¿½ï¿½ ï¿½Ã¹Ù¸ï¿½ï¿½ï¿½ ï¿½Ê½ï¿½ï¿½Ï´ï¿½.");
 					}
 				});
 			});
 		});
 
-		/*id,pwdÃ£±â*/
+		/*id,pwdÃ£ï¿½ï¿½*/
 		function openLostInfo(event, type) {
-			event.preventDefault(); // ±âº» µ¿ÀÛ ¸·±â
+			event.preventDefault(); // ï¿½âº» ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 
 			var url;
 			if (type === 'id') {
