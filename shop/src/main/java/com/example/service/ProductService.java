@@ -40,7 +40,7 @@ public class ProductService implements MyService{
 
 	@Override
 	public Product getProductByProductNum(int productNum) throws Exception {
-		// TODO Auto-generated method stub
+	
 		return mapper.getProductByProductNum(productNum);
 	}
 
@@ -66,12 +66,14 @@ public class ProductService implements MyService{
 
 	/* 상품의 재고가 있으면 False로 , 없으면 true */
 	public boolean isOutOfStock(int productNum, int quantityToCheck) {
-		Product product=mapper. isOutOfStock(productNum);
-		
-		if(product==null) {
-			return true;
-		}
-		return product.getQuantity() < quantityToCheck; //재고량 비교
+	    Product product = mapper.getProductByProductNum(productNum);
+	    
+	    if (product == null || product.getQuantity() == 0) {
+	        // 상품이 없거나 상품의 수량이 0인 경우
+	        return true;
+	    }
+	    
+	    return product.getQuantity() < quantityToCheck;
 	}
 
 

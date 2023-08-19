@@ -64,9 +64,11 @@ public class CartService implements MyService<Integer,Cart>{
 
 	public void addToCart(int memberNum, int productNum, int quantityToCheck) {
 		Cart cartItem = new Cart();
-		cartItem.setMembernum(memberNum);
-		cartItem.setProduct_num(productNum);
+		cartItem.setMemberNum(memberNum);
+		cartItem.setProductNum(productNum);
 		cartItem.setCounts(quantityToCheck);
+		
+		cmapper.addToCart(cartItem);
 	}
 
 

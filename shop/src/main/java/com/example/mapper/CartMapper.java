@@ -13,6 +13,7 @@ public interface CartMapper extends MyMapper<Integer, Cart> {
 	Cart findCart(int memberNum, int productNum);
 
 
-	void addToCart(int MemberNum, int product_num, int counts);
+
+	void addToCart(Cart cartItem);
 
 }

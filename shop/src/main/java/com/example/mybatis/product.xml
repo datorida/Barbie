@@ -25,7 +25,8 @@
 		SELECT * FROM product WHERE product_num=#{productNum}
 	</select>
 	
-	<select id=" isOutOfStock" resultType="Integer">
+	<!-- 재고량 조회 -->
+	<select id="isOutOfStock" resultType="Integer">
 		SELECT quantity FROM product WHERE product_num =#{ProductNum}
 	</select>
 

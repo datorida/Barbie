@@ -1,68 +1,236 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 
-<head th:replace="fragments/common :: head('상품리스트')">
-<meta charset="utf-8" />
-<meta name="viewport"
-	content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-<script th:src="@{/js/jquery-3.4.1.min.js}"></script>
-
-
+<head th:replace="fragments/common :: head">
+<title>상품리스트</title>
 </head>
 
 <body>
 
 	<header th:replace="fragments/common :: copy"></header>
-	<div class="centered-container">
-		<div id="product-container" class="product"
-			data-product-num="${product.product_num}">
-			<div class="product-img-container">
-				<img th:src="'/' + ${product.image_url}" alt="Product Image"
-					class="product-img">
-			</div>
-			<div class="product-detail">
-				<h1 th:text="${product.product_name}" class="product-name">제품명</h1>
-				<p th:text="${product.price} + '$'" class="price">가격</p>
-				<p th:text="${product.product_info}" class="product-info"></p>
-				<p class="count">
-					<span th:if="${product.quantity > 0}"
-						th:text="'Available Quantity:' + ${product.quantity}"></span> <span
-						th:if="${product.quantity ==0}" class="sold-out">Sold Out</span>
-				</p>
-
-				<!-- 상품수량 추가시 토탈금액 -->
-				<div class="input-container">
-					<input type="number" id="quantity" min="1" value="1"
-						th:disabled="${product.quantity==0}" class="quantity-input">
-					<input type="hidden" id="available-quantity"
-						th:value="${product.quantity}">
-					<p id="total-amount" class="total-amount">
-						Total Amount: <span id="calculated-total"></span> $
+	<section>
+		<div class="centered-container">
+			<div id="product-container" class="product"
+				data-product-num="${product.product_num}">
+				<div class="product-img-container">
+					<img th:src="'/' + ${product.image_url}" alt="Product Image"
+						class="product-img">
+				</div>
+				<div class="product-detail">
+					<h1 th:text="${product.product_name}" class="product-name">제품명</h1>
+					<p th:text="${product.price} + '$'" class="price">가격</p>
+					<p th:text="${product.product_info}" class="product-info"></p>
+					<p class="count">
+						<span th:if="${product.quantity > 0}"
+							th:text="'Available Quantity:' + ${product.quantity}"></span> <span
+							th:if="${product.quantity ==0}" class="sold-out">Sold Out</span>
 					</p>
+
+					<!-- 상품수량 추가시 토탈금액 -->
+					<div class="input-container">
+						<input type="number" id="quantity" min="1" value="1"
+							th:disabled="${product.quantity==0}" class="quantity-input">
+						<input type="hidden" id="available-quantity"
+							th:value="${product.quantity}">
+						<p id="total-amount" class="total-amount">
+							Total Amount: <span id="calculated-total"></span> $
+						</p>
+					</div>
+
+					<!-- 버튼 -->
+					<div class="button-container">
+						<div class="w-btn-outline w-btn-yellow-outline"
+							id="add-to-cart-btn"  type="button">Add to Cart</div>
+						<div class="w-btn-outline w-btn-skin-outline buy-now-btn"
+							type="button">Buy Now</div>
+					</div>
 				</div>
 
-				<!-- 버튼 -->
-				<div class="button-container">
-					<div class="w-btn-outline w-btn-yellow-outline"
-						id="add-to-cart-btn" type="button">Add to Cart</div>
-					<div class="w-btn-outline w-btn-skin-outline buy-now-btn" type="button">Buy Now</div>
-				</div>
 			</div>
-
 		</div>
-	</div>
+	</section>
+
 
 	<script>
-		/*input type 수량 제한 코드*/
-		var availableQuantity = parseInt(document
-				.getElementById("available-quantity").value);
+	
+	/*장바구니*/
+	// 상품 추가 버튼에 클릭 이벤트 리스너를 부착합니다
+document.addEventListener("DOMContentLoaded", function () {
+        updateTotalAmount();
+		
+        const quantityInput = document.getElementById('quantity');
+        quantityInput.addEventListener('input', updateTotalAmount);
 
-		var quantityInput = document.getElementById("quantity");
-		quantityInput.addEventListener("change", function() {
-			if (quantityInput.value > availableQuantity) {
-				quantityInput.value = availableQuantity;
-			}
-		});
+        const addToCartButton = document.getElementById("add-to-cart-btn");
+        if (addToCartButton) {
+            addToCartButton.addEventListener("click", function () {
+                handleCartButtonClick();
+            });
+        } else {
+            console.error("Unable to find the 'Add to Cart' button element.");
+        }
+
+        const buyNowButton = document.querySelector(".buy-now-btn");
+        buyNowButton.addEventListener("click", function () {
+            handleBuyNowClick();
+        });
+    });
+		
+function handleCartButtonClick() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const dataProductNum = urlParams.get('productNum');
+    const quantityInput = document.getElementById('quantity');
+    const quantity = parseInt(quantityInput.value);
+    const productNum = dataProductNum;
+
+    isLoggedIn(function (isLoggedIn) {
+        if (!isLoggedIn) {
+            // 비로그인 상태일 때의 처리
+            const existingCartCookie = getCookie("cart");
+            const cartItems = existingCartCookie ? JSON.parse(existingCartCookie) : [];
+            
+            const existingCartItemIndex = cartItems.findIndex(item => item.productNum === productNum);
+
+            if (existingCartItemIndex !== -1) {
+                // 이미 해당 상품이 장바구니에 있을 경우 수량 증가
+                cartItems[existingCartItemIndex].quantity += quantity;
+            } else {
+                // 새로운 상품을 장바구니에 추가
+                cartItems.push({ productNum, quantity });
+            }
+
+            setCookie("cart", JSON.stringify(cartItems), 7);
+            updateCartItemCount(); // 장바구니 아이템 수 업데이트
+
+            alert("장바구니에 추가되었습니다! (비로그인 상태)");
+        } else {
+            // 로그인 상태일 때의 처리
+            addToCart(productNum, quantity);
+        }
+    });
+}
+
+
+//getCookie 함수정의
+function getCookie(cookieName) {
+    var name = cookieName + "=";
+    var decodedCookie = decodeURIComponent(document.cookie);
+    var cookieArray = decodedCookie.split(';');
+    
+    for (var i = 0; i < cookieArray.length; i++) {
+        var cookie = cookieArray[i].trim();
+        if (cookie.indexOf(name) === 0) {
+            return cookie.substring(name.length, cookie.length);
+        }
+    }
+    return "";
+}
+
+//setCookie 함수정의 
+function setCookie(cookieName, cookieValue, days) {
+    var expirationDate = new Date();
+    expirationDate.setDate(expirationDate.getDate() + days);
+    var cookie = encodeURIComponent(cookieName) + "=" + encodeURIComponent(cookieValue) + "; expires=" + expirationDate.toUTCString() + "; path=/";
+    document.cookie = cookie;
+}
+
+
+//handleBuyNowClick()  함수정의
+    function handleBuyNowClick() {
+        isLoggedIn(function (isLoggedIn) {
+            if (!isLoggedIn) {
+                alert("로그인 후 이용해주세요!😘");
+                window.location.href = "[[@{/login}]]";
+                return;
+            }
+            // Buy Now 버튼에 대한 추가적인 로직을 처리할 수 있음
+        });
+    }
+
+//addToCart(productNum, quantity) 함수정의
+function addToCart(productNum, quantity) {
+    $.ajax({
+        url: '[[@{/addToCart}]]',
+        method: 'POST',
+        data: {
+            productNum: productNum,
+            quantity: quantity
+        },
+        success: function (response) {
+            if (response === "true") {
+                alert("장바구니에 추가되었습니다!");
+                updateCartItemCount(); // 장바구니 아이템 수 업데이트
+                
+            } else if (response === "out_of_stock") {
+                alert("재고가 부족하여 추가가 불가능 합니다.");
+            } else if (response === "error") {
+                alert("서버 오류로 인해 장바구니 추가에 실패했습니다.");
+            } else {
+                alert("알 수 없는 오류가 발생했습니다.");
+            }
+        },
+        error: function () {
+            alert("서버 통신 중 오류가 발생했습니다.");
+        }
+    });
+}
+
+//페이지 로딩 시에 장바구니 갯수 업데이트
+function updateCartItemCountOnLoad() {
+    updateCartItemCount();
+}
+
+// 이동 시에 장바구니 아이템 수량 업데이트
+function updateCartItemCountOnNavigation() {
+    updateCartItemCount();
+}
+
+document.addEventListener("DOMContentLoaded", updateCartItemCountOnLoad);
+
+// 장바구니 페이지 떠날 때만 이벤트를 등록
+if (window.location.pathname !== '/cart') {
+    window.addEventListener('beforeunload', updateCartItemCountOnNavigation);
+}
+
+
+//장바구니 갯수 업데이트 함수
+function updateCartItemCount() {
+    const cartItems = getCookie("cart");
+    const cartItemCountElement = document.getElementById("cartItemCount");
+    
+    if (cartItems) {
+        const itemCount = JSON.parse(cartItems).reduce((sum, item) => sum + item.quantity, 0);
+        cartItemCountElement.textContent = itemCount;
+    } else {
+        cartItemCountElement.textContent = "0";
+    }
+}
+/* isLoggedIn(callback)  함수정의 */
+    function isLoggedIn(callback) {
+        $.ajax({
+            url: '[[@{/checkLogin}]]',
+            method: 'GET',
+            success: function (response) {
+                callback(response === "true");
+            },
+            error: function () {
+                callback(false);
+            }
+        });
+    }
+    
+    
+		/*input type 수량 제한 코드*/
+	var availableQuantity = parseInt(document.getElementById("available-quantity").value);
+
+var quantityInput = document.getElementById("quantity");
+quantityInput.addEventListener("change", function() {
+    if (quantityInput.value > availableQuantity) {
+        alert("구매 가능한 수량을 초과하였습니다.");
+        quantityInput.value = availableQuantity;
+    }
+});
+
 
 		/*총 금액 계산기*/
 		function updateTotalAmount() {
@@ -80,135 +248,11 @@
 			}
 		}
 
-		
-		
-		/*장바구니*/
-	// 상품 추가 버튼에 클릭 이벤트 리스너를 부착합니다
-document.addEventListener("DOMContentLoaded", function () {
-        updateTotalAmount();
-
-        const quantityInput = document.getElementById('quantity');
-        quantityInput.addEventListener('input', updateTotalAmount);
-
-        const addToCartButton = document.getElementById("add-to-cart-btn");
-        addToCartButton.addEventListener("click", function () {
-            handleCartButtonClick();
-        });
-
-        const buyNowButton = document.querySelector(".buy-now-btn");
-        buyNowButton.addEventListener("click", function () {
-            handleBuyNowClick();
-        });
-    });
-		
-function handleCartButtonClick() {
-    const quantityInput = document.getElementById('quantity');
-    const quantity = parseInt(quantityInput.value);
-    const productNum = dataProductNum;
-    
-    isLoggedIn(function (isLoggedIn) {
-        if (!isLoggedIn) {
-            // 비로그인 상태일 때의 처리
-            const existingCartCookie = getCookie("cart");
-            if (existingCartCookie) {
-                const cartItems = JSON.parse(existingCartCookie);
-                const existingCartItem = cartItems.find(item => item.productNum === productNum);
-                
-                if (existingCartItem) {
-                    existingCartItem.quantity += quantity;
-                } else {
-                    cartItems.push({ productNum, quantity });
-                }
-                
-                setCookie("cart", JSON.stringify(cartItems), 7); // Set cookie for 7 days
-            } else {
-                setCookie("cart", JSON.stringify([{ productNum, quantity }]), 7);
-            }
-   
-            alert("장바구니에 추가되었습니다! (비로그인 상태)");
-        }else{
-        	//로그인 상태일때의 처리
-        addToCart(productNum, quantity);
-        }
-        });
-}
-
-    function handleBuyNowClick() {
-        isLoggedIn(function (isLoggedIn) {
-            if (!isLoggedIn) {
-                alert("로그인 후 이용해주세요!😘");
-                window.location.href = "[[@{/login}]]";
-                return;
-            }
-            // Buy Now 버튼에 대한 추가적인 로직을 처리할 수 있음
-        });
-    }
-
-    function addToCart(productNum, quantity) {
-        $.ajax({
-        	url:'[[@{/addToCart}]]',
-        	method:'POST',
-        	data:{
-        			productNum : productNum,
-        			quantity : quantity
-        			},
-        	success : function(resopnse){
-        		if(response==="true"){
-        			alert ("장바구니에 추가되었습니다!");
-        		}else if(response ==="out_of_stock"){
-        			alert("재고가 부족하여 추가가 불가능 합니다.")
-        			}
-        		},
-        		 error: function () {
-        	            alert("서버와의 통신 중 오류가 발생했습니다.");
-        		 }
-        		 })
-    }
-
-    function isLoggedIn(callback) {
-        $.ajax({
-            url: '[[@{/checkLogin}]]',
-            method: 'GET',
-            success: function (response) {
-                callback(response === "true");
-            },
-            error: function () {
-                callback(false);
-            }
-        });
-    }
-
 
 
 	</script>
 
-	<!-- popper js -->
-	<script
-		src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
-		integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
-		crossorigin="anonymous">
-	</script>
-	<!-- bootstrap js -->
-	<script src="/js/bootstrap.js"></script>
-	<!-- owl slider -->
-	<script
-		src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js">
-	</script>
-	<!-- isotope js -->
-	<script
-		src="https://unpkg.com/isotope-layout@3.0.4/dist/isotope.pkgd.min.js"></script>
-	<!-- nice select -->
-	<script
-		src="https://cdnjs.cloudflare.com/ajax/libs/jquery-nice-select/1.1.0/js/jquery.nice-select.min.js"></script>
-	<!-- custom js -->
-	<script src="/js/custom.js"></script>
-	<!-- Google Map -->
-	<script
-		src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCh39n5U-4IoWpsVGUHWdqB6puEkhRLdmI&callback=myMap">
-	</script>
-	<link rel="stylesheet" th:href="@{/css/product.css}">
-
+	<footer th:replace="fragments/common :: footer-script"></footer>
 </body>
 </html>
->>>>>>> branch 'main' of https://github.com/datorida/Barbie.git
 
