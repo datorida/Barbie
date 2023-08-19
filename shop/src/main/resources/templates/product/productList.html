@@ -4,7 +4,7 @@
 <head th:replace="fragments/common :: head">
 <title>상품리스트</title>
 </head>
-
+x
 <body>
 
 	<header th:replace="fragments/common :: copy"></header>
@@ -96,7 +96,7 @@ function handleCartButtonClick() {
                 cartItems[existingCartItemIndex].quantity += quantity;
             } else {
                 // 새로운 상품을 장바구니에 추가
-                cartItems.push({ productNum, quantity });
+                 cartItems.push({ product: { product_num: productNum }, counts: quantity });
             }
 
             setCookie("cart", JSON.stringify(cartItems), 7);

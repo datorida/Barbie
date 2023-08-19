@@ -3,6 +3,7 @@ package com.example.controller;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -61,13 +62,14 @@ public class AjaxController {
 	// 로그인 여부 체크 컨트롤러
 	@GetMapping("/checkLogin")
 	@ResponseBody
-	public String checkLogin(HttpSession session) {
+	public String checkLogin(HttpSession session, Model model) {
 	    MemberList sessionMember = (MemberList) session.getAttribute("member");
 	    
 	    if (sessionMember != null) {
-	        return "true"; // 로그인된 상태
+	    	model.addAttribute("username",sessionMember.getMem_id());
+	    	return "true";
 	    } else {
-	        return "false"; // 비로그인 상태
+	        return "false";
 	    }
 	}
 

@@ -39,5 +39,11 @@ public class Cart {
     public void setProductNum(int productNum) {
         this.productNum = productNum;
     }
+    
+    public Product product;
+    
+    public Product getProduct() {
+    	return product;
+    }
 
 }
