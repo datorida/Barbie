@@ -1,18 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
+
 <mapper namespace="com.example.mapper.CartMapper">
 	<insert id="addToCart" parameterType="Cart">
-		INSERT INTO cart (membernum, product_num, counts) VALUES (#{memberNum},#{productNum},#{counts})
+		INSERT INTO cart
+		(membernum, product_num, counts) VALUES
+		(#{memberNum},#{productNum},#{counts})
 	</insert>
 
 	<select id="selectAll" resultType="Cart">
 		SELECT*FROM cart
 	</select>
-<!-- 장바구니 리스트에 현재 상품찾기 -->
-	<select id="findCart"  resultType="Cart">
-		SELECT*FROM cart WHERE membernum = #{memberNum} AND product_num = #{productNum}
+	<!-- 장바구니 리스트에 현재 상품찾기 -->
+	<select id="findCart" resultType="Cart">
+		SELECT*FROM cart WHERE
+		membernum = #{memberNum} AND product_num = #{productNum}
 	</select>
+
+<!-- 	해당 아이디에 장바구니에 존재하는 상품에 또추가로 추가하였을때 -->
+	<update id="update"  parameterType="Cart">
+		UPDATE cart
+		SET counts = #{counts}
+		WHERE membernum = #{memberNum} AND product_num = #{productNum}
+	</update>
 
 
 

@@ -29,10 +29,11 @@ public class CartService implements MyService<Integer,Cart>{
 		
 	}
 
+	
+	//존재하는 상품에서 또 장바구니에 추가했을때 카운트업데이트
 	@Override
-	public void modify(Cart v) throws Exception {
-		// TODO Auto-generated method stub
-		
+	public void modify(Cart cart) throws Exception {
+		cmapper.update(cart);	
 	}
 
 	@Override
@@ -72,5 +73,6 @@ public class CartService implements MyService<Integer,Cart>{
 	}
 
 
+	
 
 }

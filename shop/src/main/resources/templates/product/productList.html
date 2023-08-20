@@ -4,7 +4,7 @@
 <head th:replace="fragments/common :: head">
 <title>상품리스트</title>
 </head>
-x
+
 <body>
 
 	<header th:replace="fragments/common :: copy"></header>
@@ -157,10 +157,15 @@ function addToCart(productNum, quantity) {
             quantity: quantity
         },
         success: function (response) {
+        	
+        	console.log("addToCart 함수 호출됨.");
+            console.log("productNum:", productNum);
+            console.log("quantity:", quantity);
+
             if (response === "true") {
-                alert("장바구니에 추가되었습니다!");
-                updateCartItemCount(); // 장바구니 아이템 수 업데이트
-                
+                alert("장바구니에 추가되었습니다!");                
+            }else if(response ==="existingCart"){
+            	alert("해당상품이 장바구니에 이미 존재 합니다. 추가하시겠습니까?")
             } else if (response === "out_of_stock") {
                 alert("재고가 부족하여 추가가 불가능 합니다.");
             } else if (response === "error") {

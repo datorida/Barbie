@@ -80,28 +80,29 @@ public class AjaxController {
 	                        HttpSession session) {
 	    MemberList sessionMember = (MemberList) session.getAttribute("member");
 	    String sessionMemberId = sessionMember != null ? sessionMember.getMem_id() : null;
-	    
-	    int memberNum = -1; // 인증되지 않은 사용자의 기본 값
-	    if (sessionMemberId != null) {
-	        memberNum = mservice.MemberNumByMemberId(sessionMemberId);
-	    }
+	
+	    int memberNum = mservice.MemberNumByMemberId(sessionMemberId);
 	    
 	    try {
-	        // 제품이 품절인지 확인
-	        if (pservice.isOutOfStock(productNum, quantityToCheck)) {
+	        // 제품의 재고확인
+	    	boolean isOutofStock=pservice.isOutOfStock(productNum, quantityToCheck);
+	    	
+	        if (isOutofStock) {
 	            return "out_of_stock"; // 클라이언트에 알림
 	        }
 	        
 	        // 아이템이 이미 장바구니에 있는지 확인
-	        Cart addCart = cservice.findCart(memberNum, productNum);
-	        if (memberNum != -1 && addCart != null) {
-	            int newQuantity = addCart.getCounts() + quantityToCheck;
-	            addCart.setCounts(newQuantity);
+	        Cart cart = cservice.findCart(memberNum, productNum);
+	        if (memberNum != 0 && cart != null) {
+	            int newQuantity = cart.getCounts() + quantityToCheck;
+	            cart.setCounts(newQuantity); //이렇게하면 메모리상에서의 값만 변경되고 데이터베이스에서는 업데이트안됨. 
+	            cservice.modify(cart);//이렇게해줘야 데이터베이스에들어감
+	            return "existingCart";
+	            
 	        } else {
-	            // 아이템을 장바구니에 추가
+	            // 장바구니에 없는경우 아이템을 장바구니에 추가
 	            cservice.addToCart(memberNum, productNum, quantityToCheck);
-	        }
-	        
+	        }  
 	        return "true"; // 성공
 	    } catch (Exception e) {
 	        // 예외를 적절하게 처리
