@@ -14,13 +14,13 @@ import lombok.ToString;
 
 public class Cart {
     private int cart_num;
-    private int productNum;
+    private int product_num;
     private int counts;
     private int membernum;
    
 
     public Cart(int product_num, int counts) {
-        this.productNum = product_num;
+        this.product_num = product_num;
         this.counts = counts;
     }
 
@@ -34,11 +34,11 @@ public class Cart {
     } 
     
     public int getProductNum() {
-        return productNum;
+        return product_num;
     }
 
     public void setProductNum(int productNum) {
-        this.productNum = productNum;
+        this.product_num = productNum;
     }
     
     public Product product;

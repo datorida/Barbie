@@ -30,68 +30,72 @@ public class ProductController {
 
 	@Autowired
 	CartService cartService;
-	
-	
 
 	@GetMapping("/productList")
-		public String productList(@RequestParam("productNum") int productNum, Model model) throws Exception {
-			Product product = productService.getProductByProductNum(productNum);
-			model.addAttribute("product", product);
-			return "/product/productList";
-			
-		}
-	
-	//장바구니페이지
+	public String productList(@RequestParam("productNum") int productNum, Model model) throws Exception {
+		Product product = productService.getProductByProductNum(productNum);
+		model.addAttribute("product", product);
+		return "/product/productList";
+
+	}
+
+	// 장바구니페이지
 	@GetMapping("/cart")
 	public String cartList(Model model, HttpSession session, HttpServletRequest request) throws Exception {
-	    MemberList memberlist = (MemberList) session.getAttribute("member");
+		MemberList memberlist = (MemberList) session.getAttribute("member");
 
-	    List<Cart> cartlist = new ArrayList<>();
-	    List<Product> products = productService.get();
-	    // 로그인 상태인 경우, 내장바구니 정보 가져오기
-	    if (memberlist != null) {
-	    	String memberId= memberlist.getMem_id();
-	        System.out.println(memberId);
-	        int memberNum = memberlist.getMembernum();
-	        cartlist = cartService.getCartByMemberNum(memberNum);
-	        
-	    }else {
-	    	System.out.println("null이");
-	    }
+		List<Cart> cartlist = new ArrayList<>();
+		List<Product> products = productService.get();
+		// 로그인 상태인 경우, 내장바구니 정보 가져오기
+		if (memberlist != null) {
+			String memberId = memberlist.getMem_id();
+			System.out.println(memberId);
+			int memberNum = memberlist.getMembernum();
+			cartlist = cartService.getCartByMemberNum(memberNum);
+			for(Cart cartitem : cartlist) {
+				int productNum= cartitem.getProductNum();
+				Product product = productService.getProductByProductNum(productNum);
+				cartitem.setProduct(product);
+			}
 
-	    // 쿠키에서 장바구니 정보 가져오기
-	    List<Cart> cookieCartList = getCartFromCookie(request);
+		} else {
+			System.out.println("null이");
+			// 쿠키에서 장바구니 정보 가져오기
+			List<Cart> cookieCartList = getCartFromCookie(request);
 
-	    for (Cart cart : cartlist) {
-	        int productNum = cart.getProductNum();
-	        Product product = productService.getProductByProductNum(productNum);
-	        if (product != null && product.getProduct_name() != null) {
-	            products.add(product);
-	        }
-	    }
-	    
-	    
-	    // 모델에 내장바구니 정보와 쿠키 장바구니 정보를 추가
-	    model.addAttribute("cartlist", cartlist);
-	    model.addAttribute("cookieCartList", cookieCartList);
+			for (Cart cart : cartlist) {
+				int productNum = cart.getProductNum();
+				Product product = productService.getProductByProductNum(productNum);
+				if (product != null && product.getProduct_name() != null) {
+					products.add(product);
 
-	    return "/product/cart";
+				}
+			}
+
+			// 모델에 내장바구니 정보와 쿠키 장바구니 정보를 추가
+			model.addAttribute("cartlist", cartlist);
+			model.addAttribute("cookieCartList", cookieCartList);
+
+			return "/product/cart";
+		}
+		model.addAttribute("cartlist", cartlist);
+		return "/product/cart";
 	}
 
 	private List<Cart> getCartFromCookie(HttpServletRequest request) {
-	    List<Cart> cartList = new ArrayList<>();
-	    Cookie[] cookies = request.getCookies();
+		List<Cart> cartList = new ArrayList<>();
+		Cookie[] cookies = request.getCookies();
 
-	    if (cookies != null) {
-	        for (Cookie cookie : cookies) {
-	            if (cookie.getName().equals("cart")) {
-	                String cartJson = cookie.getValue();
-	                // cartJson을 파싱하여 Cart 객체로 변환하고 cartList에 추가하는 코드 작성
-	                // 예: cartList.add(new Cart(productNum, counts));
-	            }
-	        }
-	    }
+		if (cookies != null) {
+			for (Cookie cookie : cookies) {
+				if (cookie.getName().equals("cart")) {
+					String cartJson = cookie.getValue();
+					// cartJson을 파싱하여 Cart 객체로 변환하고 cartList에 추가하는 코드 작성
+					// 예: cartList.add(new Cart(productNum, counts));
+				}
+			}
+		}
 
-	    return cartList;
+		return cartList;
 	}
 }

@@ -1,0 +1,42 @@
+/* Rectangle 1 */
+.cart_container {
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    box-sizing: border-box;
+    background: #E8DDE6;
+    text-align: center;
+}
+
+.cart_info {
+    display: flex;
+    flex-direction: column; /* 이미지 밑에 정보를 나열하기 위해 컬럼으로 설정 */
+    align-items: center; /* 이미지와 정보를 가로 중앙 정렬 */
+    margin-bottom: 20px; /* 아이템 사이에 간격 추가 */
+}
+
+/* Cart */
+.carth2 {
+    font-family: 'Dancing Script', cursive;
+    margin: 0;
+}
+
+.price, .counts {
+    font-family: 'jsMath-cmti10';
+    font-style: italic;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 17px;
+    color: #100E10;
+    margin: 0;
+}
+
+.cartimg {
+    width: 113px;
+    height: 113px;
+    background: #D9D9D9;
+    display: block;
+    margin-bottom: 10px; /* 이미지 아래 간격 추가 */
+    object-fit: cover;
+}
