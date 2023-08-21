@@ -45,12 +45,18 @@ public class ProductController {
 	@GetMapping("/cart")
 	public String cartList(Model model, HttpSession session, HttpServletRequest request) throws Exception {
 	    MemberList memberlist = (MemberList) session.getAttribute("member");
+
 	    List<Cart> cartlist = new ArrayList<>();
 	    List<Product> products = productService.get();
 	    // 로그인 상태인 경우, 내장바구니 정보 가져오기
 	    if (memberlist != null) {
-	        System.out.println(memberlist.getMem_id());
-	        cartlist = cartService.get();
+	    	String memberId= memberlist.getMem_id();
+	        System.out.println(memberId);
+	        int memberNum = memberlist.getMembernum();
+	        cartlist = cartService.getCartByMemberNum(memberNum);
+	        
+	    }else {
+	    	System.out.println("null이");
 	    }
 
 	    // 쿠키에서 장바구니 정보 가져오기

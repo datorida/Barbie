@@ -18,13 +18,17 @@
 		membernum = #{memberNum} AND product_num = #{productNum}
 	</select>
 
-<!-- 	해당 아이디에 장바구니에 존재하는 상품에 또추가로 추가하였을때 -->
+	<!--해당 아이디에 장바구니에 존재하는 상품에 또추가로 추가하였을때 -->
 	<update id="update"  parameterType="Cart">
 		UPDATE cart
 		SET counts = #{counts}
 		WHERE membernum = #{memberNum} AND product_num = #{productNum}
 	</update>
-
+	
+	<!--세션에서 가저온 멤버넘버로 해당아이디 장바구니 들고오기 -->
+	<select id="getCartByMemberNum" resultType="Cart">
+		SELECT * FROM cart WHERE membernum= #{memberNum}
+	</select>
 
 
 </mapper>

@@ -73,6 +73,11 @@ public class CartService implements MyService<Integer,Cart>{
 	}
 
 
+	public List<Cart> getCartByMemberNum(int memberNum) {
+		return cmapper.getCartByMemberNum(memberNum);
+	}
+
+
 	
 
 }

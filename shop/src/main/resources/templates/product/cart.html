@@ -2,7 +2,7 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 
 <head th:replace="fragments/common :: head">
-<title>장바구니</title>
+	<title>장바구니</title>
 </head>
 
 
@@ -15,25 +15,27 @@
 			<!-- 로그인 상태인 경우에만 보이는 내용 -->
 			<!-- 내장바구니 정보 표시 -->
 			<div th:if="${session.member != null}">
-    <h3>내장바구니</h3>
-    <table>
-        <!-- 내장바구니 정보 표시 -->
-        <tr th:each="cartItem : ${cartlist}">
-            <!-- 제품 이름 -->
-            <td><span th:text="${cartItem.product != null ? cartItem.product.product_name : '상품 없음'}"></span></td>
-            
-            <!-- 제품 갯수 -->
-            <td><span th:text="${cartItem.counts} ?: 0"></span></td>
-            
-            <!-- 제품 가격 -->
-            <td><span th:text="${cartItem.product != null ? cartItem.product.price : 0}"></span></td>
-            
-           
-        </tr>
-        
-     
-    </table>
-</div>
+
+				<table>
+					<!-- 내장바구니 정보 표시 -->
+					<tr th:each="cartItem : ${cartlist}">
+						<!-- 제품 이름 -->
+						<td><span
+								th:text="'상품:'+${cartItem.product != null ? cartItem.product.product_name : '상품 없음'}"></span>
+						</td>
+
+						<!-- 제품 갯수 -->
+						<td><span th:text="${cartItem.counts} ?: 0">갯수</span></td>
+
+						<!-- 제품 가격 -->
+						<td><span th:text="${cartItem.product != null ? cartItem.product.price : 0}">가격</span></td>
+
+
+					</tr>
+
+
+				</table>
+			</div>
 
 			<!-- 쿠키로부터 장바구니 정보 표시 -->
 			<div th:if="${session.member == null}">
@@ -41,19 +43,18 @@
 				<table>
 					<!-- 쿠키 장바구니 정보 표시 -->
 					<tr th:each="cookieCartItem : ${cookieCartList}">
-						<td><span
-							th:text="${cookieCartItem.product.product_name} ?: '상품 없음'"></span></td>
+						<td><span th:text="${cookieCartItem.product.product_name} ?: '상품 없음'"></span></td>
 						<td><span th:text="${cookieCartItem.counts} ?: 0"></span></td>
 						<td><span th:text="${cookieCartItem.price} ?: 0"></span></td>
-						<td th:text="${cookieCartItem.totalPrice} ?: 0"></td>
+						
 					</tr>
 				</table>
 			</div>
 
-</div>
-</section>
-	
-<footer th:replace="fragments/common :: footer-script"></footer>
+		</div>
+	</section>
+
+	<footer th:replace="fragments/common :: footer-script"></footer>
 </body>
 
 </html>
