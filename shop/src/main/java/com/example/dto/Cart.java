@@ -9,7 +9,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
-@Setter
+ @Setter
 @ToString
 
 public class Cart {
@@ -17,6 +17,7 @@ public class Cart {
     private int product_num;
     private int counts;
     private int membernum;
+    private String temporaryIdentifier;
    
 
     public Cart(int product_num, int counts) {
@@ -48,4 +49,13 @@ public class Cart {
     	return product;
     }
 
+    public String getTemporaryIdentifier() {
+        return temporaryIdentifier;
+    }
+
+    public void setTemporaryIdentifier(String temporaryIdentifier) {
+        this.temporaryIdentifier = temporaryIdentifier;
+    }
+    
+    
 }

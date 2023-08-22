@@ -18,9 +18,8 @@ public class CartService implements MyService<Integer,Cart>{
 	CartMapper cmapper;
 	
 	@Override
-	public void register(Cart v) throws Exception {
-		// TODO Auto-generated method stub
-		
+	public void register(Cart cart) throws Exception {
+		cmapper.insert(cart);
 	}
 
 	@Override
@@ -77,7 +76,30 @@ public class CartService implements MyService<Integer,Cart>{
 		return cmapper.getCartByMemberNum(memberNum);
 	}
 
+	public void updateCartItem(Cart existingCartItem) {
+		cmapper.updateCartItem(existingCartItem);
+		
+	}
+
+	public void addToGeustCart(Cart guestCart) {
+		cmapper.addToCart(guestCart);
+	}
+
+	public Cart AsGuestFindCart(String temporaryIdentifier, int productNum) {
+		return cmapper.AsGuestFindCart(temporaryIdentifier,productNum);
+	}
+
+	public Cart getGuestCartByTemporaryIdentifier(String temporaryIdentifier, int productNum) {
+		return cmapper.getGuestCartByTemporaryIdentifier(temporaryIdentifier, productNum) ;
+	}
+
+	public void updateGuestCart(Cart guestCart) {
+		cmapper.updateGuestCart(guestCart);
+		
+	}
 
 	
 
+	
+	
 }

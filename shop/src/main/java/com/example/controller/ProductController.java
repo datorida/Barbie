@@ -1,7 +1,9 @@
 package com.example.controller;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -12,90 +14,138 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.example.dto.Cart;
+import com.example.dto.CartCookieItem;
 import com.example.dto.MemberList;
 import com.example.dto.Product;
 import com.example.service.CartService;
 import com.example.service.ProductService;
+import com.google.gson.Gson;
 
 @Controller
 @RequestMapping("/product")
 public class ProductController {
 
-	@Autowired
-	ProductService productService;
+    @Autowired
+    ProductService productService;
 
-	@Autowired
-	CartService cartService;
+    @Autowired
+    CartService cartService;
 
-	@GetMapping("/productList")
-	public String productList(@RequestParam("productNum") int productNum, Model model) throws Exception {
-		Product product = productService.getProductByProductNum(productNum);
-		model.addAttribute("product", product);
-		return "/product/productList";
+    @GetMapping("/productList")
+    public String productList(@RequestParam("productNum") int productNum, Model model) throws Exception {
+        Product product = productService.getProductByProductNum(productNum);
+        model.addAttribute("product", product);
+        return "/product/productList";
+    }
 
-	}
+    // 장바구니페이지
+    private final Gson gson = new Gson();
 
-	// 장바구니페이지
-	@GetMapping("/cart")
-	public String cartList(Model model, HttpSession session, HttpServletRequest request) throws Exception {
-		MemberList memberlist = (MemberList) session.getAttribute("member");
+    @GetMapping("/cart")
+    public String cartList(Model model, HttpSession session, HttpServletRequest request, HttpServletResponse response)
+            throws Exception {
+        MemberList memberlist = (MemberList) session.getAttribute("member");
+        List<Cart> cartlist = new ArrayList<>();
+        List<Product> products = productService.get();
 
-		List<Cart> cartlist = new ArrayList<>();
-		List<Product> products = productService.get();
-		// 로그인 상태인 경우, 내장바구니 정보 가져오기
-		if (memberlist != null) {
-			String memberId = memberlist.getMem_id();
-			System.out.println(memberId);
-			int memberNum = memberlist.getMembernum();
-			cartlist = cartService.getCartByMemberNum(memberNum);
-			for(Cart cartitem : cartlist) {
-				int productNum= cartitem.getProductNum();
-				Product product = productService.getProductByProductNum(productNum);
-				cartitem.setProduct(product);
-			}
+        if (memberlist != null) {
+            // 로그인 상태인 경우, 로그인한 사용자의 장바구니 정보를 가져옴
+            String memberId = memberlist.getMem_id();
+            int memberNum = memberlist.getMembernum();
+            cartlist = cartService.getCartByMemberNum(memberNum);
+            for (Cart cartitem : cartlist) {
+                int productNum = cartitem.getProductNum();
+                Product product = productService.getProductByProductNum(productNum);
+                cartitem.setProduct(product);
+            }
+        } else {
+            // 비로그인 상태인 경우, 쿠키를 사용하여 임시 식별자를 관리
+            String temporaryIdentifier = getTemporaryIdentifierFromCookie(request);
+            String cartCookieValue = getCookie("cart_" + temporaryIdentifier, request);
+            
+            
+            if (temporaryIdentifier == null) {
+                // 쿠키에 임시 식별자가 없으면 생성
+                temporaryIdentifier = generateTemporaryIdentifier();
+                // 생성한 임시 식별자를 쿠키에 설정
+                setTemporaryIdentifierCookie(response, temporaryIdentifier);
+            }
 
-		} else {
-			System.out.println("null이");
-			// 쿠키에서 장바구니 정보 가져오기
-			List<Cart> cookieCartList = getCartFromCookie(request);
+            // 해당 임시 식별자의 장바구니 정보를 가져옴 (쿠키에서 읽어옴)
+            cartlist = getCartItemsFromCookie(temporaryIdentifier, cartCookieValue);
+            model.addAttribute("temporaryIdentifier", temporaryIdentifier); // 임시 식별자를 모델에 추가
+        }
 
-			for (Cart cart : cartlist) {
-				int productNum = cart.getProductNum();
-				Product product = productService.getProductByProductNum(productNum);
-				if (product != null && product.getProduct_name() != null) {
-					products.add(product);
+        model.addAttribute("cartlist", cartlist);
+        return "/product/cart";
+    }
 
-				}
-			}
+    private String getTemporaryIdentifierFromCookie(HttpServletRequest request) {
+        Cookie[] cookies = request.getCookies();
 
-			// 모델에 내장바구니 정보와 쿠키 장바구니 정보를 추가
-			model.addAttribute("cartlist", cartlist);
-			model.addAttribute("cookieCartList", cookieCartList);
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if (cookie.getName().equals("temporaryIdentifier")) {
+                    return cookie.getValue();
+                }
+            }
+        }
 
-			return "/product/cart";
-		}
-		model.addAttribute("cartlist", cartlist);
-		return "/product/cart";
-	}
+        return null;
+    }
 
-	private List<Cart> getCartFromCookie(HttpServletRequest request) {
-		List<Cart> cartList = new ArrayList<>();
-		Cookie[] cookies = request.getCookies();
+    private void setTemporaryIdentifierCookie(HttpServletResponse response, String temporaryIdentifier) {
+        Cookie cookie = new Cookie("cart_" + temporaryIdentifier, "");
+        cookie.setMaxAge(86400);
+        cookie.setPath("/");
+        response.addCookie(cookie);
+    }
 
-		if (cookies != null) {
-			for (Cookie cookie : cookies) {
-				if (cookie.getName().equals("cart")) {
-					String cartJson = cookie.getValue();
-					// cartJson을 파싱하여 Cart 객체로 변환하고 cartList에 추가하는 코드 작성
-					// 예: cartList.add(new Cart(productNum, counts));
-				}
-			}
-		}
+    private String generateTemporaryIdentifier() {
+        // UUID를 사용하여 임시 식별자 생성
+        return UUID.randomUUID().toString();
+    }
 
-		return cartList;
-	}
+    private String getCookie(String cookieName, HttpServletRequest request) {
+        Cookie[] cookies = request.getCookies();
+
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if (cookie.getName().equals(cookieName)) {
+                    return cookie.getValue();
+                }
+            }
+        }
+
+        return null;
+    }
+
+    // 쿠키에서 장바구니 아이템을 읽어오는 메서드
+    private List<Cart> getCartItemsFromCookie(String temporaryIdentifier, String cartCookie) {
+        List<Cart> cartlist = new ArrayList<>();
+
+        if (cartCookie != null && cartCookie.startsWith("[")) {
+            List<CartCookieItem> cartItems = Arrays.asList(gson.fromJson(cartCookie, CartCookieItem[].class));
+
+            for (CartCookieItem cartItem : cartItems) {
+                Cart cart = new Cart();
+                cart.setTemporaryIdentifier(temporaryIdentifier);
+                cart.setProductNum(cartItem.getProductNum());
+                cart.setCounts(cartItem.getQuantity());
+                cartlist.add(cart);
+            }
+        }
+
+        return cartlist;
+    }
+    
+    
+  
+    
 }

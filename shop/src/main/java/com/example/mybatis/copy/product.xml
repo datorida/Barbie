@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.mapper.ProductMapper">
+	<insert id="insert" parameterType="Product">
+		INSERT INTO Product (quantity, price, product_name, category_num)
+		VALUES(#{quantity}, #{price}, #{product_name}, #{category_num})
+	</insert>
+
+	<select id="selectAll" resultType="Product">
+		SELECT*FROM product
+	</select>
+
+	<select id="select">
+		SELECT*FROM product WHERE product_num=#{product_num}
+	</select>
+
+	<select id="selectCategoryNameByCategoryNum" resultType="java.lang.String">
+		SELECT category_name
+		FROM category
+		WHERE category_num = #{categoryNum}
+	</select>
+	
+	<select id="getProductByProductNum" resultType="Product">
+		SELECT * FROM product WHERE product_num=#{productNum}
+	</select>
+	
+	<!-- 재고량 조회 -->
+	<select id="isOutOfStock" resultType="Integer">
+		SELECT quantity FROM product WHERE product_num =#{productNum}
+	</select>
+
+
+</mapper>

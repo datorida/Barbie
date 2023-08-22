@@ -22,39 +22,45 @@
 					<!-- 제품 이름 -->
 					<div class="cart_info">
 						<div th:if="${cartItem.product != null}"
-							th:text="${cartItem.product.product_name}" class="carth2 pro_name]"></div>
+							th:text="${cartItem.product.product_name}" class="cart_name"></div>
 						<!-- 제품 갯수 -->
-						<div th:text="'counts: ' + ${cartItem.counts} ?: 0" class="counts"></div>
+						<div th:text="'counts: ' + ${cartItem.counts} ?: 0"
+							class="cart_counts"></div>
 
 						<!-- 제품 가격 -->
 						<div th:if="${cartItem.product != null}"
-							th:text="'price:' + ${cartItem.product.price}" class="price"></div>
+							th:text="'price:' + ${cartItem.product.price}" class="cart_price"></div>
 					</div>
 				</div>
 
 			</div>
 			<!-- 쿠키로부터 장바구니 정보 표시 -->
 			<div th:if="${session.member == null}" class="cookie-cart">
-				<h3>쿠키 장바구니</h3>
+				<!-- 비로그인 상태에서 보이는 내용 -->
 				<ul>
 					<li th:each="cookieCartItem : ${cookieCartList}"
 						class="product-info">
 						<!-- 이미지 표시 --> <img th:if="${cookieCartItem.product != null}"
 						th:src="${cookieCartItem.product.image_url}" alt="Product Image"
-						class="cartimg" /> <!-- 제품 이름 -->
-						<div th:if="${cookieCartItem.product != null}"
-							th:text="'상품: ' + ${cookieCartItem.product.product_name}"
-							class="carth2"></div> <!-- 제품 가격 --> <span
-						th:text="'price:' + ${cookieCartItem.price != null ? cookieCartItem.price : '0'}"
-						class="price"></span> <!-- 제품 갯수 --> <span
-						th:text="'counts: ' + ${cookieCartItem.counts ?: 0}"
-						class="counts"></span> <!-- 합계 --> <span
-						th:text="'total: ' + ${cookieCartItem.price != null && cookieCartItem.counts != null ? cookieCartItem.price * cookieCartItem.counts : '0'}"
-						class="price"></span>
+						class="cartimg" />
+						<div class="cart_info">
+							<!-- 제품 이름 -->
+							<div th:if="${cookieCartItem.product != null}"
+								th:text="'상품: ' + ${cookieCartItem.product.product_name}"
+								class="carth2"></div>
+							<!-- 제품 가격 -->
+							<span
+								th:text="'price:' + ${cookieCartItem.price != null ? cookieCartItem.price : '0'}"
+								class="cart_price"></span>
+							<!-- 제품 갯수 -->
+							<span th:text="'counts: ' + ${cookieCartItem.counts ?: 0}"
+								class="cart_counts"></span>
+						</div>
 					</li>
 				</ul>
 			</div>
 		</div>
+
 	</section>
 	<footer th:replace="fragments/common :: footer-script"></footer>
 </body>
