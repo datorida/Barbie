@@ -44,5 +44,14 @@ public interface CartMapper extends MyMapper<Integer, Cart> {
 
 
 
+	void saveTemporaryIdentifier(Cart cart);
+
+
+
+
+
+
+
+
 
 }

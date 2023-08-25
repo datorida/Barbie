@@ -32,18 +32,12 @@
 		WHERE membernum= #{memberNum}
 	</select>
 
-	<!--해당 임시 식별자의 장바구니 정보를 가져옴 -->
-	<select id="getCartByTemporaryIdentifier" resultType="Cart">
-		SELECT *
-		FROM cart WHERE temporaryIdentifier = #{temporaryIdentifier}
-	</select>
-
 	<!-- 비회원 장바구니 정보 삽입 -->
 	<insert id="addToGeustCart" parameterType="Cart">
 		INSERT INTO cart
 		(temporaryIdentifier, product_num, counts, membernum)
 		VALUES
-		(#{temporaryIdentifier}, #{productNum}, #{counts}, -1)
+		(#{temporaryIdentifier},-1, -1, -1)
 	</insert>
 
 
@@ -64,16 +58,25 @@
 	</update>
 
 	<select id="getGuestCartByTemporaryIdentifier" resultType="Cart">
-		SELECT*FROM cart WHERE temporaryIdentifier =#{temporaryIdentifier} AND product_num =#{productNum}
+		SELECT*FROM cart WHERE temporaryIdentifier =#{temporaryIdentifier} AND
+		product_num =#{productNum}
 	</select>
 
 	<!-- 비회원 장바구니있는경우 기존장바구니 업데이트 -->
 	<update id="updateGuestCart" parameterType="Cart">
 		UPDATE cart
-		SET counts = ${counts}
-		WHERE temporaryIdentifier =#{temporaryIdentifier} AND product_num
-		=#{productNum}
-
+		SET counts
+		= #{counts}
+		WHERE temporaryIdentifier = #{temporaryIdentifier} AND
+		product_num =
+		#{productNum}
 	</update>
+
+
+	<insert id="saveTemporaryIdentifier" parameterType="com.example.dto.Cart">
+		INSERT INTO cart (temporaryIdentifier, memberNum, productNum, counts)
+		VALUES (#{temporaryIdentifier}, #{memberNum}, #{productNum}, #{counts})
+	</insert>
+
 
 </mapper>

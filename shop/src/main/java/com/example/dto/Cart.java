@@ -18,8 +18,12 @@ public class Cart {
     private int counts;
     private int membernum;
     private String temporaryIdentifier;
-   
+    public Product product;
+    
+    
 
+  
+    
     public Cart(int product_num, int counts) {
         this.product_num = product_num;
         this.counts = counts;
@@ -42,7 +46,7 @@ public class Cart {
         this.product_num = productNum;
     }
     
-    public Product product;
+  
     
     public Product getProduct() {
     

@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.dto.Cart;
-import com.example.dto.Order;
 import com.example.dto.Product;
 import com.example.frame.MyService;
 import com.example.mapper.CartMapper;
@@ -90,14 +89,24 @@ public class CartService implements MyService<Integer,Cart>{
 	}
 
 	public Cart getGuestCartByTemporaryIdentifier(String temporaryIdentifier, int productNum) {
-		return cmapper.getGuestCartByTemporaryIdentifier(temporaryIdentifier, productNum) ;
+	 
+	        return cmapper.getGuestCartByTemporaryIdentifier(temporaryIdentifier, productNum);
+	   
 	}
-
+	
 	public void updateGuestCart(Cart guestCart) {
 		cmapper.updateGuestCart(guestCart);
 		
 	}
 
+	public void saveTemporaryIdentifier(String temporaryIdentifier) {
+		    Cart cart= new Cart();
+	        cart.setTemporaryIdentifier(temporaryIdentifier);
+	        cmapper.saveTemporaryIdentifier(cart);
+	}
+
+	
+	
 	
 
 	
