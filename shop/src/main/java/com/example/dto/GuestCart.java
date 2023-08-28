@@ -18,7 +18,7 @@ public class GuestCart {
     private int counts;
     private String temporaryIdentifier;
 
-    
+    public Product product;
    
   
   
@@ -31,4 +31,9 @@ public class GuestCart {
     public void setProductNum(int ProductNum) {
     	this.product_num = ProductNum;
     }
+    
+    public Product getProduct() {
+    	return product;
+    }
+
 }

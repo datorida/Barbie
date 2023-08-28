@@ -35,30 +35,32 @@
 
 			</div>
 			<!-- 쿠키로부터 장바구니 정보 표시 -->
+			<!-- 쿠키로부터 장바구니 정보 표시 -->
 			<div th:if="${session.member == null}" class="cookie-cart">
 				<!-- 비로그인 상태에서 보이는 내용 -->
 				<ul>
-					<li th:each="cookieCartItem : ${cookieCartList}"
-						class="product-info">
-						<!-- 이미지 표시 --> <img th:if="${cookieCartItem.product != null}"
-						th:src="${cookieCartItem.product.image_url}" alt="Product Image"
+					<li th:each="guestCart : ${guestCartList}" class="product-info">
+					
+						<!-- 이미지 표시 --> <img th:if="${guestCart.product != null}"
+						th:src="${guestCart.product.image_url}" alt="Product Image"
 						class="cartimg" />
 						<div class="cart_info">
 							<!-- 제품 이름 -->
-							<div th:if="${cookieCartItem.product != null}"
-								th:text="'상품: ' + ${cookieCartItem.product.product_name}"
+							<div th:if="${guestCart.product != null}"
+								th:text="'상품: ' + ${guestCart.product.product_name}"
 								class="carth2"></div>
 							<!-- 제품 가격 -->
 							<span
-								th:text="'price:' + ${cookieCartItem.price != null ? cookieCartItem.price : '0'}"
+								th:text="'price:' + ${guestCart.product != null ? guestCart.product.price : '0'}"
 								class="cart_price"></span>
 							<!-- 제품 갯수 -->
-							<span th:text="'counts: ' + ${cookieCartItem.counts ?: 0}"
+							<span th:text="'counts: ' + ${guestCart.counts ?: 0}"
 								class="cart_counts"></span>
 						</div>
 					</li>
 				</ul>
 			</div>
+
 		</div>
 
 	</section>

@@ -29,8 +29,8 @@ public class GuestCartService implements MyService<Integer,GuestCart>{
 	}
 
 	@Override
-	public void modify(GuestCart v) throws Exception {
-		// TODO Auto-generated method stub
+	public void modify(GuestCart guest) throws Exception {
+		guestmapper.update(guest);
 		
 	}
 
@@ -61,10 +61,17 @@ public class GuestCartService implements MyService<Integer,GuestCart>{
 		return guestmapper.getCartBytemporaryIdentifier(temporaryIdentifier);
 	}
 
+
 	public void addToGuestCart(GuestCart guestCart) {
-		 guestmapper.addToGuestCart(guestCart);
+	    guestmapper.addToGuestCart(guestCart);
 	}
-	
+
+
+	public List<GuestCart> getCartListBytemporaryIdentifier(String temporaryIdentifier) {
+	    return guestmapper.getCartListBytemporaryIdentifier(temporaryIdentifier);
+	}
+
+
 
 	
 	

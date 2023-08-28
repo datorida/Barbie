@@ -1,5 +1,7 @@
 package com.example.controller;
 
+import java.util.List;
+
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -132,24 +134,38 @@ public class AjaxController {
 			}
 			// 비회원 장바구니 정보 조회 또는 생성 및 업데이트
 		
-			GuestCart guestCart= guestService.getCartBytemporaryIdentifier(temporaryIdentifier);
-			System.out.println(temporaryIdentifier);
-			if (guestCart == null) {
+			// GuestCart 정보 가져오기
+			List<GuestCart> guestCarts = guestService.getCartListBytemporaryIdentifier(temporaryIdentifier);
+
+			if (guestCarts == null || guestCarts.isEmpty()) {
 			    // 장바구니가 없는 경우 새로 생성
-			    guestCart = new GuestCart();
-			    guestCart.setProduct_num(productNum);
-			    guestCart.setCounts(quantity);
-			    guestCart.setTemporaryIdentifier(temporaryIdentifier);
-			    guestService.addToGuestCart(guestCart);
+			    GuestCart newGuestCart = new GuestCart();
+			    newGuestCart.setProduct_num(productNum);
+			    newGuestCart.setCounts(quantity);
+			    newGuestCart.setTemporaryIdentifier(temporaryIdentifier);
+			    guestService.addToGuestCart(newGuestCart);
+			    System.out.println(newGuestCart);
 			    return "true";
-			    
 			} else {
-			    int existingQuantity = guestCart.getCounts();
-			    guestCart.setCounts(existingQuantity + quantity);
-			    return "existingCart";
+			    // 해당 제품이 이미 장바구니에 있는지 확인
+			    for (GuestCart guest : guestCarts) {
+			        if (guest.getProduct_num() == productNum) {
+			            int existingQuantity = guest.getCounts();
+			            guest.setCounts(existingQuantity + quantity);
+			            guestService.modify(guest);
+			            System.out.println(guest.getCounts());
+			            return "existingCart";
+			        }
+			    }
+			    // 장바구니에 없는 경우 새로운 GuestCart를 생성하고 추가
+			    GuestCart newGuestCart = new GuestCart();
+			    newGuestCart.setProduct_num(productNum);
+			    newGuestCart.setCounts(quantity);
+			    newGuestCart.setTemporaryIdentifier(temporaryIdentifier);
+			    guestService.addToGuestCart(newGuestCart);
+			    return "true";
 			}
-			
-		
+
 			
 		} catch (Exception e) {
 			// 예외를 적절하게 처리

@@ -59,7 +59,7 @@
 		// 임시 식별자 생성 로직
 		function generateTemporaryIdentifierWithExpiration() {
 			const currentTime = new Date().getTime();
-			const expirationTime = currentTime + 5 * 60 * 1000; // 5분 (5 * 60 * 1000 밀리초)
+			const expirationTime = currentTime + 60 * 60 * 1000; // 5분 (5 * 60 * 1000 밀리초)
 			const temporaryIdentifier = `guest_${currentTime}_${expirationTime}`;
 			return temporaryIdentifier;
 		}
