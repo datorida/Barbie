@@ -27,31 +27,4 @@ public interface CartMapper extends MyMapper<Integer, Cart> {
 	void updateCartItem(Cart existingCartItem);
 
 
-
-	void addToGeustCart(Cart guestCart);
-
-
-
-	Cart AsGuestFindCart(String temporaryIdentifier, int productNum);
-
-
-	void updateGuestCart(Cart guestCart);
-
-
-
-	Cart getGuestCartByTemporaryIdentifier(String temporaryIdentifier, int productNum);
-
-
-
-
-	void saveTemporaryIdentifier(Cart cart);
-
-
-
-
-
-
-
-
-
 }

@@ -10,4 +10,10 @@ import com.example.frame.MyMapper;
 @Repository
 public interface GuestCartMapper extends MyMapper<Integer, GuestCart> {
 
+	GuestCart getCartBytemporaryIdentifier(String temporaryIdentifier);
+
+	void addToGuestCart(GuestCart guestCart);
+
+	
+
 }

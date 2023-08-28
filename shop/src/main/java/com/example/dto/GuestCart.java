@@ -9,7 +9,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
- @Setter
+@Setter
 @ToString
 
 public class GuestCart {
@@ -24,5 +24,11 @@ public class GuestCart {
   
     // Getter and setter methods...
  
+    public int getProductNum() {
+    	return product_num;
+    }
     
+    public void setProductNum(int ProductNum) {
+    	this.product_num = ProductNum;
+    }
 }

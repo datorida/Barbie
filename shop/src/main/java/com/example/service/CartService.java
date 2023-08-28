@@ -75,39 +75,7 @@ public class CartService implements MyService<Integer,Cart>{
 		return cmapper.getCartByMemberNum(memberNum);
 	}
 
-	public void updateCartItem(Cart existingCartItem) {
-		cmapper.updateCartItem(existingCartItem);
-		
-	}
 
-	public void addToGeustCart(Cart guestCart) {
-		cmapper.addToCart(guestCart);
-	}
-
-	public Cart AsGuestFindCart(String temporaryIdentifier, int productNum) {
-		return cmapper.AsGuestFindCart(temporaryIdentifier,productNum);
-	}
-
-	public Cart getGuestCartByTemporaryIdentifier(String temporaryIdentifier, int productNum) {
-	 
-	        return cmapper.getGuestCartByTemporaryIdentifier(temporaryIdentifier, productNum);
-	   
-	}
-	
-	public void updateGuestCart(Cart guestCart) {
-		cmapper.updateGuestCart(guestCart);
-		
-	}
-
-	public void saveTemporaryIdentifier(String temporaryIdentifier) {
-		    Cart cart= new Cart();
-	        cart.setTemporaryIdentifier(temporaryIdentifier);
-	        cmapper.saveTemporaryIdentifier(cart);
-	}
-
-	
-	
-	
 
 	
 	

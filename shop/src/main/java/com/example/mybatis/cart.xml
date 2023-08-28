@@ -32,51 +32,6 @@
 		WHERE membernum= #{memberNum}
 	</select>
 
-	<!-- 비회원 장바구니 정보 삽입 -->
-	<insert id="addToGeustCart" parameterType="Cart">
-		INSERT INTO cart
-		(temporaryIdentifier, product_num, counts, membernum)
-		VALUES
-		(#{temporaryIdentifier},-1, -1, -1)
-	</insert>
-
-
-	<!-- 비회원 시 이미 데이터베이스에 동일한 상품이 있는지 확인 -->
-	<select id="AsGuestFindCart" resultType="Cart">
-		SELECT COUNT(*) > 0
-		FROM
-		cart
-		WHERE product_num = #{productNum} AND temporaryIdentifier =
-		#{temporaryIdentifier}
-	</select>
-	<!-- 비회원 장바구니 아이템 업데이트 (수량 증가) -->
-	<update id="updateCartItem" parameterType="Cart">
-		UPDATE cart
-		SET counts
-		= #{counts}
-		WHERE cart_num = #{cart_num}
-	</update>
-
-	<select id="getGuestCartByTemporaryIdentifier" resultType="Cart">
-		SELECT*FROM cart WHERE temporaryIdentifier =#{temporaryIdentifier} AND
-		product_num =#{productNum}
-	</select>
-
-	<!-- 비회원 장바구니있는경우 기존장바구니 업데이트 -->
-	<update id="updateGuestCart" parameterType="Cart">
-		UPDATE cart
-		SET counts
-		= #{counts}
-		WHERE temporaryIdentifier = #{temporaryIdentifier} AND
-		product_num =
-		#{productNum}
-	</update>
-
-
-	<insert id="saveTemporaryIdentifier" parameterType="com.example.dto.Cart">
-		INSERT INTO cart (temporaryIdentifier, memberNum, productNum, counts)
-		VALUES (#{temporaryIdentifier}, #{memberNum}, #{productNum}, #{counts})
-	</insert>
 
 
 </mapper>

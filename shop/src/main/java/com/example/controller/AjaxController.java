@@ -132,20 +132,20 @@ public class AjaxController {
 			}
 			// 비회원 장바구니 정보 조회 또는 생성 및 업데이트
 		
-			GuestCart guestCart = guestService.get
+			GuestCart guestCart= guestService.getCartBytemporaryIdentifier(temporaryIdentifier);
 			System.out.println(temporaryIdentifier);
 			if (guestCart == null) {
 			    // 장바구니가 없는 경우 새로 생성
-			    guestCart.setProductNum(productNum);
+			    guestCart = new GuestCart();
+			    guestCart.setProduct_num(productNum);
 			    guestCart.setCounts(quantity);
 			    guestCart.setTemporaryIdentifier(temporaryIdentifier);
-			    cservice.addToGeustCart(guestCart); // 장바구니 추가
+			    guestService.addToGuestCart(guestCart);
 			    return "true";
 			    
 			} else {
 			    int existingQuantity = guestCart.getCounts();
 			    guestCart.setCounts(existingQuantity + quantity);
-			    cservice.updateGuestCart(guestCart); // 장바구니 업데이트
 			    return "existingCart";
 			}
 			

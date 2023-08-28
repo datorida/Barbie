@@ -5,11 +5,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.example.dto.Cart;
 import com.example.dto.GuestCart;
 import com.example.dto.Product;
 import com.example.frame.MyService;
-import com.example.mapper.CartMapper;
 import com.example.mapper.GuestCartMapper;
 
 @Service
@@ -38,14 +36,13 @@ public class GuestCartService implements MyService<Integer,GuestCart>{
 
 	@Override
 	public GuestCart get(Integer k) throws Exception {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 
 	@Override
 	public List<GuestCart> get() throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		return guestmapper.selectAll();
 	}
 
 	@Override
@@ -58,6 +55,14 @@ public class GuestCartService implements MyService<Integer,GuestCart>{
 	public Product getProductByProductNum(int productNum) throws Exception {
 		// TODO Auto-generated method stub
 		return null;
+	}
+	
+	public GuestCart getCartBytemporaryIdentifier(String temporaryIdentifier) {
+		return guestmapper.getCartBytemporaryIdentifier(temporaryIdentifier);
+	}
+
+	public void addToGuestCart(GuestCart guestCart) {
+		 guestmapper.addToGuestCart(guestCart);
 	}
 	
 

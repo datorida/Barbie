@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.mapper.GuestCartMapper">
+	
+	<select id="selectAll" resultType="GuestCart">
+		SELECT * FROM guestCart
+	</select>
+	
+	<!--임시식별자로 비회원장바구니가져오기-->
+	<select id="getCartBytemporaryIdentifier" resultType="GuestCart">
+		SELECT * FROM guestCart WHERE temporaryIdentifier = #{temporaryIdentifier}
+	</select>
+
+
+	<!-- 비회원 장바구니 정보 삽입 -->
+	<insert id="addToGuestCart" parameterType="com.example.dto.GuestCart">
+  	 	 INSERT INTO guestCart (product_num, counts, temporaryIdentifier) VALUES
+    	(#{productNum}, #{counts}, #{temporaryIdentifier})
+	</insert>
+
+
+	<!-- 비회원 시 이미 데이터베이스에 동일한 상품이 있는지 확인 -->
+	<select id="AsGuestFindCart" resultType="GuestCart">
+		SELECT COUNT(*)
+		FROM
+		cart
+		WHERE product_num = #{productNum} AND temporaryIdentifier =
+		#{temporaryIdentifier}
+	</select>
+
+	<!-- 비회원 장바구니 아이템 업데이트 (수량 증가) -->
+	<update id="updateCartItem" parameterType="com.example.dto.GuestCart">
+		UPDATE cart
+		SET counts
+		= #{counts}
+		WHERE cart_num = #{cart_num}
+	</update>
+
+
+	<!-- 비회원 장바구니있는경우 기존장바구니 업데이트 -->
+	<update id="updateGuestCart" parameterType="com.example.dto.GuestCart">
+		UPDATE cart
+		SET counts
+		= #{counts}
+		WHERE temporaryIdentifier = #{temporaryIdentifier} AND
+		product_num =
+		#{productNum}
+	</update>
+
+</mapper>
