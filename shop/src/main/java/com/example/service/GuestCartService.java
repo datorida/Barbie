@@ -1,0 +1,66 @@
+package com.example.service;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.example.dto.Cart;
+import com.example.dto.GuestCart;
+import com.example.dto.Product;
+import com.example.frame.MyService;
+import com.example.mapper.CartMapper;
+import com.example.mapper.GuestCartMapper;
+
+@Service
+public class GuestCartService implements MyService<Integer,GuestCart>{
+
+	@Autowired
+	GuestCartMapper guestmapper;
+
+	@Override
+	public void register(GuestCart v) throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void remove(Integer k) throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void modify(GuestCart v) throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public GuestCart get(Integer k) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<GuestCart> get() throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean authenticate(String mem_id, String pwd) throws Exception {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public Product getProductByProductNum(int productNum) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+
+	
+	
+}

@@ -1,8 +1,5 @@
 package com.example.controller;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,8 +11,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.dto.Cart;
+import com.example.dto.GuestCart;
 import com.example.dto.MemberList;
 import com.example.service.CartService;
+import com.example.service.GuestCartService;
 import com.example.service.MemberListService;
 import com.example.service.ProductService;
 
@@ -30,6 +29,9 @@ public class AjaxController {
 
 	@Autowired
 	ProductService pservice;
+	
+	@Autowired
+	GuestCartService guestService;
 
 	// id찾기
 	@GetMapping("/FindID")
@@ -130,12 +132,10 @@ public class AjaxController {
 			}
 			// 비회원 장바구니 정보 조회 또는 생성 및 업데이트
 		
-			Cart guestCart = cservice.getGuestCartByTemporaryIdentifier(temporaryIdentifier, productNum);
+			GuestCart guestCart = guestService.get
 			System.out.println(temporaryIdentifier);
 			if (guestCart == null) {
 			    // 장바구니가 없는 경우 새로 생성
-		
-			    guestCart = new Cart();
 			    guestCart.setProductNum(productNum);
 			    guestCart.setCounts(quantity);
 			    guestCart.setTemporaryIdentifier(temporaryIdentifier);
