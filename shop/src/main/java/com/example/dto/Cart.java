@@ -1,5 +1,7 @@
 package com.example.dto;
 
+import java.math.BigDecimal;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,6 +20,7 @@ public class Cart {
     private int counts;
     private int membernum;
     private String temporaryIdentifier;
+    private BigDecimal total;
     public Product product;
     
     
@@ -59,6 +62,14 @@ public class Cart {
 
     public void setTemporaryIdentifier(String temporaryIdentifier) {
         this.temporaryIdentifier = temporaryIdentifier;
+    }
+    
+    public BigDecimal getTotal() {
+    	return total;
+    }
+    
+    public void setTotal(BigDecimal total) {
+    	this.total=total;
     }
     
     

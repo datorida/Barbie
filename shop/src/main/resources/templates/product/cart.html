@@ -21,7 +21,9 @@
                             <div th:if="${cartItem.product != null}" th:text="${cartItem.product.product_name}" class="cart_name"></div>
                             <div th:text="'counts: ' + ${cartItem.counts} ?: 0" class="cart_counts"></div>
                             <div th:if="${cartItem.product != null}" th:text="'price:' + ${cartItem.product.price}" class="cart_price"></div>
-                            <div th:text="'total: ' + ${cartItem.product != null ? (cartItem.product.price * cartItem.counts) : 0}" class="cart_total"></div>
+                           <div th:text="'total: ' + ${cartItem.total}" class="cart_total"></div>
+
+
                         </div>
                         <!-- 체크한상품 총가격 -->
                     </div>
@@ -38,10 +40,10 @@
                             <img th:if="${guestCart.product != null}" th:src="'/' + ${guestCart.product.image_url}" alt="Product Image" class="cartimg" />
                             <!-- 제품 정보 -->
                             <div class="cart_info">
-                                <div th:if="${guestCart.product != null}" th:text="'상품: ' + ${guestCart.product.product_name}" class="carth2"></div>
+                                <div th:if="${guestCart.product != null}" th:text="${guestCart.product.product_name}" class="carth2"></div>
                                 <span th:text="'price:' + ${guestCart.product != null ? guestCart.product.price : '0'}" class="cart_price"></span>
                                 <span th:text="'counts: ' + ${guestCart.counts ?: 0}" class="cart_counts"></span>
-                                <div th:text ="'total:'+(${guestCart.product.price * guestCart.counts})" class="cart_total"></div>
+                                <div th:text ="'total:'+${guestCart.total}" class="cart_total"></div>
                             </div>
                         </div>
                     </li>

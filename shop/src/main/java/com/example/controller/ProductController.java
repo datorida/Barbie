@@ -1,5 +1,6 @@
 package com.example.controller;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -73,6 +74,14 @@ public class ProductController {
 	            int productNum = cartitem.getProductNum();
 	            Product product = productService.getProductByProductNum(productNum);
 	            cartitem.setProduct(product);
+	            
+	            // 각 카트 아이템의 total 값을 계산하여 설정
+	            int count=cartitem.getCounts();
+	            BigDecimal price= product.getPrice();
+	            BigDecimal total = new BigDecimal(count).multiply(price);
+	            cartitem.setTotal(total);
+	          
+	            
 	        }
 	    } else if (temporaryIdentifier != null) {
 	        // 임시 식별자를 사용하여 비회원 장바구니 정보를 가져옴
@@ -81,6 +90,12 @@ public class ProductController {
 	            int productNum = guestCartItem.getProductNum();
 	            Product product = productService.getProductByProductNum(productNum);
 	            guestCartItem.setProduct(product);
+	            
+	            int guestCount = guestCartItem.getCounts();
+	            BigDecimal guestPrice = product.getPrice();
+	            BigDecimal total = new BigDecimal(guestCount).multiply(guestPrice);
+	            
+	            guestCartItem.setTotal(total);
 	        }
 	    }
 

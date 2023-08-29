@@ -1,13 +1,13 @@
 /* 전체 컨테이너 스타일링 */
 .cart_container {
-	width: 80%;
+	width: 70%;
 	margin: 0 auto;
 	padding: 20px;
 }
 
 /* 장바구니 제목 스타일링 */
 .carth2 {
-	font-size: 20px;
+	font-size: 40px;
 	margin-bottom: 20px;
 	margin-left: 10px;
 	font-family: 'Dancing Script';
@@ -33,26 +33,28 @@
 
 /* 이미지 스타일 설정 */
 .cartimg {
-	max-width: 100px; /* 이미지 최대 너비 설정 */
+	max-width: 200px; /* 이미지 최대 너비 설정 */
 	/* 상품 이미지 스타일링 */
 }
 
 /* 상품 정보 스타일링 */
 .cart_info {
 	flex: 1;
+	margin-left: 25px;
 }
 
 /* 상품 이름 스타일링 */
 .cart_name {
 	font-size: 18px;
 	font-weight: bold;
-	margin-bottom: 5px;
+	margin-bottom: 15px;
+	font-family: 'Dancing Script';
+	
 }
 
 /* 상품 가격 스타일링 */
 .cart_price {
 	display: flex;
-	margin-left: 10px;
 	margin-bottom: 20px;
 	font-size: 16px;
 	color: #e74c3c; /* 가격 텍스트 색상을 원하는 색상으로 변경하세요. */
@@ -63,18 +65,15 @@
 	font-size: 16px;
 	margin-top: 5px;
 	display: flex;
-	margin-left: 10px;
-		margin-bottom: 20px;
+	margin-bottom: 20px;
 }
 
 .cart_total {
 	font-size: 16px;
 	margin-top: 5px;
 	display: flex;
-	margin-left: 10px;
-		margin-bottom: 20px;
+	margin-bottom: 20px;
 }
-
 
 /* 비로그인 상태에서 장바구니 정보 스타일링 */
 .cookie-cart {
