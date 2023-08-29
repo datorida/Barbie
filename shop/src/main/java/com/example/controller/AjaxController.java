@@ -2,12 +2,15 @@ package com.example.controller;
 
 import java.util.List;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -31,7 +34,7 @@ public class AjaxController {
 
 	@Autowired
 	ProductService pservice;
-	
+
 	@Autowired
 	GuestCartService guestService;
 
@@ -78,6 +81,20 @@ public class AjaxController {
 		} else {
 			return "false";
 		}
+	}
+
+	@PostMapping("/storeTemporaryIdentifier")
+	@ResponseBody
+	public String storeTemporaryIdentifier(@RequestParam("temporaryIdentifier") String temporaryIdentifier, HttpSession session,
+			HttpServletResponse response) {
+		// 클라이언트에서 전송한 임시 식별자를 쿠키로 저장
+		  // 쿠키에 임시 식별자 저장
+	    Cookie cookie = new Cookie("temporaryIdentifier", temporaryIdentifier);
+	    cookie.setMaxAge(60 * 60); // 쿠키의 유효 시간을 1시간으로 설정 (초 단위)
+	    cookie.setPath("/"); // 쿠키의 경로 설정
+	    response.addCookie(cookie);
+	    return "Temporary identifier stored successfully.";
+
 	}
 
 	// 장바구니 추가
@@ -127,46 +144,44 @@ public class AjaxController {
 		try {
 			// 제품 재고확인
 			boolean isOutofStock = pservice.isOutOfStock(productNum, quantity);
-			System.out.println(temporaryIdentifier);
 
 			if (isOutofStock) {
 				return "out_of_stock"; // 클라이언트에 알림
 			}
 			// 비회원 장바구니 정보 조회 또는 생성 및 업데이트
-		
+
 			// GuestCart 정보 가져오기
 			List<GuestCart> guestCarts = guestService.getCartListBytemporaryIdentifier(temporaryIdentifier);
 
 			if (guestCarts == null || guestCarts.isEmpty()) {
-			    // 장바구니가 없는 경우 새로 생성
-			    GuestCart newGuestCart = new GuestCart();
-			    newGuestCart.setProduct_num(productNum);
-			    newGuestCart.setCounts(quantity);
-			    newGuestCart.setTemporaryIdentifier(temporaryIdentifier);
-			    guestService.addToGuestCart(newGuestCart);
-			    System.out.println(newGuestCart);
-			    return "true";
+				// 장바구니가 없는 경우 새로 생성
+				GuestCart newGuestCart = new GuestCart();
+				newGuestCart.setProduct_num(productNum);
+				newGuestCart.setCounts(quantity);
+				newGuestCart.setTemporaryIdentifier(temporaryIdentifier);
+				guestService.addToGuestCart(newGuestCart);
+
+				return "true";
 			} else {
-			    // 해당 제품이 이미 장바구니에 있는지 확인
-			    for (GuestCart guest : guestCarts) {
-			        if (guest.getProduct_num() == productNum) {
-			            int existingQuantity = guest.getCounts();
-			            guest.setCounts(existingQuantity + quantity);
-			            guestService.modify(guest);
-			            System.out.println(guest.getCounts());
-			            return "existingCart";
-			        }
-			    }
-			    // 장바구니에 없는 경우 새로운 GuestCart를 생성하고 추가
-			    GuestCart newGuestCart = new GuestCart();
-			    newGuestCart.setProduct_num(productNum);
-			    newGuestCart.setCounts(quantity);
-			    newGuestCart.setTemporaryIdentifier(temporaryIdentifier);
-			    guestService.addToGuestCart(newGuestCart);
-			    return "true";
+				// 해당 제품이 이미 장바구니에 있는지 확인
+				for (GuestCart guest : guestCarts) {
+					if (guest.getProduct_num() == productNum) {
+						int existingQuantity = guest.getCounts();
+						guest.setCounts(existingQuantity + quantity);
+						guestService.modify(guest);
+						System.out.println(guest.getCounts());
+						return "existingCart";
+					}
+				}
+				// 장바구니에 없는 경우 새로운 GuestCart를 생성하고 추가
+				GuestCart newGuestCart = new GuestCart();
+				newGuestCart.setProduct_num(productNum);
+				newGuestCart.setCounts(quantity);
+				newGuestCart.setTemporaryIdentifier(temporaryIdentifier);
+				guestService.addToGuestCart(newGuestCart);
+				return "true";
 			}
 
-			
 		} catch (Exception e) {
 			// 예외를 적절하게 처리
 			e.printStackTrace(); // 디버깅 목적으로 사용; 로깅을 고려하세요

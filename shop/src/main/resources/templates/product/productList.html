@@ -46,93 +46,111 @@
 
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	<script>
-		// 임시 아이디를 로컬 스토리지에 저장하는 함수
-		function setTemporaryIdentifier(temporaryIdentifier) {
-			localStorage.setItem("temporaryIdentifier", temporaryIdentifier);
-		}
+	// 임시 식별자 생성 함수
+	function generateTemporaryIdentifierWithExpiration() {
+	    const currentTime = new Date().getTime();
+	    const expirationTime = currentTime + 60 * 60 * 1000; // 1시간 후의 타임스탬프
+	    const temporaryIdentifier = `guest_${currentTime}_${expirationTime}`;
+	    return temporaryIdentifier;
+	}
 
-		// 로컬 스토리지에서 임시 아이디를 가져오는 함수
-		function getTemporaryIdentifier() {
-			return localStorage.getItem("temporaryIdentifier");
-		}
+	// 임시 식별자 만료 여부 확인 함수
+	function isTemporaryIdentifierExpired(temporaryIdentifier) {
+	    const expirationTime = temporaryIdentifier.split('_')[2];
+	    const currentTime = new Date().getTime();
+	    return currentTime > parseInt(expirationTime);
+	}
 
-		// 임시 식별자 생성 로직
-		function generateTemporaryIdentifierWithExpiration() {
-			const currentTime = new Date().getTime();
-			const expirationTime = currentTime + 60 * 60 * 1000; // 5분 (5 * 60 * 1000 밀리초)
-			const temporaryIdentifier = `guest_${currentTime}_${expirationTime}`;
-			return temporaryIdentifier;
-		}
+	// 쿠키에서 임시 식별자 가져오는 함수
+	function getTemporaryIdentifierFromCookie() {
+	    const cookies = document.cookie.split('; ');
+	    let temporaryIdentifier;
+	    for (const cookie of cookies) {
+	        const [name, value] = cookie.split('=');
+	        if (name === 'temporaryIdentifier') {
+	            temporaryIdentifier = value;
+	            break;
+	        }
+	    }
+	    return temporaryIdentifier;
+	}
 
-		// 임시식별자 생성 및 확인
-		const temporaryIdentifier = generateTemporaryIdentifierWithExpiration();
-		console.log('임시식별자:', temporaryIdentifier);
+	// 쿠키에 임시 식별자 설정하는 함수
+	function setTemporaryIdentifierCookie(temporaryIdentifier) {
+	    document.cookie = `temporaryIdentifier=${temporaryIdentifier}; path=/; max-age=${60 * 60}`;
+	}
 
-		function isTemporaryIdentifierExpired(temporaryIdentifier) {
-			const parts = temporaryIdentifier.split('_');
-			if (parts.length === 3) {
-				const expirationTime = parseInt(parts[2]);
-				const currentTime = new Date().getTime();
-				return currentTime > expirationTime;
-			}
-			return true; // 만료 정보가 없는 경우
-		}
+	// 페이지 초기화 함수
+	function initializePage() {
+	    let temporaryIdentifier = getTemporaryIdentifierFromCookie();
 
-		// 상품 추가 버튼에 클릭 이벤트 리스너를 부착합니다
-		document
-				.addEventListener(
-						"DOMContentLoaded",
-						function() {
-							updateTotalAmount();
+	    if (!temporaryIdentifier || isTemporaryIdentifierExpired(temporaryIdentifier)) {
+	        temporaryIdentifier = generateTemporaryIdentifierWithExpiration();
+	        setTemporaryIdentifierCookie(temporaryIdentifier);
+	    }
 
-							const quantityInput = document
-									.getElementById('quantity');
-							quantityInput.addEventListener('input',
-									updateTotalAmount);
+	    // 임시 식별자를 서버로 전송
+	    $.ajax({
+	        url: '[[@{/storeTemporaryIdentifier}]]', // 임시 식별자를 서버에 전송하는 엔드포인트
+	        method: 'POST',
+	        data: {
+	            temporaryIdentifier: temporaryIdentifier
+	        },
+	        success: function(response) {
+	            console.log('임시 식별자 서버 전송 성공:', response);
+	        },
+	        error: function() {
+	            console.error('임시 식별자 서버 전송 오류');
+	        }
+	    });
 
-							const addToCartButton = document
-									.getElementById("add-to-cart-btn");
-							if (addToCartButton) {
-								addToCartButton.addEventListener("click",
-										function() {
-											handleCartButtonClick();
-										});
-							} else {
-								console
-										.error("Unable to find the 'Add to Cart' button element.");
-							}
+	    // 나머지 페이지 초기화 코드
+	    updateTotalAmount();
 
-							const buyNowButton = document
-									.querySelector(".buy-now-btn");
-							buyNowButton.addEventListener("click", function() {
-								handleBuyNowClick();
-							});
-						});
+	    const quantityInput = document.getElementById('quantity');
+	    quantityInput.addEventListener('input', updateTotalAmount);
 
-		function handleCartButtonClick() {
-			const urlParams = new URLSearchParams(window.location.search);
-			const dataProductNum = urlParams.get('productNum');
-			const quantityInput = document.getElementById('quantity');
-			const quantity = parseInt(quantityInput.value);
-			const productNum = dataProductNum;
+	    const addToCartButton = document.getElementById("add-to-cart-btn");
+	    if (addToCartButton) {
+	        addToCartButton.addEventListener("click", function() {
+	            handleCartButtonClick();
+	        });
+	    } else {
+	        console.error("Unable to find the 'Add to Cart' button element.");
+	    }
 
-			let temporaryIdentifier = getTemporaryIdentifier(); // 로컬 스토리지에서 임시 아이디 가져오기
+	    const buyNowButton = document.querySelector(".buy-now-btn");
+	    buyNowButton.addEventListener("click", function() {
+	        handleBuyNowClick();
+	    });
+	}
 
-			if (!temporaryIdentifier
-					|| isTemporaryIdentifierExpired(temporaryIdentifier)) {
-				temporaryIdentifier = generateTemporaryIdentifierWithExpiration();
-				setTemporaryIdentifier(temporaryIdentifier); // 임시 아이디를 로컬 스토리지에 저장
-			}
+	// 페이지 로드 시 초기화 함수 호출
+	document.addEventListener("DOMContentLoaded", initializePage);
 
-			isLoggedIn(function(isLoggedIn) {
-				if (!isLoggedIn) {
-					addToCartAsGuest(productNum, quantity, temporaryIdentifier);
-				} else {
-					addToCart(productNum, quantity);
-				}
-			});
-		}
+	// 상품 추가 버튼 클릭 이벤트 핸들러
+	function handleCartButtonClick() {
+	    const urlParams = new URLSearchParams(window.location.search);
+	    const dataProductNum = urlParams.get('productNum');
+	    const quantityInput = document.getElementById('quantity');
+	    const quantity = parseInt(quantityInput.value);
+	    const productNum = dataProductNum;
 
+	    let temporaryIdentifier = getTemporaryIdentifierFromCookie();
+
+	    if (!temporaryIdentifier || isTemporaryIdentifierExpired(temporaryIdentifier)) {
+	        temporaryIdentifier = generateTemporaryIdentifierWithExpiration();
+	        setTemporaryIdentifierCookie(temporaryIdentifier);
+	    }
+
+	    isLoggedIn(function(isLoggedIn) {
+	        if (!isLoggedIn) {
+	            addToCartAsGuest(productNum, quantity, temporaryIdentifier);
+	        } else {
+	            addToCart(productNum, quantity);
+	        }
+	    });
+	}
 		// Function to add a product to the cart for logged-in users
 		function addToCart(productNum, quantity) {
 			$.ajax({
@@ -166,7 +184,7 @@
 		}
 
 		// Function to add a product to the cart for guest users
-		// Function to add a product to the cart for guest users
+
 		function addToCartAsGuest(productNum, quantity, temporaryIdentifier) {
 			$.ajax({
 				url : '[[@{/addToCartAsGuest}]]', // 실제 엔드포인트 URL로 대체

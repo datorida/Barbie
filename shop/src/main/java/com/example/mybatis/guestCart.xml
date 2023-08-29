@@ -40,9 +40,8 @@
 	<update id="update" parameterType="com.example.dto.GuestCart">
 		UPDATE GuestCart SET counts =
 		#{counts}
-		WHERE temporaryIdentifier = '#{temporaryIdentifier}' AND
-		product_num =
-		#{productNum}
+		WHERE temporaryIdentifier = #{temporaryIdentifier} AND
+		product_num = #{productNum}
 	</update>
 
 

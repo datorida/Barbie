@@ -1,42 +1,88 @@
-/* Rectangle 1 */
+/* 전체 컨테이너 스타일링 */
 .cart_container {
-    width: 100%;
-    max-width: 600px;
-    margin: 0 auto;
-    padding: 20px;
-    box-sizing: border-box;
-    background: #E8DDE6;
-    text-align: center;
+	width: 80%;
+	margin: 0 auto;
+	padding: 20px;
 }
 
-.cart_info {
-    display: flex;
-    flex-direction: column; /* 이미지 밑에 정보를 나열하기 위해 컬럼으로 설정 */
-    align-items: center; /* 이미지와 정보를 가로 중앙 정렬 */
-    margin-bottom: 20px; /* 아이템 사이에 간격 추가 */
-}
-
-/* Cart */
+/* 장바구니 제목 스타일링 */
 .carth2 {
-    font-family: 'Dancing Script', cursive;
-    margin: 0;
+	font-size: 20px;
+	margin-bottom: 20px;
+	margin-left: 10px;
+	font-family: 'Dancing Script';
 }
 
-.price, .counts {
-    font-family: 'jsMath-cmti10';
-    font-style: italic;
-    font-weight: 500;
-    font-size: 16px;
-    line-height: 17px;
-    color: #100E10;
-    margin: 0;
+/* 상품 정보 컨테이너 스타일링 */
+.product-info {
+	display: flex;
+	border-bottom: 1px solid #ddd;
+	margin-bottom: 20px;
 }
 
+/* 이미지와 체크박스를 가로 정렬하기 위한 스타일 */
+.item-container {
+	display: flex;
+	align-items: center;
+}
+
+/* 체크박스 스타일 설정 */
+.cart-checkbox {
+	margin-right: 10px; /* 이미지 오른쪽에 여백 추가 */
+}
+
+/* 이미지 스타일 설정 */
 .cartimg {
-    width: 113px;
-    height: 113px;
-    background: #D9D9D9;
-    display: block;
-    margin-bottom: 10px; /* 이미지 아래 간격 추가 */
-    object-fit: cover;
+	max-width: 100px; /* 이미지 최대 너비 설정 */
+	/* 상품 이미지 스타일링 */
+}
+
+/* 상품 정보 스타일링 */
+.cart_info {
+	flex: 1;
+}
+
+/* 상품 이름 스타일링 */
+.cart_name {
+	font-size: 18px;
+	font-weight: bold;
+	margin-bottom: 5px;
+}
+
+/* 상품 가격 스타일링 */
+.cart_price {
+	display: flex;
+	margin-left: 10px;
+	margin-bottom: 20px;
+	font-size: 16px;
+	color: #e74c3c; /* 가격 텍스트 색상을 원하는 색상으로 변경하세요. */
+}
+
+/* 상품 갯수 스타일링 */
+.cart_counts {
+	font-size: 16px;
+	margin-top: 5px;
+	display: flex;
+	margin-left: 10px;
+		margin-bottom: 20px;
+}
+
+.cart_total {
+	font-size: 16px;
+	margin-top: 5px;
+	display: flex;
+	margin-left: 10px;
+		margin-bottom: 20px;
+}
+
+
+/* 비로그인 상태에서 장바구니 정보 스타일링 */
+.cookie-cart {
+	margin-top: 20px;
+}
+
+/* 비로그인 상태에서 상품 목록 스타일링 */
+.cookie-cart ul {
+	list-style-type: none;
+	padding: 0;
 }

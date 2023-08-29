@@ -4,66 +4,51 @@
 <title>장바구니</title>
 </head>
 <body>
-	<header th:replace="fragments/common :: copy"></header>
-	<section>
-		<div class="cart_container">
-
-			<h2 class="carth2">Cart</h2>
-			<!-- 로그인 상태인 경우에만 보이는 내용 -->
-			<!-- 내장바구니 정보 표시 -->
-			<div th:if="${session.member != null}">
-				<div th:each="cartItem : ${cartlist}" class="product-info">
-					<!-- 이미지 표시 -->
-
-					<img th:if="${cartItem.product != null}"
-						th:src="'/' + ${cartItem.product.image_url}" alt="Product Image"
-						class="cartimg" />
-					<!-- 제품 정보 -->
-					<!-- 제품 이름 -->
-					<div class="cart_info">
-						<div th:if="${cartItem.product != null}"
-							th:text="${cartItem.product.product_name}" class="cart_name"></div>
-						<!-- 제품 갯수 -->
-						<div th:text="'counts: ' + ${cartItem.counts} ?: 0"
-							class="cart_counts"></div>
-
-						<!-- 제품 가격 -->
-						<div th:if="${cartItem.product != null}"
-							th:text="'price:' + ${cartItem.product.price}" class="cart_price"></div>
-					</div>
-				</div>
-
-			</div>
-			<!-- 쿠키로부터 장바구니 정보 표시 -->
-			<!-- 쿠키로부터 장바구니 정보 표시 -->
-			<div th:if="${session.member == null}" class="cookie-cart">
-				<!-- 비로그인 상태에서 보이는 내용 -->
-				<ul>
-					<li th:each="guestCart : ${guestCartList}" class="product-info">
-					
-						<!-- 이미지 표시 --> <img th:if="${guestCart.product != null}"
-						th:src="${guestCart.product.image_url}" alt="Product Image"
-						class="cartimg" />
-						<div class="cart_info">
-							<!-- 제품 이름 -->
-							<div th:if="${guestCart.product != null}"
-								th:text="'상품: ' + ${guestCart.product.product_name}"
-								class="carth2"></div>
-							<!-- 제품 가격 -->
-							<span
-								th:text="'price:' + ${guestCart.product != null ? guestCart.product.price : '0'}"
-								class="cart_price"></span>
-							<!-- 제품 갯수 -->
-							<span th:text="'counts: ' + ${guestCart.counts ?: 0}"
-								class="cart_counts"></span>
-						</div>
-					</li>
-				</ul>
-			</div>
-
-		</div>
-
-	</section>
-	<footer th:replace="fragments/common :: footer-script"></footer>
+    <header th:replace="fragments/common :: copy"></header>
+    <section>
+        <div class="cart_container">
+            <h2 class="carth2">Cart</h2>
+            <!-- 로그인 상태인 경우에만 보이는 내용 -->
+            <!-- 내장바구니 정보 표시 -->
+            <div th:if="${session.member != null}">
+                <div th:each="cartItem : ${cartlist}" class="product-info">
+                    <!-- 이미지 및 체크박스 표시 -->
+                    <div class="item-container">
+                        <input type="checkbox" class="cart-checkbox" /> <!-- 체크박스 추가 -->
+                        <img th:if="${cartItem.product != null}" th:src="'/' + ${cartItem.product.image_url}" alt="Product Image" class="cartimg" />
+                        <!-- 제품 정보 -->
+                        <div class="cart_info">
+                            <div th:if="${cartItem.product != null}" th:text="${cartItem.product.product_name}" class="cart_name"></div>
+                            <div th:text="'counts: ' + ${cartItem.counts} ?: 0" class="cart_counts"></div>
+                            <div th:if="${cartItem.product != null}" th:text="'price:' + ${cartItem.product.price}" class="cart_price"></div>
+                            <div th:text="'total: ' + ${cartItem.product != null ? (cartItem.product.price * cartItem.counts) : 0}" class="cart_total"></div>
+                        </div>
+                        <!-- 체크한상품 총가격 -->
+                    </div>
+                </div>
+            </div>
+            <!-- 쿠키로부터 장바구니 정보 표시 -->
+            <div th:if="${session.member == null}" class="cookie-cart">
+                <!-- 비로그인 상태에서 보이는 내용 -->
+                <ul>
+                    <li th:each="guestCart : ${guestCartList}" class="product-info">
+                        <!-- 이미지 및 체크박스 표시 -->
+                        <div class="item-container">
+                            <input type="checkbox" class="cart-checkbox" /> <!-- 체크박스 추가 -->
+                            <img th:if="${guestCart.product != null}" th:src="'/' + ${guestCart.product.image_url}" alt="Product Image" class="cartimg" />
+                            <!-- 제품 정보 -->
+                            <div class="cart_info">
+                                <div th:if="${guestCart.product != null}" th:text="'상품: ' + ${guestCart.product.product_name}" class="carth2"></div>
+                                <span th:text="'price:' + ${guestCart.product != null ? guestCart.product.price : '0'}" class="cart_price"></span>
+                                <span th:text="'counts: ' + ${guestCart.counts ?: 0}" class="cart_counts"></span>
+                                <div th:text ="'total:'+(${guestCart.product.price * guestCart.counts})" class="cart_total"></div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </section>
+    <footer th:replace="fragments/common :: footer-script"></footer>
 </body>
 </html>

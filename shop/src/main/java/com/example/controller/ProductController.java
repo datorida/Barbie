@@ -14,6 +14,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.example.dto.Cart;
 import com.example.dto.GuestCart;
@@ -36,11 +37,13 @@ public class ProductController {
 	@Autowired
 	GuestCartService guestService;
 
-	@GetMapping("/productList")
-	public String productList(@RequestParam("productNum") int productNum, Model model) throws Exception {
-		Product product = productService.getProductByProductNum(productNum);
-		model.addAttribute("product", product);
-		return "/product/productList";
+	
+
+	@RequestMapping("/productList")
+	public String productList(@RequestParam("productNum") int productNum, Model model, HttpSession session) throws Exception {
+	    Product product = productService.getProductByProductNum(productNum);
+	    model.addAttribute("product", product);
+	    return "/product/productList";
 	}
 
 	@GetMapping("/cart")
@@ -49,11 +52,21 @@ public class ProductController {
 	    MemberList memberlist = (MemberList) session.getAttribute("member");
 	    List<Cart> cartlist = new ArrayList<>();
 	    List<GuestCart> guestCartList = new ArrayList<>();
-	    String guestCookie =null;
+	    String temporaryIdentifier = null;
+
+	    // 임시 식별자를 쿠키에서 추출
+	    Cookie[] cookies = request.getCookies();
+	    if (cookies != null) {
+	        for (Cookie cookie : cookies) {
+	            if ("temporaryIdentifier".equals(cookie.getName())) {
+	                temporaryIdentifier = cookie.getValue();
+	                break;
+	            }
+	        }
+	    }
 
 	    if (memberlist != null) {
 	        // 로그인 상태인 경우, 로그인한 사용자의 장바구니 정보를 가져옴
-
 	        int memberNum = memberlist.getMembernum();
 	        cartlist = cartService.getCartByMemberNum(memberNum);
 	        for (Cart cartitem : cartlist) {
@@ -61,34 +74,21 @@ public class ProductController {
 	            Product product = productService.getProductByProductNum(productNum);
 	            cartitem.setProduct(product);
 	        }
-	    } else {
-	        // 비회원인 경우, 쿠키로부터 장바구니 정보를 가져오는 대신
-	        // 임시식별자를 사용하여 데이터베이스에서 비회원 장바구니 정보를 가져옴
-	        String temporaryIdentifier = getTemporaryIdentifierFromCookie(request);
-	        if (temporaryIdentifier != null) {
-	            guestCartList = guestService.getCartListBytemporaryIdentifier(temporaryIdentifier);
-	            for (GuestCart guestCart : guestCartList) {
-	                int productNum = guestCart.getProduct_num();
-	                Product product = productService.getProductByProductNum(productNum);
-	                guestCart.setProduct(product);
-	            }
+	    } else if (temporaryIdentifier != null) {
+	        // 임시 식별자를 사용하여 비회원 장바구니 정보를 가져옴
+	        guestCartList = guestService.getCartListBytemporaryIdentifier(temporaryIdentifier);
+	        for (GuestCart guestCartItem : guestCartList) {
+	            int productNum = guestCartItem.getProductNum();
+	            Product product = productService.getProductByProductNum(productNum);
+	            guestCartItem.setProduct(product);
 	        }
 	    }
 
+	    // 모델에 데이터 추가
 	    model.addAttribute("cartlist", cartlist); // 회원 장바구니
 	    model.addAttribute("guestCartList", guestCartList); // 비회원 장바구니
+	    model.addAttribute("temporaryIdentifier", temporaryIdentifier); // 임시 식별자
 	    return "/product/cart";
 	}
 
-	private String getTemporaryIdentifierFromCookie(HttpServletRequest request) {
-	    Cookie[] cookies = request.getCookies();
-	    if (cookies != null) {
-	        for (Cookie cookie : cookies) {
-	            if (cookie.getName().equals("temporaryIdentifier")) {
-	                return cookie.getValue();
-	            }
-	        }
-	    }
-	    return null;
-	}
 }
