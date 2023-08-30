@@ -35,17 +35,8 @@
 	width: 70%
 }
 
-.delete-button {
-	float: right;
-	margin-bottom: 15px;
-	margin-right: 10px;
-}
 
-.guest-delete-button {
-	float: right;
-	margin-bottom: 15px;
-	margin-right: 10px;
-}
+
 
 .cart_info {
 	flex: 1;
@@ -61,7 +52,7 @@
 
 .cart_price {
 	display: flex;
-	margin-bottom: 20px;
+	margin-top: 30px;
 	font-size: 16px;
 	color: #e74c3c;
 }
@@ -242,12 +233,35 @@
 	margin-bottom: 20px;
 }
 
+.quantity-input {
+    width: 50px; /* 너비 조절 */
+    padding: 5px; /* 내부 여백 조절 */
+    border: 1px solid #ccc; /* 테두리 추가 */
+    border-radius: 5px; /* 둥근 테두리 적용 */
+    text-align: center; /* 텍스트 가운데 정렬 */
+    margin-top: 15px;
+    margin-bottom: 15px;
+    margin-left: 5px;
+}
+
 .cart_total {
 	font-size: 16px;
 	margin-top: 5px;
 	display: flex;
 	margin-bottom: 20px;
 }
+.partial-button{
+	float:right;
+}
+
+.delete-button,
+.guest-delete-button 
+ {
+	float: right;
+	margin-bottom: 15px;
+	margin-left: 10px;
+}
+
 
 .total {
 	margin-left: 10px;
@@ -268,8 +282,8 @@
 
 .selectAllButton {
 	font-family: "Open Sans", sans-serif;
-	margin-right: 12px;
-	width: 75px;
+	margin-right: 8px;
+	width: auto;
 	height: 30px;
 	color: #fff;
 	border-radius: 5px;
