@@ -31,6 +31,10 @@
 		SELECT * FROM cart
 		WHERE membernum= #{memberNum}
 	</select>
+	
+	<delete id="delete" parameterType="Integer">
+		DELETE FROM cart WHERE cart_num=${cartItemId}
+	</delete>
 
 
 

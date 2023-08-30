@@ -23,8 +23,8 @@ public class GuestCartService implements MyService<Integer,GuestCart>{
 	}
 
 	@Override
-	public void remove(Integer k) throws Exception {
-		// TODO Auto-generated method stub
+	public void remove(Integer guestCartId) throws Exception {
+		guestmapper.delete(guestCartId);
 		
 	}
 

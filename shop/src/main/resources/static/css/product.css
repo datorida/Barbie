@@ -1,3 +1,4 @@
+
 tml, body {
     height: 100%; /* Set the height to 100% for the entire HTML and body */
     margin: 0;
@@ -121,16 +122,23 @@ tml, body {
   .w-btn-skin-outline:hover {
     background-color: #f8e6e0;
   }
+@media (max-width: 768px) {
+    /* 뷰포트 너비가 768px 미만일 때 적용될 스타일 */
 
-  @media (max-width: 768px) {
-    .product-container {
-      flex-direction: column;
+    .centered-container {
+        margin-top: 20px; /* 예시: margin-top 값을 조정하세요 */
     }
+
+ 
 
     .product-img {
-      width: 100%;
-      margin-right: 0;
-      float:none;
+        width: 70%;
+        margin-right: 0;
+        float: none;
     }
-  }
+	 .product-detail {
+        flex-direction: column;
+    }
+    /* 추가적인 스타일 변경을 여기에 추가하세요 */
+}
 

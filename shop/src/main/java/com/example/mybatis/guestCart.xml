@@ -44,6 +44,8 @@
 		product_num = #{productNum}
 	</update>
 
-
+	<delete id="delete" parameterType="Integer">
+		DELETE FROM guestCart WHERE guest_cart_num =#{guestCartId}
+	</delete>
 
 </mapper>

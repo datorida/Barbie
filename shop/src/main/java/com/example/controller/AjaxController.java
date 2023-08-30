@@ -7,6 +7,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -188,5 +190,29 @@ public class AjaxController {
 			return "error"; // 클라이언트에 오류를 알림
 		}
 	}
-
+	//회원 장바구니 상품 삭제
+	@PostMapping("/deleteCart")
+	public ResponseEntity<String> deleteCart(@RequestParam("cartItemId") int cartItemId) {
+		try {
+			cservice.remove(cartItemId);
+			return ResponseEntity.ok("삭제되었습니다");
+		}catch(Exception e) {
+			e.printStackTrace();
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("삭제 중 오류 발생");
+        }
+	}
+	
+	
+	//비회원 장바구니 상품삭제
+	@PostMapping("/guestDeleteCart")
+	public ResponseEntity<String> guestDeleteCart(@RequestParam("guestCartItemId") int guestCartId){
+		try {
+			guestService.remove(guestCartId);
+			return ResponseEntity.ok("삭제되었습니다");
+		}catch(Exception e) {
+			e.printStackTrace();
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("삭제 중 오류 발생");
+	}
+	}
+	
 }

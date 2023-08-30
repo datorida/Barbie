@@ -22,8 +22,8 @@ public class CartService implements MyService<Integer,Cart>{
 	}
 
 	@Override
-	public void remove(Integer k) throws Exception {
-		// TODO Auto-generated method stub
+	public void remove(Integer cartItemId) throws Exception {
+		cmapper.delete(cartItemId);
 		
 	}
 
