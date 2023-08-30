@@ -31,15 +31,20 @@
 						<div th:if="${cartItem.product != null}"
 							th:text="'price:' + ${cartItem.product.price}" class="cart_price"></div>
 						<div th:text="'total: ' + ${cartItem.total}" class="cart_total"></div>
+						<button class="save-button">Save</button>
 						<button class="delete-button">Delete</button>
 					</div>
 
 				</div>
-					<div class="total">
-						<button id="selectAllButton" class="selectAllButton">전체 선택</button>
-						<button id="deleteSelectedButton" class="deleteSelectedButton">선택 삭제</button>
-						<div class="total-price">Total Price: <span id="selectedTotalPrice">0</span></div>
+				<div class="total">
+					<div class="btn-function">
+						<button id="selectAllButton" class="selectAllButton btn">Select All</button>
+						<button id="deleteSelectedButton" class="deleteSelectedButton btn">Delete check</button>
 					</div>
+					<div class="total-price">
+						Total Price: <span id="selectedTotalPrice">0</span>
+					</div>
+				</div>
 			</div>
 
 
@@ -63,17 +68,21 @@
 								th:text="'counts: ' + ${guestCart.counts ?: 0}"
 								class="cart_counts"></span>
 							<div th:text="'total:'+${guestCart.total}" class="cart_total"></div>
+							<button class="guest-save-button">Save</button>
 							<button class="guest-delete-button">Delete</button>
 						</div>
 					</li>
 				</ul>
-					<div class="total">
-						<div class="btn">
-						<button id="selectAllButton" class="selectAllButton yellow">전체 선택</button>
-						<button id="deleteSelectedButton" class="deleteSelectedButton green">선택 삭제</button>
-						</div>
-						<div class="total-price">Total Price: <span id="selectedTotalPrice">0</span></div>
+				<div class="total">
+					<div class="btn-function">
+						<button id="selectAllButton" class="selectAllButton btn">Select All</button>
+						<button id="GuestDeleteSelectedButton"
+							class="deleteSelectedButton btn">Delete check</button>
 					</div>
+					<div class="total-price">
+						Total Price: <span id="selectedTotalPrice">0</span>
+					</div>
+				</div>
 			</div>
 		</div>
 	</section>
@@ -93,8 +102,8 @@
 						cartItemId : cartItemId
 					},
 					success : function(response) {
-						console.log('cartItemId')
-						alert("삭제되었습니다");
+
+						alert("Deleted!");
 
 						// 화면에서 해당 항목 삭제
 						guestCartItem.remove();
@@ -111,7 +120,7 @@
 
 			//비회원 상품 삭제버튼
 			$(".guest-delete-button").click(function() {
-				console.log("클릭되나");
+
 				var guestCartItem = $(this).closest(".product-info"); // this는 클릭된 삭제버튼이고 거기서 제일 가까운 클래스를 불러와서 변수 할당
 				var guestCartItemId = guestCartItem.attr("data-cart-id"); // 장바구니 항목의 고유 아이디를 가져옵니다.
 
@@ -122,8 +131,8 @@
 						guestCartItemId : guestCartItemId
 					},
 					success : function(response) {
-						console.log('cartItemId')
-						alert("삭제되었습니다");
+						
+						alert("Deleted!");
 
 						// 화면에서 해당 항목 삭제
 						guestCartItem.remove();
@@ -161,36 +170,67 @@
 				total = total.toFixed(2);
 				$("#selectedTotalPrice").text(total);
 			}
-			
+
 			// 전체 선택/해제 버튼 클릭 시
 			$("#selectAllButton").click(function() {
-			    var isChecked = $(this).text() === "전체 선택";
-			    $(".cart-checkbox").prop("checked", isChecked);
-			    $(this).text(isChecked ? "전체 해제" : "전체 선택");
-			    recalculateTotalPrice();
+				var isChecked = $(this).text() === "Select All";
+				$(".cart-checkbox").prop("checked", isChecked);
+				$(this).text(isChecked ? "Full Release" : "Select All");
+				recalculateTotalPrice();
 			});
 
 			// 선택 삭제 버튼 클릭 시
 			$("#deleteSelectedButton").click(function() {
-			    $(".cart-checkbox:checked").each(function() {
-			        var cartItem = $(this).closest(".product-info");
-			        var cartItemId = cartItem.attr("data-cart-id");
-			        $.ajax({
-			            type: "POST",
-			            url: '[[@{/deleteCart}]]',
-			            data: {
-			                cartItemId: cartItemId
-			            },
-			            success: function(response) {
-			                alert("선택된 항목이 삭제되었습니다.");
-			                cartItem.remove();
-			                recalculateTotalPrice();
-			            },
-			            error: function(xhr, status, error) {
-			                console.error("장바구니 항목을 삭제하는 중 오류 발생: " + error);
-			            }
-			        });
-			    });
+				$(".cart-checkbox:checked").each(function() {
+					var cartItem = $(this).closest(".product-info");
+					var cartItemId = cartItem.attr("data-cart-id");
+					$.ajax({
+						type : "POST",
+						url : '[[@{/deleteCart}]]',
+						data : {
+							cartItemId : cartItemId
+						},
+						success : function(response) {
+							alert("선택된 항목이 삭제되었습니다.");
+							cartItem.remove();
+							recalculateTotalPrice();
+						},
+						error : function(xhr, status, error) {
+							console.error("장바구니 항목을 삭제하는 중 오류 발생: " + error);
+						}
+					});
+				});
+			});
+
+			// 비회원 선택 삭제 버튼 클릭 시
+			$("#GuestDeleteSelectedButton").click(function() {
+				$(".cart-checkbox:checked").each(function() {
+
+					var guestCartItem = $(this).closest(".product-info"); // this는 클릭된 삭제버튼이고 거기서 제일 가까운 클래스를 불러와서 변수 할당
+					var guestCartItemId = guestCartItem.attr("data-cart-id"); // 장바구니 항목의 고유 아이디를 가져옵니다.
+
+					$.ajax({
+						type : "POST",
+						url : '[[@{/guestDeleteCart}]]', // 서버 엔드포인트 URL을 직접 지정
+						data : {
+							guestCartItemId : guestCartItemId
+						},
+						success : function(response) {
+							console.log('cartItemId')
+							alert("삭제되었습니다");
+
+							// 화면에서 해당 항목 삭제
+							guestCartItem.remove();
+
+							// 총 가격 재계산
+							recalculateTotalPrice();
+						},
+						error : function(xhr, status, error) {
+							// 오류 처리 로직을 추가하세요.
+							console.error("장바구니 항목을 삭제하는 중 오류 발생: " + error);
+						}
+					});
+				});
 			});
 		});
 	</script>
