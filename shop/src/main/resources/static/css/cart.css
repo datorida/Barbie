@@ -1,3 +1,4 @@
+
 @import
 	url("https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;500;600;700&family=Open+Sans:wght@400;600;700&display=swap")
 	;
@@ -166,6 +167,155 @@
 .btn-16:active {
 	top: 2px;
 }
+
+@import url("https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;500;600;700&family=Open+Sans:wght@400;600;700&display=swap");
+/* 기본 스타일 */
+.cart_container {
+	width: 60%;
+	margin: 0 auto;
+	padding: 20px;
+}
+
+.carth2 {
+	font-size: 40px;
+	margin-bottom: 20px;
+	margin-left: 25px;
+	font-family: 'Dancing Script';
+}
+
+.product-info {
+	display: flex;
+	border-bottom: 1px solid #ddd;
+	margin-bottom: 20px;
+}
+
+.item-container {
+	display: flex;
+	align-items: center;
+}
+
+.cart-checkbox {
+	margin-right: 10px;
+}
+
+.cartimg {
+	max-width: 200px;
+	width: 70%
+}
+
+.delete-button {
+	float: right;
+	margin-bottom: 15px;
+	margin-right: 10px;
+}
+
+.guest-delete-button {
+	float: right;
+	margin-bottom: 15px;
+	margin-right: 10px;
+}
+
+.cart_info {
+	flex: 1;
+	margin-left: 25px;
+}
+
+.cart_name {
+	font-size: 18px;
+	font-weight: bold;
+	margin-bottom: 15px;
+	font-family: 'Dancing Script';
+}
+
+.cart_price {
+	display: flex;
+	margin-bottom: 20px;
+	font-size: 16px;
+	color: #e74c3c;
+}
+
+.cart_counts {
+	font-size: 16px;
+	margin-top: 5px;
+	display: flex;
+	margin-bottom: 20px;
+}
+
+.cart_total {
+	font-size: 16px;
+	margin-top: 5px;
+	display: flex;
+	margin-bottom: 20px;
+}
+
+
+.total {
+	margin-left:10px;
+	font-weight: bold;
+	font-size: 19px;
+	display:flex;
+	align-items: center;
+	 justify-content: space-between; /* 수평으로 아이템을 분리하는 속성을 추가합니다 */
+}
+.btn{
+	float: left;
+}
+.total-price{
+	float:right;
+}
+
+.selectAllButton{
+	 font-family: "Open Sans", sans-serif;
+	margin-right:12px;
+	font-size: 12px;
+	text-decoration: none;
+	color: black;
+	padding: 5px;
+	display: inline-block;
+	position: relative;
+	border: 1px solid rgba(0, 0, 0, 0.21);
+	border-bottom: 4px solid rgba(0, 0, 0, 0.21);
+	border-radius: 4px;
+	text-shadow: 0 1px 0 rgba(0, 0, 0, 0.15);
+}
+.selectAllButton.yellow {
+  background: rgba(240,210,100,1);
+  background: -webkit-gradient(linear, 0 0, 0 100%, from(rgba(240,210,100,1)), to(rgba(229,201,96,1)));
+  background: -webkit-linear-gradient(rgba(240,210,100,1) 0%, rgba(229,201,96,1) 100%);
+  background: -moz-linear-gradient(rgba(240,210,100,1) 0%, rgba(229,201,96,1) 100%);
+  background: -o-linear-gradient(rgba(240,210,100,1) 0%, rgba(229,201,96,1) 100%);
+  background: linear-gradient(rgba(240,210,100,1) 0%, rgba(229,201,96,1) 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f0d264', endColorstr='#e5c960', GradientType=0 );
+}
+
+.selectAllButton.yellow:active  {background: #DBC05B;}
+
+.deleteSelectedButton{
+	 font-family: "Open Sans", sans-serif;
+	font-size: 12px;
+	text-decoration: none;
+	color: black;
+	padding: 5px;
+	display: inline-block;
+	position: relative;
+	border: 1px solid rgba(0, 0, 0, 0.21);
+	border-bottom: 4px solid rgba(0, 0, 0, 0.21);
+	border-radius: 4px;
+	text-shadow: 0 1px 0 rgba(0, 0, 0, 0.15);
+}
+
+.deleteSelectedButton.green {
+  background: rgba(130,200,160,1);
+  background: -moz-linear-gradient(top, rgba(130,200,160,1) 0%, rgba(130,199,158,1) 100%);
+  background: -webkit-gradient(left top, left bottom, color-stop(0%, rgba(130,200,160,1)), color-stop(100%, rgba(130,199,158,1)));
+  background: -webkit-linear-gradient(top, rgba(130,200,160,1) 0%, rgba(130,199,158,1) 100%);
+  background: -o-linear-gradient(top, rgba(130,200,160,1) 0%, rgba(130,199,158,1) 100%);
+  background: -ms-linear-gradient(top, rgba(130,200,160,1) 0%, rgba(130,199,158,1) 100%);
+  background: linear-gradient(to bottom, rgba(130,200,160,1) 0%, rgba(124, 185, 149, 1) 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#82c8a0', endColorstr='#82c79e', GradientType=0 );
+}
+
+
 
 /* 작은 화면 (예: 스마트폰)에 대한 스타일 */
 @media ( max-width : 767px) {

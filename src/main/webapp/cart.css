@@ -1,0 +1,39 @@
+/* Rectangle 1 */
+.cart_container {
+    position: relative; /* 변경: absolute에서 relative로 수정 */
+    width: 541px;
+    height: 566px;
+    background: #E8DDE6;
+    margin: 0 auto; /* 가운데 정렬을 위해 추가 */
+    text-align: center; /* 가운데 정렬을 위해 추가 */
+    padding: 20px; /* 간격 추가 */
+}
+
+/* Cart */
+.carth2 {
+    font-family: 'jsMath-cmti10';
+    font-style: italic;
+    font-weight: 500;
+    font-size: 24px;
+    line-height: 26px;
+    color: #100E10;
+    margin: 0; /* 기본 마진 제거 */
+}
+
+.price, .counts {
+    font-family: 'jsMath-cmti10';
+    font-style: italic;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 17px;
+    color: #100E10;
+    margin: 0; /* 기본 마진 제거 */
+}
+
+.cartimg {
+    width: 166px;
+    height: 113px;
+    background: #D9D9D9;
+    display: block; /* 이미지를 블록 요소로 변경 */
+    margin: 0 auto; /* 이미지 가운데 정렬 */
+}
