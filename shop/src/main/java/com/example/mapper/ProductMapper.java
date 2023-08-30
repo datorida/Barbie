@@ -14,8 +14,6 @@ public interface ProductMapper extends MyMapper<Integer,Product>{
 
 	Product getProductByProductNum(int productNum);
 
-	Integer isOutOfStock(int productNum);
-
-
+	int isOutOfStock(int productNum);
 
 }

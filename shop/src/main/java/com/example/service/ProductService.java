@@ -10,7 +10,7 @@ import com.example.frame.MyService;
 import com.example.mapper.ProductMapper;
 
 @Service
-public class ProductService implements MyService{
+public class ProductService implements MyService<Integer, Product>{
 
 	@Autowired
 	ProductMapper mapper;
@@ -21,19 +21,19 @@ public class ProductService implements MyService{
 	}
 
 	@Override
-	public void register(Object v) throws Exception {
+	public void register(Product v) throws Exception {
+
+		
+	}
+
+	@Override
+	public void remove(Integer k) throws Exception {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void remove(Object k) throws Exception {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void modify(Object v) throws Exception {
+	public void modify(Product v) throws Exception {
 		// TODO Auto-generated method stub
 		
 	}
@@ -59,23 +59,24 @@ public class ProductService implements MyService{
 	}
 
 	@Override
-	public Object get(Object k) throws Exception {
+	public Product get(Integer k) throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	/* 상품의 재고가 있으면 False로 , 없으면 true */
 	public boolean isOutOfStock(int productNum, int quantityToCheck) {
-	    Product product = mapper.getProductByProductNum(productNum);
-	    
-	    if (product == null || product.getQuantity() == 0) {
-	        // 상품이 없거나 상품의 수량이 0인 경우
-	        return true;
-	    }
-	    
-	    return product.getQuantity() < quantityToCheck;
+	 int productQuantity=mapper.isOutOfStock(productNum);
+	 
+	 if(productQuantity == 0) {
+		 return true;
+	 }
+	 return productQuantity < quantityToCheck; 
+	 //재고가 주문수량보다 작을경우 true반환, 그렇지않으면 false반환
+	 //비교 연산자(<)는 왼쪽 피연산자가 오른쪽 피연산자보다 작을 때 true를 반환하고, 그렇지 않으면 false를 반환합니다. 
 	}
 
+	
 
 
 

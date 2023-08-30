@@ -1,122 +1,231 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
-
 <head th:replace="fragments/common :: head">
-	<title>장바구니</title>
-</head>
+<title>장바구니</title>
 
+</head>
 <body>
 	<header th:replace="fragments/common :: copy"></header>
 	<section>
-		<div class="container">
-			<h2>장바구니</h2>
-
+		<div class="cart_container">
+			<h2 class="carth2">Cart</h2>
 			<!-- 로그인 상태인 경우에만 보이는 내용 -->
-			<div th:if="${session != null}">
-				<p th:text="'안녕하세요, ' + ${username} + '님!'"></p>
-				<!-- 회원의 장바구니 상품 목록 표시 -->
-				<table>
-					<tr>
-						<th>상품명</th>
-						<th>수량</th>
-						<th>상품가격</th>
-						<th>총 가격</th>
-					</tr>
-					<tr th:each="cartItem : ${cartlist}">
-						<td>
-							<span th:if="${cartItem.product != null}" th:text="${cartItem.product.product_name}"></span>
-							<span th:if="${cartItem.product == null}">상품 없음</span><!-- 상품이 null인 경우 기본값 설정 -->
-						</td>
-						<td>
-							<span th:if="${cartItem.product != null}" th:text="${cartItem.product.counts}"></span>
-							<span th:if="${cartItem.product == null}">0</span><!-- 상품이 null인 경우 0으로 설정 -->
-						</td>
-						<td>
-							<span th:if="${cartItem.product != null}" th:text="${cartItem.product.price}"></span>
-							<span th:if="${cartItem.product == null}">0</span><!-- 상품이 null인 경우 0으로 설정 -->
-						</td>
-						<td th:text="${cartItem.product != null ? cartItem.product.price * cartItem.counts : 0}"></td>
-					</tr>
-				</table>
+			<!-- 내장바구니 정보 표시 -->
+			<div th:if="${session.member != null}">
+				<div th:each="cartItem : ${cartlist}" class="product-info"
+					th:attr="data-cart-id=${cartItem.cart_num}">
+					<!-- 이미지 및 체크박스 표시 -->
+
+					<input type="checkbox" class="cart-checkbox"
+						th:data-price="${cartItem.total}" />
+					<!-- 체크박스 추가 -->
+					<img th:if="${cartItem.product != null}"
+						th:src="'/' + ${cartItem.product.image_url}" alt="Product Image"
+						class="cartimg" />
+					<!-- 제품 정보 -->
+					<div class="cart_info">
+						<div th:if="${cartItem.product != null}"
+							th:text="${cartItem.product.product_name}" class="cart_name"></div>
+						<div th:text="'counts: ' + ${cartItem.counts} ?: 0"
+							class="cart_counts"></div>
+						<div th:if="${cartItem.product != null}"
+							th:text="'price:' + ${cartItem.product.price}" class="cart_price"></div>
+						<div th:text="'total: ' + ${cartItem.total}" class="cart_total"></div>
+						<button class="delete-button">Delete</button>
+					</div>
+
+				</div>
+					<div class="total">
+						<div class="btn-function">
+						<button id="selectAllButton" class="selectAllButton btn">전체 선택</button>
+						<button id="deleteSelectedButton" class="deleteSelectedButton btn">선택 삭제</button>
+						</div>
+						<div class="total-price">Total Price: <span id="selectedTotalPrice">0</span></div>
+					</div>
 			</div>
-			<!--cartItem.product가 null인 경우에 대비하여 기본값을 설정하게 됩니다. 코드를 적용한 후 다시 테스트하여 정상적으로 동작하는지 확인하십시오.-->
 
 
-
-
-
-
-			<!-- 로그인 상태가 아닌 경우에 보이는 내용 -->
-			<div th:unless="${session != null}">
-
-				<!-- 쿠키에서 읽어온 장바구니 정보 표시 -->
-				<table id="cartTable">
-					<tr>
-						<th>상품 이름</th>
-						<th>상품 수량</th>
-						<th>상품 가격</th>
-						<th>총 가격</th>
-					</tr>
-				</table>
+			<!-- 쿠키로부터 장바구니 정보 표시 -->
+			<div th:if="${session.member == null}" class="cookie-cart">
+				<!-- 비로그인 상태에서 보이는 내용 -->
+				<ul>
+					<li th:each="guestCart : ${guestCartList}" class="product-info"
+						th:attr="data-cart-id=${guestCart.guest_cart_num}">
+						<!-- 이미지 및 체크박스 표시 --> <input type="checkbox"
+						class="cart-checkbox" th:data-price="${guestCart.total}" /> <!-- 체크박스 추가 -->
+						<img th:if="${guestCart.product != null}"
+						th:src="'/' + ${guestCart.product.image_url}" alt="Product Image"
+						class="cartimg" /> <!-- 제품 정보 -->
+						<div class="cart_info">
+							<div th:if="${guestCart.product != null}"
+								th:text="${guestCart.product.product_name}" class="cart_name"></div>
+							<span
+								th:text="'price:' + ${guestCart.product != null ? guestCart.product.price : '0'}"
+								class="cart_price"></span> <span
+								th:text="'counts: ' + ${guestCart.counts ?: 0}"
+								class="cart_counts"></span>
+							<div th:text="'total:'+${guestCart.total}" class="cart_total"></div>
+							<button class="guest-delete-button">Delete</button>
+						</div>
+					</li>
+				</ul>
+					<div class="total">
+						<div class="btn-function">
+						<button id="selectAllButton" class="selectAllButton btn">전체 선택</button>
+						<button id="guestDeleteSelectedButton" class="deleteSelectedButton btn">선택 삭제</button>
+						</div>
+						<div class="total-price">Total Price: <span id="selectedTotalPrice">0</span></div>
+					</div>
 			</div>
 		</div>
 	</section>
 
-	<script src="js/jquery-3.4.1.min.js"></script>
 	<script>
-		//비로그인 상타에서 자압구니 정보를 표시하는 함수
-		function displayCartFromCookie() {
-			const existingCartCookie = getCookie("cart");
-			if (existingCartCookie) {
-				const cartItems = JSON.parse(existingCartCookie);
+		$(document).ready(function() {
+			// 상품 삭제버튼
+			$(".delete-button").click(function() {
+				console.log("클릭되나");
+				var cartItem = $(this).closest(".product-info"); // this는 클릭된 삭제버튼이고 거기서 제일 가까운 클래스를 불러와서 변수 할당
+				var cartItemId = cartItem.attr("data-cart-id"); // 장바구니 항목의 고유 아이디를 가져옵니다.
 
-				//장바구니 테이블 또는 다른 html 요소를 선택하여 쿠키에서 가져온 정보를 표시합니다.-->
-				const cartTable = document.getElementById("cartTable");
+				$.ajax({
+					type : "POST",
+					url : '[[@{/deleteCart}]]', // 서버 엔드포인트 URL을 직접 지정
+					data : {
+						cartItemId : cartItemId
+					},
+					success : function(response) {
+					
+						alert("삭제되었습니다");
 
-				//장바구니 테이블 초기화
-				cartTable.innerHTML = "";
+						// 화면에서 해당 항목 삭제
+						guestCartItem.remove();
 
-				//각 항목을 테이블에 추가
-				for (const cartItem of cartItems) {
-					const row = cartTable.insertRow();
-					const cell1 = row.insertCell(0);
-					const cell2 = row.insertCell(1);
-					const cell3 = row.insertCell(2);
-					const cell4 = row.insertCell(3);
+						// 총 가격 재계산 
+						recalculateTotalPrice();
+					},
+					error : function(xhr, status, error) {
+						// 오류 처리 로직을 추가하세요.
+						console.error("장바구니 항목을 삭제하는 중 오류 발생: " + error);
+					}
+				});
+			});
 
+			//비회원 상품 삭제버튼
+			$(".guest-delete-button").click(function() {
+				console.log("클릭되나");
+				var guestCartItem = $(this).closest(".product-info"); // this는 클릭된 삭제버튼이고 거기서 제일 가까운 클래스를 불러와서 변수 할당
+				var guestCartItemId = guestCartItem.attr("data-cart-id"); // 장바구니 항목의 고유 아이디를 가져옵니다.
 
-					cell1.textContent = `상품 이름 : ${cartItem.product.product_name}`;
-					cell2.textContent = `상품 수량 : ${cartItem.counts}`;
-					cell3.textContent = `상품 가격 : ${cartItem.product.price}`;
-					cell4.textContent = `총 가격 : ${cartItem.product.price * cartItem.counts}`;
+				$.ajax({
+					type : "POST",
+					url : '[[@{/guestDeleteCart}]]', // 서버 엔드포인트 URL을 직접 지정
+					data : {
+						guestCartItemId : guestCartItemId
+					},
+					success : function(response) {
+					
+						alert("삭제되었습니다");
 
-				}
+						// 화면에서 해당 항목 삭제
+						guestCartItem.remove();
+
+						// 총 가격 재계산
+						recalculateTotalPrice();
+					},
+					error : function(xhr, status, error) {
+						// 오류 처리 로직을 추가하세요.
+						console.error("장바구니 항목을 삭제하는 중 오류 발생: " + error);
+					}
+				});
+			});
+
+			// 체크박스 선택 시 해당 상품의 가격 플러스
+			$(".cart-checkbox").change(function() {
+				console.log("체크는 되니?");
+				var total = 0;
+				$(".cart-checkbox:checked").each(function() {
+					// 선택된 체크박스의 data-price 속성에서 가격 정보를 가져와 더합니다.
+					total += parseFloat($(this).attr("data-price"));
+				});
+				// 소수점 이하 자릿수를 제한하여 더 정확한 결과를 얻을 수 있습니다.
+				total = total.toFixed(2); // 소수점 이하 2자리까지만 표시
+				// 계산된 총 가격을 화면에 표시합니다.
+				$("#selectedTotalPrice").text(total);
+			});
+
+			// 총 가격을 재계산하는 함수
+			function recalculateTotalPrice() {
+				var total = 0;
+				$(".cart-checkbox:checked").each(function() {
+					total += parseFloat($(this).attr("data-price"));
+				});
+				total = total.toFixed(2);
+				$("#selectedTotalPrice").text(total);
 			}
-		}
-		//페이지 로드시 장바구니 정보를 표시
-		window.onload = function () {
-			displayCartFromCookie();
-		}
+			
+			// 전체 선택/해제 버튼 클릭 시
+			$("#selectAllButton").click(function() {
+			    var isChecked = $(this).text() === "전체 선택";
+			    $(".cart-checkbox").prop("checked", isChecked);
+			    $(this).text(isChecked ? "전체 해제" : "전체 선택");
+			    recalculateTotalPrice();
+			});
 
+			// 회원 선택 삭제 버튼 클릭 시
+			$("#deleteSelectedButton").click(function() {
+			    $(".cart-checkbox:checked").each(function() {
+			        var cartItem = $(this).closest(".product-info");
+			        var cartItemId = cartItem.attr("data-cart-id");
+			        $.ajax({
+			            type: "POST",
+			            url: '[[@{/deleteCart}]]',
+			            data: {
+			                cartItemId: cartItemId
+			            },
+			            success: function(response) {
+			                alert("선택된 항목이 삭제되었습니다.");
+			                cartItem.remove();
+			                recalculateTotalPrice();
+			            },
+			            error: function(xhr, status, error) {
+			                console.error("장바구니 항목을 삭제하는 중 오류 발생: " + error);
+			            }
+			        });
+			    });
+			});
+			
+			//비회원 선택삭제 버튼 클릭
+			$("#guestDeleteSelectedButton").click(function() {
+			    $(".cart-checkbox:checked").each(function() {
+			    	var guestCartItem = $(this).closest(".product-info"); // this는 클릭된 삭제버튼이고 거기서 제일 가까운 클래스를 불러와서 변수 할당
+					var guestCartItemId = guestCartItem.attr("data-cart-id"); // 장바구니 항목의 고유 아이디를 가져옵니다.
 
-		//getCookie 함수정의
-		function getCookie(cookieName) {
-			var name = cookieName + "=";
-			var decodedCookie = decodeURIComponent(document.cookie);
-			var cookieArray = decodedCookie.split(';');
+					$.ajax({
+						type : "POST",
+						url : '[[@{/guestDeleteCart}]]', // 서버 엔드포인트 URL을 직접 지정
+						data : {
+							guestCartItemId : guestCartItemId
+						},
+						success : function(response) {
+							console.log(guestCartItemId);
+							alert("삭제되었습니다");
 
-			for (var i = 0; i < cookieArray.length; i++) {
-				var cookie = cookieArray[i].trim();
-				if (cookie.indexOf(name) === 0) {
-					return cookie.substring(name.length, cookie.length);
-				}
-			}
-			return "";
-		}
+							// 화면에서 해당 항목 삭제
+							guestCartItem.remove();
 
+							// 총 가격 재계산
+							recalculateTotalPrice();
+						},
+						error : function(xhr, status, error) {
+							// 오류 처리 로직을 추가하세요.
+							console.error("장바구니 항목을 삭제하는 중 오류 발생: " + error);
+						}
+					});
+				});
+			});
+		});
 	</script>
 	<footer th:replace="fragments/common :: footer-script"></footer>
-
 </body>
-
 </html>

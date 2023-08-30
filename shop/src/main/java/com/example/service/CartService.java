@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.dto.Cart;
-import com.example.dto.Order;
 import com.example.dto.Product;
 import com.example.frame.MyService;
 import com.example.mapper.CartMapper;
@@ -18,21 +17,21 @@ public class CartService implements MyService<Integer,Cart>{
 	CartMapper cmapper;
 	
 	@Override
-	public void register(Cart v) throws Exception {
-		// TODO Auto-generated method stub
-		
+	public void register(Cart cart) throws Exception {
+		cmapper.insert(cart);
 	}
 
 	@Override
-	public void remove(Integer k) throws Exception {
-		// TODO Auto-generated method stub
+	public void remove(Integer cartItemId) throws Exception {
+		cmapper.delete(cartItemId);
 		
 	}
 
+	
+	//존재하는 상품에서 또 장바구니에 추가했을때 카운트업데이트
 	@Override
-	public void modify(Cart v) throws Exception {
-		// TODO Auto-generated method stub
-		
+	public void modify(Cart cart) throws Exception {
+		cmapper.update(cart);	
 	}
 
 	@Override
@@ -72,5 +71,12 @@ public class CartService implements MyService<Integer,Cart>{
 	}
 
 
+	public List<Cart> getCartByMemberNum(int memberNum) {
+		return cmapper.getCartByMemberNum(memberNum);
+	}
 
+
+
+	
+	
 }

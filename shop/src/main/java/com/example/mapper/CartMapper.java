@@ -1,6 +1,9 @@
 package com.example.mapper;
 
+import java.util.List;
+
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import com.example.dto.Cart;
@@ -15,5 +18,13 @@ public interface CartMapper extends MyMapper<Integer, Cart> {
 
 
 	void addToCart(Cart cartItem);
+
+
+	List<Cart> getCartByMemberNum(int memberNum);
+
+
+
+	void updateCartItem(Cart existingCartItem);
+
 
 }

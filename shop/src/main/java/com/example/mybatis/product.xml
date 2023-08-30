@@ -27,7 +27,7 @@
 	
 	<!-- 재고량 조회 -->
 	<select id="isOutOfStock" resultType="Integer">
-		SELECT quantity FROM product WHERE product_num =#{ProductNum}
+		SELECT quantity FROM product WHERE product_num =#{productNum}
 	</select>
 
 
